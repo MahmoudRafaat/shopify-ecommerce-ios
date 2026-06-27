@@ -1,0 +1,9 @@
+# Xcode user-specific files (open tabs, window positions, etc.)
+xcuserdata/
+*.xcuserstate
+
+# Derived Data (Build files)
+DerivedData/
+
+# DS_Store (Mac system files)
+.DS_Store
