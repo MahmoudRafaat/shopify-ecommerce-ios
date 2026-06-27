@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct AuthCustomeButton: View {
+    let text: String
+    let action: () -> Void
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button(action: action, label: {
+            Text(text)
+                .fontWeight(.semibold)
+                .font(.system(size: 20))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(Color(.gray))
+        })
+        .padding(.horizontal, 20)
     }
 }
 
 #Preview {
-    AuthCustomeButton()
+    AuthCustomeButton(text: "Sign Up", action: {})
 }
