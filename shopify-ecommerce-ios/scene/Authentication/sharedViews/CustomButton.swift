@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AuthCustomeButton: View {
+struct CustomButton: View {
     let text: String
     let action: () -> Void
     var body: some View {
@@ -25,5 +25,5 @@ struct AuthCustomeButton: View {
 }
 
 #Preview {
-    AuthCustomeButton(text: "Sign Up", action: {})
+    CustomButton(text: "Sign Up", action: {})
 }
