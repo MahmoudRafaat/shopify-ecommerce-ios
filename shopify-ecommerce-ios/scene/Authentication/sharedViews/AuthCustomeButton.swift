@@ -18,7 +18,7 @@ struct AuthCustomeButton: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 55)
-                .background(Color(.gray))
+                .background(Color(.red))
         })
         .padding(.horizontal, 20)
     }
