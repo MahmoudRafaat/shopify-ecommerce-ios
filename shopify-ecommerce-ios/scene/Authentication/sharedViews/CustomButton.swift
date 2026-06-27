@@ -20,7 +20,6 @@ struct CustomButton: View {
                 .frame(height: 55)
                 .background(Color(.red))
         })
-        .padding(.horizontal, 20)
     }
 }
 
