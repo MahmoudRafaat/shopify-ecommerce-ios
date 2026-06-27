@@ -7,35 +7,6 @@
 
 import SwiftUI
 
-
-enum TextFieldtype{
-    case email
-    case password
-    case name
-    
-    var icon: String{
-        switch self{
-        case .name:
-            return "person.fill"
-        case .email:
-            return "envelope.fill"
-        case .password:
-            return "lock.fill"
-        }
-    }
-    
-    var keyboardType : UIKeyboardType{
-        switch self{
-        case .email:
-            return .emailAddress
-        default:
-            return .default
-        }
-    }
-    
-}
-
-
 struct CustomTextField: View {
     let placeholder : String
     let type: TextFieldtype
@@ -80,7 +51,7 @@ struct CustomTextField: View {
                             .foregroundStyle(.red)
                             .padding(.leading,4)
                     }
-        }.padding(.horizontal)
+        }.padding(.horizontal,28)
     }
 }
 
