@@ -12,7 +12,25 @@ struct OnboardingScreen: View {
     @State private var isAnimating = false
     
     var body: some View {
+        
         VStack {
+            HStack{
+                HStack (spacing : 0 ) {
+                    Text("\(currentPage+1)")
+                        .font(Font.body.bold())
+                    Text("/\(OnboardingPage.allCases.count)")
+                        .font(Font.body.bold())
+                        .opacity(0.3)
+                }
+                Spacer()
+                Button("Skip") {
+                    // TODO: Navigate To Home Screen
+                    print("Home Screen will appear")
+                }
+                .font(Font.body.bold())
+                .foregroundStyle(Color.primary)
+            }
+            
             TabView(selection: $currentPage) {
                 ForEach(OnboardingPage.allCases, id: \.rawValue) { page in
                     getPageView(for: page)
@@ -52,6 +70,7 @@ struct OnboardingScreen: View {
                             if currentPage < OnboardingPage.allCases.count - 1 {
                                 currentPage += 1
                             } else {
+                                // TODO: Navigate To Home Screen
                                 print("Home Screen will appear")
                             }
                         }
