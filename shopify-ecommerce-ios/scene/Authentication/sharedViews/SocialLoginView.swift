@@ -9,21 +9,18 @@ import SwiftUI
 
 
 struct SocialLoginView: View {
+    var onGoogleTap: () -> Void
+        var onAppleTap: () -> Void
+        var onFacebookTap: () -> Void
     var body: some View {
         VStack(spacing: 20) {
             Text("- OR Continue with -")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
-            HStack(spacing: 24) {
-                SocialCircularButton(iconName: "google_logo") {
-                    print("Google Tapped")
-                }
-                SocialCircularButton(iconName: "applelogo", isSystemImage: true) {
-                    print("Apple Tapped")
-                }
-                SocialCircularButton(iconName: "facebook_logo") {
-                    print("Facebook Tapped")
-                }
+            HStack(spacing: 10) {
+                SocialCircularButton(iconName: "google",action: onGoogleTap)
+                SocialCircularButton(iconName: "apple",action: onAppleTap)
+                SocialCircularButton(iconName: "facebook", action: onFacebookTap)
             }
         }
         .padding()
@@ -37,29 +34,22 @@ struct SocialCircularButton: View {
     var body: some View {
         Button(action: action) {
             Group {
-                if isSystemImage {
-                    Image(systemName: iconName)
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(.black)
-                } else {
                     Image(iconName)
                         .resizable()
                         .scaledToFit()
-                }
             }
             .frame(width: 24, height: 24)
             .padding(18)
-            .background(Color(red: 0.98, green: 0.95, blue: 0.96)) // Light pinkish background
+            .background(Color(red: 0.98, green: 0.95, blue: 0.96))
             .clipShape(Circle())
             .overlay(
                 Circle()
-                    .stroke(Color(red: 1.0, green: 0.3, blue: 0.4), lineWidth: 1.5) // Red border
+                    .stroke(Color(red: 1.0, green: 0.3, blue: 0.4), lineWidth: 1.5)
             )
         }
     }
 }
 
 #Preview {
-    SocialLoginView()
+    SocialLoginView(onGoogleTap: {print("google tapped")}, onAppleTap: {print("apple tapped")}, onFacebookTap: {print("facebook tapped")})
 }
