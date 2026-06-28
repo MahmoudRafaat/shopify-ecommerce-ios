@@ -34,21 +34,7 @@ struct AdCard: View {
                         .font(.system(size: 12, weight: .light))
                         .foregroundStyle(Color.white)
                 }
-                
-                Button(action: {
-                    action()
-                }) {
-                    HStack {
-                        Text("Shop now")
-                        Image(systemName: "chevron.right")
-                    }
-                    .foregroundStyle(Color.white)
-                    .padding(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .strokeBorder(.white, lineWidth: 2)
-                    )
-                }
+                TrailingIconOutlinedButton(action: action)
             }
             .padding(14)
         }
