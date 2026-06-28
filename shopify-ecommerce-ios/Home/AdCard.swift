@@ -34,7 +34,7 @@ struct AdCard: View {
                         .font(.system(size: 12, weight: .light))
                         .foregroundStyle(Color.white)
                 }
-                TrailingIconOutlinedButton(action: action)
+                TrailingIconOutlinedButton(title: "Shop now", action: action)
             }
             .padding(14)
         }

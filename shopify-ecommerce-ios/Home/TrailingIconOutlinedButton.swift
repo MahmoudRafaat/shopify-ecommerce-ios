@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct TrailingIconOutlinedButton: View {
+    let title: String
     let action: () -> Void
-    let 
+    
     var body: some View {
         Button(action: {
             action()
         }) {
             HStack {
-                Text("Shop now")
+                Text(title)
                 Image(systemName: "chevron.right")
             }
             .foregroundStyle(Color.white)
@@ -29,5 +30,5 @@ struct TrailingIconOutlinedButton: View {
 }
 
 #Preview {
-    TrailingIconOutlinedButton(action: {})
+    TrailingIconOutlinedButton(title: "Shop now", action: {})
 }
