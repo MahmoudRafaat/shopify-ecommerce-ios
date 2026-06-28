@@ -39,7 +39,7 @@ struct CollectionOfAds: View {
         return HStack {
             ForEach(0..<allAdCards.count, id: \.self){ index in
                 Circle()
-                    .fill(idx == index ? Color.pink : Color.primary)
+                    .fill(idx == index ? .appPink : .primary)
                     .opacity(idx == index ? 1 : 0.3)
                     .frame(height: index == idx ? 9 : 8)
                     .animation(.spring(), value: idx)
