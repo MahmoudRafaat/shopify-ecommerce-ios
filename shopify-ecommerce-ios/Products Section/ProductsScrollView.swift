@@ -10,16 +10,16 @@ import SwiftUI
 struct ProductsScrollView: View {
     let products: [Product] = [
         Product(
-            image: "woman",
-            name: "Women Printed Kurta",
-            description: "Neque porro quisquam est qui dolorem ipsum quia",
+            image: "watch",
+            name: "2021 Pilot's Watch",
+            description: "IWC Schaffhausen 2021 Pilot's Watch \"SIHH 2019\" 44mm",
             price: 1500.0,
             discount: 40,
             stars: 4.4,
             reviewers: 3455
         ),
         Product(
-            image: "woman",
+            image: "watch",
             name: "Elegant Summer Dress",
             description: "Comfortable and stylish outfit for everyday wear",
             price: 2200.0,
@@ -28,7 +28,7 @@ struct ProductsScrollView: View {
             reviewers: 2890
         ),
         Product(
-            image: "woman",
+            image: "watch",
             name: "Classic Women Outfit",
             description: "Premium fabric with modern design collection",
             price: 1800.0,
@@ -37,7 +37,7 @@ struct ProductsScrollView: View {
             reviewers: 4120
         ),
         Product(
-            image: "woman",
+            image: "watch",
             name: "Classic Women Outfit",
             description: "Premium fabric with modern design collection",
             price: 1800.0,
@@ -46,7 +46,7 @@ struct ProductsScrollView: View {
             reviewers: 4120
         ),
         Product(
-            image: "woman",
+            image: "watch",
             name: "Classic Women Outfit",
             description: "Premium fabric with modern design collection",
             price: 1800.0,

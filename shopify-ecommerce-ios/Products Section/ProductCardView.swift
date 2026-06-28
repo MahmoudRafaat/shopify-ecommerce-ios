@@ -45,8 +45,6 @@ struct ProductCardView: View {
                 starsView(productStars: product.stars)
             }
             .padding(8)
-            
-            
         }
         .frame(width: 170, height: 250)
         .background(Color.white)
@@ -81,5 +79,11 @@ struct ProductCardView: View {
 }
 
 #Preview {
-    ProductCardView(product: Product(image: "woman", name: "Women Printed Kurta", description: "Neque porro quisquam est qui dolorem ipsum quia", price: 1500.0, discount: 40, stars: 4.4, reviewers: 3455))
+    ProductCardView(product: Product(image: "watch",
+                                     name: "Women Printed Kurta",
+                                     description: "Neque porro quisquam est qui dolorem ipsum quia",
+                                     price: 1500.0,
+                                     discount: 40,
+                                     stars: 4.4,
+                                     reviewers: 3455))
 }
