@@ -62,9 +62,9 @@ struct ImageModel: Codable, Identifiable {
 
 
 #Playground {
-    let apiKey = "aa8d104ab1b323002f6385dd093896ff"
-    let apiPassword = "apiPassword"
-    let hostname = "mad46-ios-team4.myshopify.com"
+    let apiKey = "api key"
+    let apiPassword = "api password"
+    let hostname = "host name"
 
     let urlString = "https://\(apiKey):\(apiPassword)@\(hostname)/admin/api/2026-01/products.json"
     guard let url = URL(string: urlString) else { return }
