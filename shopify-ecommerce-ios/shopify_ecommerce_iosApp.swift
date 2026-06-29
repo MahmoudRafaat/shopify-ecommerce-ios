@@ -28,7 +28,7 @@ struct shopify_ecommerce_iosApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SignupView(viewmodel: SignupViewModel())
         }
         .modelContainer(sharedModelContainer)
     }
