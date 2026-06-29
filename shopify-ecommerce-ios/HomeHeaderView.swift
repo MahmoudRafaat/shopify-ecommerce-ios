@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeHeaderView: View {
+    @State var searchText = ""
     var body: some View {
         VStack{
             HStack(){
@@ -37,12 +38,12 @@ struct HomeHeaderView: View {
                 }
                 
             }.padding(.horizontal,14)
-            
+            SearchField(searchText: $searchText).padding(16)
         
         }
     }
 }
 
 #Preview {
-    HomeHeaderView()
+    HomeHeaderView(searchText: "")
 }
