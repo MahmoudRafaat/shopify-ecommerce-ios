@@ -10,6 +10,9 @@ import SwiftData
 
 @main
 struct shopify_ecommerce_iosApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
