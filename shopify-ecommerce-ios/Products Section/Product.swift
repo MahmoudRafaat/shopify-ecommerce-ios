@@ -62,9 +62,12 @@ struct ImageModel: Codable, Identifiable {
 
 
 #Playground {
-    guard let url = URL(string: "https://aa8d104ab1b323002f6385dd093896ff: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@mad46-ios-team4.myshopify.com/admin/api/2026-01/products.json") else {
-        fatalError("Invalid URL")
-    }
+    let apiKey = "aa8d104ab1b323002f6385dd093896ff"
+    let apiPassword = "apiPassword"
+    let hostname = "mad46-ios-team4.myshopify.com"
+
+    let urlString = "https://\(apiKey):\(apiPassword)@\(hostname)/admin/api/2026-01/products.json"
+    guard let url = URL(string: urlString) else { return }
         
     let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
         guard let data = data, error == nil else {
