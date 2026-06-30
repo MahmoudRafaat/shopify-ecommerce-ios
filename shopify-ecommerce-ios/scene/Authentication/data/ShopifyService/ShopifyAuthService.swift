@@ -40,10 +40,11 @@ class ShopifyAuthService: ShopifyAuthServiceProtocol {
         
         let dataResponse = await task.serializingData().response
         if let data = dataResponse.data {
-            if let jsonString = String(data: data, encoding: .utf8) {
-                print(jsonString)
-            }
+            let prettyString = JsonHelper.prettyJSON(data)
+            print("Response JSON: \(prettyString)")
         }
+        
+        try dataResponse.validateAndHandlError()
         
         let response = try await task.serializingDecodable(CustomerResponse.self).value
         return response.customer
