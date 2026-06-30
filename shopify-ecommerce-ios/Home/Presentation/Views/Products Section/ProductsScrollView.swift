@@ -40,6 +40,7 @@ struct ProductsScrollView: View {
 }
 
 #Preview {
+    
     let viewModel = HomeViewModel()
     ProductsScrollView(products: viewModel.products)
 }

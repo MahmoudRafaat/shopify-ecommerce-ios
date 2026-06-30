@@ -1,24 +1,20 @@
 //
-//  HomeViewModel.swift
+//  HomeService.swift
 //  shopify-ecommerce-ios
 //
-//  Created by albaraa alsayed on 14/01/1448 AH.
+//  Created by albaraa alsayed on 15/01/1448 AH.
 //
 
 import Foundation
-import Observation
 
-@Observable
-class HomeViewModel {
-    
-    private(set) var products: [Product] = []
-    
-    init() {
-        loadData()
-    }
-    
-    private func loadData() {
-        self.products = [
+protocol HomeServiceProtocol: AnyObject {
+    func loadProducts() -> [Product]
+    func loadCategories() -> [Category]
+}
+
+class HomeService : HomeServiceProtocol {
+    func loadProducts() -> [Product] {
+        return [
             Product(
                 image: "watch",
                 name: "2021 Pilot's Watch",
@@ -48,4 +44,16 @@ class HomeViewModel {
             )
         ]
     }
+    
+    func loadCategories() -> [Category] {
+        return [
+            Category(title: "Beauty", imageName: "category-image"),
+            Category(title: "Fashion", imageName: "category-image"),
+            Category(title: "Kids", imageName: "category-image"),
+            Category(title: "Mens", imageName: "category-image"),
+            Category(title: "Womens", imageName: "category-image")
+        ]
+    }
+    
+    
 }
