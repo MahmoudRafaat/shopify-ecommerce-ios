@@ -9,13 +9,7 @@ import SwiftUI
 
 struct HomeHeaderView: View {
     @State var searchText = ""
-    let categories = [
-        Category(title: "Beauty", imageName: "category-image"),
-        Category(title: "Fashion", imageName: "category-image"),
-        Category(title: "Kids", imageName: "category-image"),
-        Category(title: "Mens", imageName: "category-image"),
-        Category(title: "Womens", imageName: "category-image")
-    ]
+    let categories : [Category]
     var body: some View {
         VStack(){
             HStack(){
@@ -62,5 +56,12 @@ struct HomeHeaderView: View {
 }
 
 #Preview {
-    HomeHeaderView(searchText: "")
+    let categories = [
+        Category(title: "Beauty", imageName: "category-image"),
+        Category(title: "Fashion", imageName: "category-image"),
+        Category(title: "Kids", imageName: "category-image"),
+        Category(title: "Mens", imageName: "category-image"),
+        Category(title: "Womens", imageName: "category-image")
+    ]
+    HomeHeaderView(searchText: "",categories: categories)
 }
