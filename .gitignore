@@ -10,3 +10,6 @@ DerivedData/
 
 # Firebase configuration file
 **/GoogleService-Info.plist
+
+# Keys and Tokens of Api 
+**/NetworkConstants.swift
