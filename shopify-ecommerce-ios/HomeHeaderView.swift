@@ -9,6 +9,13 @@ import SwiftUI
 
 struct HomeHeaderView: View {
     @State var searchText = ""
+    let categories = [
+        Category(title: "Beauty", imageName: "category-image"),
+        Category(title: "Fashion", imageName: "category-image"),
+        Category(title: "Kids", imageName: "category-image"),
+        Category(title: "Mens", imageName: "category-image"),
+        Category(title: "Womens", imageName: "category-image")
+    ]
     var body: some View {
         VStack(){
             HStack(){
@@ -48,7 +55,8 @@ struct HomeHeaderView: View {
                 ActionChipButton(title: "Filter", systemImage: "filter-icon"){
                     print("filter")
                 }
-            }.padding(.horizontal,16)
+            }.padding(.horizontal, 16)
+            CategoriesSectionView(categories: categories).padding(.top,16)
         }
     }
 }
