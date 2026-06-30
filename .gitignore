@@ -7,3 +7,5 @@ DerivedData/
 
 # DS_Store (Mac system files)
 .DS_Store
+
+SeacretConstants.swift
