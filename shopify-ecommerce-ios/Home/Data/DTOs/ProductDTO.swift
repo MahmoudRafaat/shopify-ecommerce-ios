@@ -7,6 +7,7 @@
 
 import Foundation
 import Playgrounds
+import Alamofire
 
 struct ProductDTO: Codable, Identifiable {
     let id: Int
@@ -42,36 +43,30 @@ struct ImageDTO: Codable, Identifiable {
 
 
 #Playground {
-    let apiKey = "api key"
-    let apiPassword = "api password"
-    let hostname = "host name"
+    let apiKey = "aa8d104ab1b323002f6385dd093896ff"
+    let apiPassword = "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"
+    let hostname = "mad46-ios-team4.myshopify.com"
 
     let urlString = "https://\(apiKey):\(apiPassword)@\(hostname)/admin/api/2026-01/products.json"
-    guard let url = URL(string: urlString) else { return }
-        
-    let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
-        guard let data = data, error == nil else {
-            print("Network error")
-            return
-        }
-            
-        do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            
-            let response = try decoder.decode(ProductsResponse.self, from: data)
-            let productDTOs = response.products
+    
+    let decoder = JSONDecoder()
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
 
-            print("Success Decoded \(productDTOs.count) products.")
-
-            if let firstProductDTO = productDTOs.first {
-                print("Product Type: \(firstProductDTO.productType)")
+    AF.request(urlString)
+        .validate()
+        .responseDecodable(of: ProductsResponse.self, decoder: decoder) { response in
+            
+            switch response.result {
+            case .success(let productsResponse):
+                let productDTOs = productsResponse.products
+                print("Success Decoded \(productDTOs.count) products.")
+                
+                if let firstProductDTO = productDTOs.first {
+                    print("Product Type: \(firstProductDTO.productType)")
+                }
+                
+            case .failure(let error):
+                print("Network or Decoding Error: \(error)")
             }
-            
-        } catch {
-            print("Decoding Error: \(error)")
         }
-    }
-        
-    task.resume()
 }
