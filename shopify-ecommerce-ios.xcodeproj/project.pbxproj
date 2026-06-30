@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6D6FCC1D2FF2511800A82A9C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC1C2FF2511800A82A9C /* FirebaseAnalytics */; };
+		6D6FCC1F2FF2511800A82A9C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC1E2FF2511800A82A9C /* FirebaseAuth */; };
+		6D6FCC222FF2531B00A82A9C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC212FF2531B00A82A9C /* Alamofire */; };
+		6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC232FF2533100A82A9C /* Kingfisher */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B3AEA0532FEFCC8500BE7867 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +59,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */,
+				6D6FCC222FF2531B00A82A9C /* Alamofire in Frameworks */,
+				6D6FCC1D2FF2511800A82A9C /* FirebaseAnalytics in Frameworks */,
+				6D6FCC1F2FF2511800A82A9C /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +83,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6D6FCC202FF2531B00A82A9C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B3AEA0372FEFCC8200BE7867 = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +97,7 @@
 				B3AEA0552FEFCC8500BE7867 /* shopify-ecommerce-iosTests */,
 				B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */,
 				B3AEA0412FEFCC8200BE7867 /* Products */,
+				6D6FCC202FF2531B00A82A9C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +131,10 @@
 			);
 			name = "shopify-ecommerce-ios";
 			packageProductDependencies = (
+				6D6FCC1C2FF2511800A82A9C /* FirebaseAnalytics */,
+				6D6FCC1E2FF2511800A82A9C /* FirebaseAuth */,
+				6D6FCC212FF2531B00A82A9C /* Alamofire */,
+				6D6FCC232FF2533100A82A9C /* Kingfisher */,
 			);
 			productName = "shopify-ecommerce-ios";
 			productReference = B3AEA0402FEFCC8200BE7867 /* shopify-ecommerce-ios.app */;
@@ -198,6 +221,7 @@
 			packageReferences = (
 				B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				B3C7A3FA2FEFD375004F3F62 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				6D6FCC1B2FF2511800A82A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B3AEA0412FEFCC8200BE7867 /* Products */;
@@ -400,6 +424,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"shopify-ecommerce-ios/Preview Content\"";
+				DEVELOPMENT_TEAM = P59Y75W95P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -428,6 +453,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"shopify-ecommerce-ios/Preview Content\"";
+				DEVELOPMENT_TEAM = P59Y75W95P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -558,6 +584,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6D6FCC1B2FF2511800A82A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.15.0;
+			};
+		};
 		B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -575,6 +609,29 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6D6FCC1C2FF2511800A82A9C /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6D6FCC1B2FF2511800A82A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		6D6FCC1E2FF2511800A82A9C /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6D6FCC1B2FF2511800A82A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		6D6FCC212FF2531B00A82A9C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		6D6FCC232FF2533100A82A9C /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3C7A3FA2FEFD375004F3F62 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B3AEA0382FEFCC8200BE7867 /* Project object */;
 }

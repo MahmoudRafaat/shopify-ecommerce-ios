@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SignupView: View {
-    @State private var emailOrUsername = ""
-    @State private var password = ""
+    @State var viewmodel: SignupViewModelProtocol
     @State private var isPasswordVisible = false
     
     var body: some View {
@@ -23,7 +22,7 @@ struct SignupView: View {
                 HStack(spacing: 12) {
                     Image(systemName: "person.fill")
                         .foregroundColor(.gray)
-                    TextField("Username or Email", text: $emailOrUsername)
+                    TextField("Username or Email", text: $viewmodel.email)
                         .font(.system(size: 16))
                 }
                 .padding()
@@ -41,9 +40,9 @@ struct SignupView: View {
                             .foregroundColor(.gray)
                         
                         if isPasswordVisible {
-                            TextField("Password", text: $password)
+                            TextField("Password", text: $viewmodel.password)
                         } else {
-                            SecureField("Password", text: $password)
+                            SecureField("Password", text: $viewmodel.password)
                         }
                         
                         Button(action: { isPasswordVisible.toggle() }) {
@@ -66,9 +65,15 @@ struct SignupView: View {
                             .foregroundColor(.gray)
                         
                         if isPasswordVisible {
-                            TextField("Confirm Password", text: $password)
+                            TextField(
+                                "Confirm Password",
+                                text: $viewmodel.confirmPassword
+                            )
                         } else {
-                            SecureField("Confirm Password", text: $password)
+                            SecureField(
+                                "Confirm Password",
+                                text: $viewmodel.confirmPassword
+                            )
                         }
                         
                         Button(action: { isPasswordVisible.toggle() }) {
@@ -88,7 +93,9 @@ struct SignupView: View {
             .padding(.top, 10)
             
             // MARK: - Login Button (Custom Button)
-            CustomButton(text: "Create Account", action: {})
+            CustomButton(text: "Create Account", action: {
+                viewmodel.signup()
+            })
             // MARK: - Social Login Divider
             HStack() {
                 Spacer()
@@ -99,10 +106,12 @@ struct SignupView: View {
             SignupFooter()
         }
         .padding(.horizontal, 24)
+        .showLoading(if: viewmodel.isLoading)
+        .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
         .background(Color.white.ignoresSafeArea())
     }
 }
 
 #Preview {
-    SignupView()
+    SignupView(viewmodel: SignupViewModel())
 }
