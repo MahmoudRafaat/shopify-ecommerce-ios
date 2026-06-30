@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C5F8D4972FF3F8C800E68249 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C5F8D4962FF3F8C800E68249 /* Alamofire */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B3AEA0532FEFCC8500BE7867 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5F8D4972FF3F8C800E68249 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 				B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */,
 				B3AEA0552FEFCC8500BE7867 /* shopify-ecommerce-iosTests */,
 				B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */,
+				C5F8D4952FF3F8C800E68249 /* Frameworks */,
 				B3AEA0412FEFCC8200BE7867 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +96,13 @@
 				B3AEA05C2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C5F8D4952FF3F8C800E68249 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +125,7 @@
 			);
 			name = "shopify-ecommerce-ios";
 			packageProductDependencies = (
+				C5F8D4962FF3F8C800E68249 /* Alamofire */,
 			);
 			productName = "shopify-ecommerce-ios";
 			productReference = B3AEA0402FEFCC8200BE7867 /* shopify-ecommerce-ios.app */;
@@ -575,6 +589,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C5F8D4962FF3F8C800E68249 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B3AEA0382FEFCC8200BE7867 /* Project object */;
 }
