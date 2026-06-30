@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 class SignupUseCase {
     private let repository: AuthRepoProtocol
@@ -15,7 +16,24 @@ class SignupUseCase {
     }
     
     func execute(email: String, password: String) async throws {
-        let firebaseUser = try await repository.registerByFireBase(email: email, password: password)
+        var firebaseUser: User?
+        do {
+            firebaseUser = try await repository.registerByFireBase(email: email, password: password)
+        }
+        catch let error as NSError {
+            
+            if AuthErrorCode(rawValue: error.code) == .emailAlreadyInUse {
+                print("Email already exists")
+                try await createShopifyUser(email: email)
+                return
+            }
+            throw error
+        }
+        
+        try await createShopifyUser(email: (firebaseUser?.email)!)
+    }
+    
+    func createShopifyUser (email:String) async throws {
         let addressInput = AddressInput(
             address1: "123 Oak St",
             city: "Ottawa",
@@ -27,8 +45,8 @@ class SignupUseCase {
         let customerInput = CustomerInput(
             firstName: "Ehab",
             lastName: "Salah",
-            email: (firebaseUser?.email)!,
-            phone: "+201144840791",
+            email: email,
+            phone: "+201144840790",
             addresses: [addressInput]
         )
         
