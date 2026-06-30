@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeHeaderView: View {
     @State var searchText = ""
     var body: some View {
-        VStack{
+        VStack(){
             HStack(){
                 Button{
                     
@@ -39,7 +39,16 @@ struct HomeHeaderView: View {
                 
             }.padding(.horizontal,14)
             SearchField(searchText: $searchText).padding(16)
-        
+            HStack(){
+                Text("All Featured").font(.title2).fontWeight(.semibold)
+                Spacer()
+                ActionChipButton(title: "Sort", systemImage: "sort-icon"){
+                    print("sort")
+                }
+                ActionChipButton(title: "Filter", systemImage: "filter-icon"){
+                    print("filter")
+                }
+            }.padding(.horizontal,16)
         }
     }
 }
