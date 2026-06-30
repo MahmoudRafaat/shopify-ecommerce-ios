@@ -12,13 +12,31 @@ struct ProductCardView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            Image(product.image)
-                .resizable()
-                .scaledToFill()
+            if product.image != "placeholder_image" {
+                let url = URL(string: product.image)
+                
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    ProgressView()
+                }
                 .frame(height: 124)
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .cornerRadius(10)
+                
+            } else {
+                Image(.imgPlaceholder)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 124)
+                    .frame(maxWidth: .infinity)
+                    .clipped()
+                    .cornerRadius(10)
+            }
+            
             
             VStack(alignment: .leading, spacing: 6) {
                 Text(product.name)
@@ -79,11 +97,10 @@ struct ProductCardView: View {
 }
 
 #Preview {
-    ProductCardView(product: Product(image: "watch",
+    ProductCardView(product: Product(id: 1,
+                                     image: "watch",
                                      name: "Women Printed Kurta",
                                      description: "Neque porro quisquam est qui dolorem ipsum quia",
                                      price: 1500.0,
-                                     discount: 40,
-                                     stars: 4.4,
-                                     reviewers: 3455))
+                                     isAvailabe: true))
 }

@@ -8,17 +8,18 @@
 import Foundation
 
 struct Product : Identifiable {
-    let id: UUID = UUID()
+    let id: Int
     let image: String
     let name: String
     let description: String
     let price: Float
-    let discount: Int
+    let isAvailabe: Bool
+    let discount: Int = 20
     
     var oldPrice: Float {
         return price / (1 - (Float(discount) / 100.0))
     }
     
-    let stars: Float
-    let reviewers: Int
+    let stars: Float = 5
+    let reviewers: Int = 1098
 }

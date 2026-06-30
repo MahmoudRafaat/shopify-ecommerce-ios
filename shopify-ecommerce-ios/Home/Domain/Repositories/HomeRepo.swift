@@ -8,6 +8,6 @@
 import Foundation
 
 protocol HomeRepo {
-    func getProducts() -> [Product]
-    func getCategories() -> [Category]
+    func getProducts() async throws -> [Product]
+    func getCategories() async throws -> [Category]
 }

@@ -9,7 +9,7 @@ import Foundation
 import Playgrounds
 import Alamofire
 
-struct ProductDTO: Codable, Identifiable {
+struct ProductDTO: Codable {
     let id: Int
     let title: String
     let bodyHtml: String?
@@ -24,19 +24,20 @@ struct ProductDTO: Codable, Identifiable {
     let image: ImageDTO?
 }
 
-struct ProductOptionDTO: Codable, Identifiable {
+struct ProductOptionDTO: Codable {
     let id: Int
     let name: String
     let values: [String]
 }
 
-struct VariantDTO: Codable, Identifiable {
+struct VariantDTO: Codable {
     let id: Int
     let price: String
     let title: String
+    let inventoryQuantity: Int
 }
 
-struct ImageDTO: Codable, Identifiable {
+struct ImageDTO: Codable {
     let id: Int
     let src: String
 }
