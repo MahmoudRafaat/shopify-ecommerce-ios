@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct HomeScreenView: View {
-    let viewModel: HomeViewModel = HomeViewModel()
+    let viewModel: HomeViewModel
+    
     var body: some View {
         VStack(spacing: 32){
             HomeHeaderView(categories: viewModel.categories)
@@ -17,11 +18,13 @@ struct HomeScreenView: View {
                 DealCard(dealName: "Deal of the Day", dealDescription: "22h 55m 20s remaining ", isToday: true)
                 ProductsScrollView(products: viewModel.products)
             }
-            
+        }
+        .task {
+            await viewModel.fetchData()
         }
     }
 }
 
 #Preview {
-    HomeScreenView()
+    HomeFactory.makeHomeView(diContainer: AppDIContainer())
 }
