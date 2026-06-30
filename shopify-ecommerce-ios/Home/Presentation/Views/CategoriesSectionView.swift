@@ -32,3 +32,10 @@ struct CategoriesSectionView: View {
 }
 
 
+#Preview {
+    CategoriesSectionView(categories: [Category(title: "Beauty", imageName: "category-image"),
+                                       Category(title: "Fashion", imageName: "category-image"),
+                                       Category(title: "Kids", imageName: "category-image"),
+                                       Category(title: "Mens", imageName: "category-image"),
+                                       Category(title: "Womens", imageName: "category-image")])
+}
