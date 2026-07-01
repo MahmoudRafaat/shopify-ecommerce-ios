@@ -12,7 +12,10 @@ struct SignupFooter: View {
         HStack {
             Text("I Already Have an Account")
                 .foregroundColor(.gray)
-            NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true)) {
+            NavigationLink(
+                destination: LoginView(viewmodel: LoginViewModel())
+                    .navigationBarBackButtonHidden(true)
+            ) {
                 Text("Login")
                     .fontWeight(.bold)
                     .foregroundColor(Color(.red))

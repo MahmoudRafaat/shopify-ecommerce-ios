@@ -8,13 +8,17 @@
 import Foundation
 import Alamofire
 
-enum AuthRouter {
+enum NetworkAuthHandler {
     case createCustomer(requestBody: CustomerRequest)
+    case searchCustomer(email: String)
 
     private var fullURL: String {
         switch self {
         case .createCustomer:
-            return NetworkConstants.BaseURL + NetworkConstants.CreateCustomerEndpoint
+            return NetworkConstants.BaseURL + AuthEndopints.createCustomer
+        case .searchCustomer(let email):
+            let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? email
+            return NetworkConstants.BaseURL + AuthEndopints.searchCustomer + "?query=email:\(encodedEmail)"
         }
     }
     
@@ -22,6 +26,8 @@ enum AuthRouter {
         switch self {
         case .createCustomer:
             return .post
+        case .searchCustomer:
+            return .get
         }
     }
     
@@ -41,6 +47,12 @@ enum AuthRouter {
                 method: method,
                 parameters: requestBody,
                 encoder: JSONParameterEncoder.default,
+                headers: headers
+            ).validate()
+        case .searchCustomer:
+            task = AF.request(
+                fullURL,
+                method: method,
                 headers: headers
             ).validate()
         }

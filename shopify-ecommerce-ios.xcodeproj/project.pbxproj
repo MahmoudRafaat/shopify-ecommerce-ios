@@ -309,7 +309,7 @@
 		B3AEA0642FEFCC8500BE7867 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */;
-			baseConfigurationReferenceRelativePath = Core/helper/NetworkConstants/Secrets.xcconfig;
+			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -375,7 +375,7 @@
 		B3AEA0652FEFCC8500BE7867 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */;
-			baseConfigurationReferenceRelativePath = Core/helper/NetworkConstants/Secrets.xcconfig;
+			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

@@ -16,38 +16,12 @@ protocol ShopifyAuthServiceProtocol {
 class ShopifyAuthService: ShopifyAuthServiceProtocol {
 
     func createCustomer(input: CustomerInput) async throws -> CustomerOutput {
-        let request = AuthEndpoints.createCustomer(customer: input)
-        
-        let task = AF.request(request)
-            .validate()
-        
-        let dataResponse = await task.serializingData().response
-        if let data = dataResponse.data {
-            let prettyString = JsonHelper.prettyJSON(data)
-            print("Response JSON: \(prettyString)")
-        }
-        
-        try dataResponse.validateAndHandlError()
-        
-        let response = try await task.serializingDecodable(CustomerResponse.self).value
+        let response: CustomerResponse = try await NetworkAuthHandler.createCustomer(requestBody: CustomerRequest(customer: input)).execute()
         return response.customer
     }
     
     func searchCustomer(email: String) async throws -> CustomerOutput {
-        let request = AuthEndpoints.searchCustomer(email: email)
-        
-        let task = AF.request(request)
-            .validate()
-        
-        let dataResponse = await task.serializingData().response
-        if let data = dataResponse.data {
-            let prettyString = JsonHelper.prettyJSON(data)
-            print("Search Response JSON: \(prettyString)")
-        }
-        
-        try dataResponse.validateAndHandlError()
-        
-        let response = try await task.serializingDecodable(CustomerSearchResponse.self).value
+        let response: CustomerSearchResponse = try await NetworkAuthHandler.searchCustomer(email: email).execute()
         
         guard let customer = response.customers.first else {
             throw LoginError.firebaseUserNotFound
