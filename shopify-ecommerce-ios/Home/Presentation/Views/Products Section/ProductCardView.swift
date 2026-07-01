@@ -102,5 +102,6 @@ struct ProductCardView: View {
                                      name: "Women Printed Kurta",
                                      description: "Neque porro quisquam est qui dolorem ipsum quia",
                                      price: 1500.0,
-                                     isAvailabe: true))
+                                     isAvailabe: true,
+                                    productType: "accessories"))
 }

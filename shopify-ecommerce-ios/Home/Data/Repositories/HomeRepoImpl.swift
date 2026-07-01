@@ -16,15 +16,18 @@ class HomeRepoImpl: HomeRepo {
     
     func getProducts() async throws -> [Product] {
         let dtos = try await service.loadProducts()
-        
+
         return dtos.map { dto in
-            Product(
+            let totalQuantity = dto.variants.reduce(0) { $0 + $1.inventoryQuantity }
+            print(totalQuantity)
+            return Product(
                 id: dto.id,
                 image: dto.image?.src ?? "placeholder_image",
                 name: dto.title,
                 description: dto.bodyHtml ?? "No description available.",
                 price: Float(dto.variants.first?.price ?? "0.0") ?? 0.0,
-                isAvailabe: dto.variants.first?.inventoryQuantity ?? 0  > 0
+                isAvailabe: totalQuantity > 0,
+                productType: dto.productType
             )
         }
     }

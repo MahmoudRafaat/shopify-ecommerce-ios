@@ -15,8 +15,10 @@ class HomeViewModel {
     private let getCategoriesUseCase: GetCategoriesUseCaseProtocol
     private weak var coordinator: HomeCoordinator?
     
-    private(set) var products: [Product] = []
     private(set) var categories: [Category] = []
+    private(set) var categorySections: [(title: String, products: [Product])] = []
+    
+    private var productTypePool : [String] = []
     
     init(
         getProductsUseCase: GetProductsUseCaseProtocol,
@@ -33,8 +35,32 @@ class HomeViewModel {
             async let fetchedProducts = getProductsUseCase.execute()
             async let fetchedCategories = getCategoriesUseCase.execute()
             
-            self.products = try await fetchedProducts
-            self.categories = try await fetchedCategories
+            let allProducts = try await fetchedProducts
+            productTypePool = Array(Set(allProducts.map(\.productType))).filter { !$0.isEmpty }
+            
+            print(productTypePool)
+            let allCategories = try await fetchedCategories
+            
+            self.categories = allCategories
+            
+            let shuffledTypes = productTypePool.shuffled() 
+            
+            var sections: [(title: String, products: [Product])] = []
+            
+            for type in shuffledTypes {
+                if sections.count == 2 { break }
+                
+                let matchedProducts = allProducts.filter { product in
+                    product.productType.localizedCaseInsensitiveContains(type)
+                }
+                
+                if !matchedProducts.isEmpty {
+                    sections.append((title: type.capitalized, products: matchedProducts))
+                }
+            }
+            
+            self.categorySections = sections
+            
         } catch {
             print("Error fetching products or categories: \(error)")
         }

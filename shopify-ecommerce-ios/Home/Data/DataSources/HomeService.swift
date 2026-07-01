@@ -21,30 +21,12 @@ class HomeRemoteDataSource: HomeServiceProtocol {
     }
     
     func loadProducts() async throws -> [ProductDTO] {
-        let urlString = "\(baseURL)products.json"
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        
-        let response = try await AF.request(urlString)
-            .validate()
-            .serializingDecodable(ProductsResponse.self, decoder: decoder)
-            .value
-            
+        let response : ProductsResponse = try await NetworkService.request(endpoint: "products.json")
         return response.products
     }
     
     func loadCategories() async throws-> [CategoryDTO] {
-        let urlString = "\(baseURL)custom_collections.json"
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        let response = try await AF.request(urlString)
-            .validate()
-            .serializingDecodable(CategoryResponse.self,decoder: decoder)
-            .value
-        
-        
+        let response : CategoryResponse = try await NetworkService.request(endpoint: "custom_collections.json")
         return response.customCollections
     }
-    
-    
 }

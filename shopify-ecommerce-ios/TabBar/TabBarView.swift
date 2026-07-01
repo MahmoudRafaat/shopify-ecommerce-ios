@@ -14,7 +14,7 @@ struct TabBarView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 NavigationStack {
-                    Text("Home Screen")
+                    HomeFactory.makeHomeView(diContainer: .init())
                 }
                 .tag(Tab.home)
                 NavigationStack {

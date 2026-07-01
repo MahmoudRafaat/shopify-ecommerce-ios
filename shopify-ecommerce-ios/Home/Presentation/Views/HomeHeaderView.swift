@@ -9,7 +9,6 @@ import SwiftUI
 
 struct HomeHeaderView: View {
     @State var searchText = ""
-    let categories : [Category]
     var body: some View {
         VStack(){
             HStack(){
@@ -40,28 +39,24 @@ struct HomeHeaderView: View {
                 
             }.padding(.horizontal,14)
             SearchField(searchText: $searchText).padding(16)
+                .onTapGesture {
+                    
+                }
             HStack(){
                 Text("All Featured").font(.title2).fontWeight(.semibold)
                 Spacer()
-                ActionChipButton(title: "Sort", systemImage: "sort-icon"){
-                    print("sort")
-                }
-                ActionChipButton(title: "Filter", systemImage: "filter-icon"){
-                    print("filter")
-                }
+//                ActionChipButton(title: "Sort", systemImage: "sort-icon"){
+//                    print("sort")
+//                }
+//                ActionChipButton(title: "Filter", systemImage: "filter-icon"){
+//                    print("filter")
+//                }
             }.padding(.horizontal, 16)
-            CategoriesSectionView(categories: categories).padding(.top,16)
+            
         }
     }
 }
 
 #Preview {
-    let categories = [
-        Category(id: 1,title: "Beauty", imageName: "category-image"),
-        Category(id: 2,title: "Fashion", imageName: "category-image"),
-        Category(id: 3,title: "Kids", imageName: "category-image"),
-        Category(id: 4,title: "Mens", imageName: "category-image"),
-        Category(id: 5,title: "Womens", imageName: "category-image")
-    ]
-    HomeHeaderView(searchText: "",categories: categories)
+    HomeHeaderView(searchText: "")
 }

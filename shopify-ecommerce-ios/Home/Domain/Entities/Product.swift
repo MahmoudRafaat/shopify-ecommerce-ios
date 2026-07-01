@@ -15,6 +15,7 @@ struct Product : Identifiable {
     let price: Float
     let isAvailabe: Bool
     let discount: Int = 20
+    let productType: String
     
     var oldPrice: Float {
         return price / (1 - (Float(discount) / 100.0))

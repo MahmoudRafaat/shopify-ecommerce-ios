@@ -50,7 +50,8 @@ struct ProductsScrollView: View {
             description: "IWC Schaffhausen 2021 Pilot's Watch \"SIHH 2019\" 44mm",
             price: 1500.0,
 
-            isAvailabe: true
+            isAvailabe: true,
+            productType: "T-shirt"
         ),
         Product(
             id: 2,
@@ -59,7 +60,8 @@ struct ProductsScrollView: View {
             description: "Comfortable and stylish outfit for everyday wear",
             price: 2200.0,
  
-            isAvailabe: true
+            isAvailabe: true,
+            productType: "T-shirt"
         ),
         Product(
             id: 3,
@@ -67,7 +69,8 @@ struct ProductsScrollView: View {
             name: "Classic Women Outfit",
             description: "Premium fabric with modern design collection",
             price: 1800.0,
-            isAvailabe: false
+            isAvailabe: false,
+            productType: "T-shirt"
         )
     ])
 }
