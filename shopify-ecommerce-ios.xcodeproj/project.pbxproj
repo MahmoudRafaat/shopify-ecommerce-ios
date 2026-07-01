@@ -36,9 +36,22 @@
 		B3AEA05C2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "shopify-ecommerce-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6D1193462FF534260092187F /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B3AEA03F2FEFCC8200BE7867 /* shopify-ecommerce-ios */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6D1193462FF534260092187F /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */,
+			);
 			path = "shopify-ecommerce-ios";
 			sourceTree = "<group>";
 		};
@@ -303,6 +316,8 @@
 /* Begin XCBuildConfiguration section */
 		B3AEA0642FEFCC8500BE7867 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */;
+			baseConfigurationReferenceRelativePath = Core/helper/NetworkConstants/Secrets.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -366,6 +381,8 @@
 		};
 		B3AEA0652FEFCC8500BE7867 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */;
+			baseConfigurationReferenceRelativePath = Core/helper/NetworkConstants/Secrets.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -432,6 +449,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "shopify-ecommerce-ios/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -462,6 +481,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "shopify-ecommerce-ios/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

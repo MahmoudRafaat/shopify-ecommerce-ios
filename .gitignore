@@ -13,3 +13,6 @@ DerivedData/
 
 # Keys and Tokens of Api 
 **/NetworkConstants.swift
+
+# Ignore Sensitive Keys
+Secrets.xcconfig
