@@ -15,7 +15,7 @@ class SignupUseCase {
         self.repository = repository
     }
     
-    func execute(email: String, password: String) async throws {
+    func execute(email: String, password: String, phone: String) async throws {
         var firebaseUser: User?
         do {
             firebaseUser = try await repository.registerByFireBase(email: email, password: password)
@@ -24,21 +24,21 @@ class SignupUseCase {
             
             if AuthErrorCode(rawValue: error.code) == .emailAlreadyInUse {
                 print("Email already exists")
-                try await createShopifyUser(email: email)
+                try await createShopifyUser(email: email, phone: phone)
                 return
             }
             throw error
         }
         
-        try await createShopifyUser(email: (firebaseUser?.email)!)
+        try await createShopifyUser(email: (firebaseUser?.email)!, phone: phone)
     }
     
-    func createShopifyUser (email:String) async throws {
+    func createShopifyUser (email: String, phone: String) async throws {
         let addressInput = AddressInput(
             address1: "123 Oak St",
             city: "Ottawa",
             province: "ON",
-            phone: "555-1212",
+            phone: phone,
             zip: "123 ABC",
             country: "CA"
         )
@@ -46,7 +46,7 @@ class SignupUseCase {
             firstName: "Ehab",
             lastName: "Salah",
             email: email,
-            phone: "+201144840790",
+            phone: "+2" + phone,
             addresses: [addressInput]
         )
         

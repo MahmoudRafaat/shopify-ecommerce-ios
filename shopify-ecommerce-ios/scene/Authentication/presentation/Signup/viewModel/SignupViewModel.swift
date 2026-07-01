@@ -10,8 +10,15 @@ import Foundation
 @MainActor
 protocol SignupViewModelProtocol {
     var email: String { get set }
+    var phone: String { get set }
     var password: String { get set }
     var confirmPassword: String { get set }
+    
+    var emailError: String? { get set }
+    var phoneError: String? { get set }
+    var passwordError: String? { get set }
+    var confirmPasswordError: String? { get set }
+    
     var errorMessage: String? { get set }
     var isLoading: Bool { get }
     var isSignupSuccess: Bool { get }
@@ -24,8 +31,14 @@ protocol SignupViewModelProtocol {
 @Observable
 class SignupViewModel: SignupViewModelProtocol {
     var email = ""
+    var phone = ""
     var password = ""
     var confirmPassword = ""
+    
+    var emailError: String? = nil
+    var phoneError: String? = nil
+    var passwordError: String? = nil
+    var confirmPasswordError: String? = nil
     
     var errorMessage: String? = nil
     var isLoading = false
@@ -38,21 +51,11 @@ class SignupViewModel: SignupViewModelProtocol {
     }
     
     func signup() {
-        guard !email.isEmpty, !password.isEmpty, !confirmPassword.isEmpty else {
-            self.errorMessage = "Please fill in all fields."
-            return
-        }
-        guard password == confirmPassword else {
-            self.errorMessage = "Passwords do not match."
-            return
-        }
-        
+        checkValidation()
         self.isLoading = true
-        self.errorMessage = nil
-        
         Task {
             do {
-                try await signupUseCase.execute(email: email, password: password)
+                try await signupUseCase.execute(email: email, password: password, phone: phone)
                 self.isSignupSuccess = true
                 self.isLoading = false
             } catch {
@@ -61,4 +64,42 @@ class SignupViewModel: SignupViewModelProtocol {
             }
         }
     }
+    
+    
+    func checkValidation(){
+        emailError = nil
+        phoneError = nil
+        passwordError = nil
+        confirmPasswordError = nil
+        errorMessage = nil
+        
+        var isValid = true
+        
+        if email.isEmpty {
+            emailError = "Email is required"
+            isValid = false
+        }
+        if phone.isEmpty {
+            phoneError = "Phone number is required"
+            isValid = false
+        }
+        if password.isEmpty {
+            passwordError = "Password is required"
+            isValid = false
+        }
+        if confirmPassword.isEmpty {
+            confirmPasswordError = "Confirm password is required"
+            isValid = false
+        } else if password != confirmPassword {
+            confirmPasswordError = "Passwords do not match"
+            isValid = false
+        }
+        
+        guard isValid else {
+            return
+        }
+        
+    }
+    
+    
 }
