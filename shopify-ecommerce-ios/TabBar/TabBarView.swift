@@ -13,9 +13,8 @@ struct TabBarView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                NavigationStack {
-                    HomeFactory.makeHomeView(diContainer: .init())
-                }
+                HomeFactory.makeHomeView(diContainer: .init())
+                    .tag(Tab.home)
                 .tag(Tab.home)
                 NavigationStack {
                     Text("Wishlist Screen")
@@ -30,7 +29,7 @@ struct TabBarView: View {
                 }
                 .tag(Tab.search)
                 NavigationStack{
-                    Text("Settings Screen")
+                    SearchView()
                 }
                 .tag(Tab.setting)
             }

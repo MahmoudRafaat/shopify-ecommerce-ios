@@ -9,11 +9,14 @@ import SwiftUI
 
 struct HomeScreenView: View {
     var viewModel: HomeViewModel
+    @EnvironmentObject var coordinator: HomeCoordinator
     
     var body: some View {
         ScrollView {
             VStack(spacing: 32) {
-                HomeHeaderView()
+                HeaderView {
+                    coordinator.goToSearchScreen()
+                }
                 CategoriesSectionView(categories: viewModel.categories).padding(.top,16)
                 CollectionOfAds()
                 
