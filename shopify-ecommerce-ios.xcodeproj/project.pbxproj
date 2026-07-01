@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08EE3CF7958DB5947ABC9311 /* Pods_shopify_ecommerce_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE308E48865092383726D8CA /* Pods_shopify_ecommerce_ios.framework */; };
 		6D6FCC222FF2531B00A82A9C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC212FF2531B00A82A9C /* Alamofire */; };
 		6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC232FF2533100A82A9C /* Kingfisher */; };
+		B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8012FF520990008A453 /* FirebaseAnalytics */; };
+		B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8032FF520A20008A453 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,12 +31,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		16C7E38F16EBDD3D9E6B0E7E /* Pods-shopify-ecommerce-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shopify-ecommerce-ios.release.xcconfig"; path = "Target Support Files/Pods-shopify-ecommerce-ios/Pods-shopify-ecommerce-ios.release.xcconfig"; sourceTree = "<group>"; };
 		B3AEA0402FEFCC8200BE7867 /* shopify-ecommerce-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "shopify-ecommerce-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3AEA0522FEFCC8500BE7867 /* shopify-ecommerce-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "shopify-ecommerce-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3AEA05C2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "shopify-ecommerce-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D1036FE5EFAC8602A2FD6582 /* Pods-shopify-ecommerce-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shopify-ecommerce-ios.debug.xcconfig"; path = "Target Support Files/Pods-shopify-ecommerce-ios/Pods-shopify-ecommerce-ios.debug.xcconfig"; sourceTree = "<group>"; };
-		EE308E48865092383726D8CA /* Pods_shopify_ecommerce_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_shopify_ecommerce_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -63,7 +61,8 @@
 			files = (
 				6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */,
 				6D6FCC222FF2531B00A82A9C /* Alamofire in Frameworks */,
-				08EE3CF7958DB5947ABC9311 /* Pods_shopify_ecommerce_ios.framework in Frameworks */,
+				B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */,
+				B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,10 +86,15 @@
 		692FFCB4E7FBE6C12B812469 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D1036FE5EFAC8602A2FD6582 /* Pods-shopify-ecommerce-ios.debug.xcconfig */,
-				16C7E38F16EBDD3D9E6B0E7E /* Pods-shopify-ecommerce-ios.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		B361E8002FF520990008A453 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B3AEA0372FEFCC8200BE7867 = {
@@ -101,7 +105,7 @@
 				B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */,
 				B3AEA0412FEFCC8200BE7867 /* Products */,
 				692FFCB4E7FBE6C12B812469 /* Pods */,
-				BF1226D1EC38345E587B1879 /* Frameworks */,
+				B361E8002FF520990008A453 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -115,14 +119,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BF1226D1EC38345E587B1879 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				EE308E48865092383726D8CA /* Pods_shopify_ecommerce_ios.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -130,11 +126,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B3AEA0662FEFCC8500BE7867 /* Build configuration list for PBXNativeTarget "shopify-ecommerce-ios" */;
 			buildPhases = (
-				3E1BCB95D18C4A8394F8A58F /* [CP] Check Pods Manifest.lock */,
 				B3AEA03C2FEFCC8200BE7867 /* Sources */,
 				B3AEA03D2FEFCC8200BE7867 /* Frameworks */,
 				B3AEA03E2FEFCC8200BE7867 /* Resources */,
-				7387F0669087AF5383039E99 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -147,6 +141,8 @@
 			packageProductDependencies = (
 				6D6FCC212FF2531B00A82A9C /* Alamofire */,
 				6D6FCC232FF2533100A82A9C /* Kingfisher */,
+				B361E8012FF520990008A453 /* FirebaseAnalytics */,
+				B361E8032FF520A20008A453 /* FirebaseAuth */,
 			);
 			productName = "shopify-ecommerce-ios";
 			productReference = B3AEA0402FEFCC8200BE7867 /* shopify-ecommerce-ios.app */;
@@ -229,6 +225,7 @@
 			packageReferences = (
 				B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				B3C7A3FA2FEFD375004F3F62 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B3AEA0412FEFCC8200BE7867 /* Products */;
@@ -265,48 +262,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		3E1BCB95D18C4A8394F8A58F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-shopify-ecommerce-ios-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7387F0669087AF5383039E99 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-shopify-ecommerce-ios/Pods-shopify-ecommerce-ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-shopify-ecommerce-ios/Pods-shopify-ecommerce-ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-shopify-ecommerce-ios/Pods-shopify-ecommerce-ios-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B3AEA03C2FEFCC8200BE7867 /* Sources */ = {
@@ -467,7 +422,6 @@
 		};
 		B3AEA0672FEFCC8500BE7867 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D1036FE5EFAC8602A2FD6582 /* Pods-shopify-ecommerce-ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -498,7 +452,6 @@
 		};
 		B3AEA0682FEFCC8500BE7867 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 16C7E38F16EBDD3D9E6B0E7E /* Pods-shopify-ecommerce-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -637,6 +590,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = exactVersion;
+				version = 11.2.0;
+			};
+		};
 		B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -665,6 +626,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B3C7A3FA2FEFD375004F3F62 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		B361E8012FF520990008A453 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		B361E8032FF520A20008A453 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
