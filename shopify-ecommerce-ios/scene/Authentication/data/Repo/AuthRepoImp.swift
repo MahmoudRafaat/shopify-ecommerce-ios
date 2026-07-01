@@ -8,13 +8,25 @@
 import Foundation
 import FirebaseAuth
 class AuthRepoImp: AuthRepoProtocol {
+    
+    
     private let authService: AuthServiceProtocol
-    
-    init(authService: AuthServiceProtocol = FirebaseAuthService()) {
+    private let shopifyService: ShopifyAuthServiceProtocol
+    init(authService: AuthServiceProtocol = FirebaseAuthService(), shopifyService: ShopifyAuthServiceProtocol = ShopifyAuthService()) {
         self.authService = authService
+        self.shopifyService = shopifyService
     }
     
-    func register(email: String, password: String) async throws -> User? {
+    
+    
+    func registerByFireBase(email: String, password: String) async throws -> User? {
         return try await authService.registerUser(withEmail: email, password: password)
+        
     }
+    
+    func createCustomerInShopify(customerInput: CustomerInput) async throws -> CustomerOutput {
+        return try await shopifyService.createCustomer(input: customerInput)
+    }
+    
+    
 }
