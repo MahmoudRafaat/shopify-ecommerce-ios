@@ -29,6 +29,7 @@ enum LoginError: LocalizedError {
     case keychainError
     case sessionExpired
     case unknown(String)
+    case unacceptableStatusCode(Int) 
     
     var errorDescription: String? {
         switch self {
@@ -74,6 +75,8 @@ enum LoginError: LocalizedError {
             return "Your session has expired. Please login again."
         case .unknown(let message):
             return "An error occurred: \(message)"
+        case .unacceptableStatusCode(let code):
+            return "Server returned an unacceptable status code: \(code). Please try again later."
         }
     }
 }

@@ -35,4 +35,9 @@ extension DataResponse {
             }
         }
     }
+    
+    func isAcceptableStatusCode() -> Bool {
+        guard let statusCode = self.response?.statusCode else { return false }
+        return (200...299).contains(statusCode)
+    }
 }

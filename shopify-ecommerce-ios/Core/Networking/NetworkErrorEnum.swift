@@ -14,6 +14,7 @@ enum NetworkError: Error, LocalizedError {
     case shopifyError(String) // 422
     case serverError         // 500
     case unknown(Int)
+    case unacceptableStatusCode(Int)
     
     var errorDescription: String? {
         switch self {
@@ -29,6 +30,8 @@ enum NetworkError: Error, LocalizedError {
             return "There is currently a problem with our server. Please try again later."
         case .unknown(let statusCode):
             return "An unexpected error occurred (Code: \(statusCode)). Please try again later."
+        case .unacceptableStatusCode(let code):
+            return "The server returned an unacceptable status code: \(code)."
         }
     }
 }
