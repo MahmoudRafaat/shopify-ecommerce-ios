@@ -10,7 +10,7 @@ import Alamofire
 
 protocol HomeServiceProtocol: AnyObject {
     func loadProducts() async throws -> [ProductDTO]
-    func loadCategories() async throws -> [Category]
+    func loadCategories() async throws -> [CategoryDTO]
 }
 
 class HomeRemoteDataSource: HomeServiceProtocol {
@@ -33,14 +33,17 @@ class HomeRemoteDataSource: HomeServiceProtocol {
         return response.products
     }
     
-    func loadCategories() -> [Category] {
-        return [
-            Category(title: "Beauty", imageName: "category-image"),
-            Category(title: "Fashion", imageName: "category-image"),
-            Category(title: "Kids", imageName: "category-image"),
-            Category(title: "Mens", imageName: "category-image"),
-            Category(title: "Womens", imageName: "category-image")
-        ]
+    func loadCategories() async throws-> [CategoryDTO] {
+        let urlString = "\(baseURL)custom_collections.json"
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let response = try await AF.request(urlString)
+            .validate()
+            .serializingDecodable(CategoryResponse.self,decoder: decoder)
+            .value
+        
+        
+        return response.customCollections
     }
     
     

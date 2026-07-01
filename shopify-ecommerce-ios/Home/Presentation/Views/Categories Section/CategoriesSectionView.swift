@@ -33,9 +33,9 @@ struct CategoriesSectionView: View {
 
 
 #Preview {
-    CategoriesSectionView(categories: [Category(title: "Beauty", imageName: "category-image"),
-                                       Category(title: "Fashion", imageName: "category-image"),
-                                       Category(title: "Kids", imageName: "category-image"),
-                                       Category(title: "Mens", imageName: "category-image"),
-                                       Category(title: "Womens", imageName: "category-image")])
+    CategoriesSectionView(categories: [ Category(id: 1,title: "Beauty", imageName: "category-image"),
+                                        Category(id: 2,title: "Fashion", imageName: "category-image"),
+                                        Category(id: 3,title: "Kids", imageName: "category-image"),
+                                        Category(id: 4,title: "Mens", imageName: "category-image"),
+                                        Category(id: 5,title: "Womens", imageName: "category-image")])
 }

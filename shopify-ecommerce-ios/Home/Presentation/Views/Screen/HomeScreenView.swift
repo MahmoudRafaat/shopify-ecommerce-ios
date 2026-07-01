@@ -11,9 +11,10 @@ struct HomeScreenView: View {
     let viewModel: HomeViewModel
     
     var body: some View {
-        VStack(spacing: 32){
-            HomeHeaderView(categories: viewModel.categories)
-            ScrollView {
+        ScrollView {
+            VStack(spacing: 32){
+                HomeHeaderView(categories: viewModel.categories)
+                
                 CollectionOfAds()
                 DealCard(dealName: "Deal of the Day", dealDescription: "22h 55m 20s remaining ", isToday: true)
                 ProductsScrollView(products: viewModel.products)
