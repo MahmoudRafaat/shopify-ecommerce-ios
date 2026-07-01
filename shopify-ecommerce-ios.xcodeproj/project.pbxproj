@@ -37,7 +37,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6D1193462FF534260092187F /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */ = {
+		B3171CC62FF556E300F54964 /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -50,7 +50,7 @@
 		B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				6D1193462FF534260092187F /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */,
+				B3171CC62FF556E300F54964 /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */,
 			);
 			path = "shopify-ecommerce-ios";
 			sourceTree = "<group>";
@@ -96,13 +96,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		692FFCB4E7FBE6C12B812469 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		B361E8002FF520990008A453 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,7 +110,6 @@
 				B3AEA0552FEFCC8500BE7867 /* shopify-ecommerce-iosTests */,
 				B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */,
 				B3AEA0412FEFCC8200BE7867 /* Products */,
-				692FFCB4E7FBE6C12B812469 /* Pods */,
 				B361E8002FF520990008A453 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -368,6 +360,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -427,6 +420,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
