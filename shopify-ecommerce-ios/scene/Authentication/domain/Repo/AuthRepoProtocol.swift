@@ -8,5 +8,6 @@
 import Foundation
 import FirebaseAuth
 protocol AuthRepoProtocol {
-    func register(email: String, password: String) async throws -> User?
+    func registerByFireBase(email: String, password: String) async throws -> User?
+    func createCustomerInShopify(customerInput: CustomerInput) async throws -> CustomerOutput
 }
