@@ -48,8 +48,13 @@ struct HeaderView: View {
             SearchField(searchText: $searchText)
                 .focused($isTextFieldFocused)
                 .padding(.horizontal, 16)
-                .onTapGesture {
-                    onSearchTap?()
+                .overlay {
+                   if onSearchTap != nil {
+                        Color.white.opacity(0.001)
+                            .onTapGesture {
+                                onSearchTap?()
+                            }
+                    }
                 }
             
             
