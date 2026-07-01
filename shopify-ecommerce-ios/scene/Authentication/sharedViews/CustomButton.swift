@@ -18,7 +18,7 @@ struct CustomButton: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 55)
-                .background(Color(.red))
+                .background(Color.appPrimary)
                 .cornerRadius(10)
         })
     }
