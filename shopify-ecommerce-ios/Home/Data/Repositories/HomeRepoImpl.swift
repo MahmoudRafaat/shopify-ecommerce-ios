@@ -30,6 +30,13 @@ class HomeRepoImpl: HomeRepo {
     }
     
     func getCategories() async throws -> [Category] {
-        return try await service.loadCategories()
+        let data = try await service.loadCategories()
+        
+        return data.map{ data in
+            Category(
+                id: data.id,
+                title: data.title,
+                imageName: data.image?.src ?? "placeholder_image")
+        }
     }
 }
