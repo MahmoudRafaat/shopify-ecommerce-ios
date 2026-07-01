@@ -8,37 +8,86 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email = ""
-    @State private var password = "" 
+    @State var viewmodel: LoginViewModelProtocol
+    @State private var showHome = false
+    @State private var navigateToSignup = false
+    
     var body: some View {
-        VStack(spacing: 24) {
-            LoginHeaderView()
-            LoginInputView(email: $email, password: $password)
-            VStack(spacing: 16) {
-                CustomButton(text: "Login") {
-                    // Login action here
+        NavigationStack {
+            ZStack {
+                VStack(spacing: 24) {
+                    LoginHeaderView()
+                    
+                    LoginInputView(
+                        email: $viewmodel.email,
+                        password: $viewmodel.password,
+                        errorMessage: viewmodel.errorMessage
+                    )
+                    
+                    VStack(spacing: 16) {
+                        CustomButton(text: "Login") {
+                            viewmodel.login()
+                        }
+                        .disabled(viewmodel.isLoading)
+                        
+                        Button(action: {
+                            // Guest login action here
+                        }) {
+                            Text("Continue as Guest")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding(.top, 10)
+                    
+                    Spacer()
+                    
+                    SocialLoginView(onGoogleTap: {}, onAppleTap: {}, onFacebookTap: {})
+                    
+                    Spacer()
+                    
+                    LoginFooterView(onSignUp: {
+                        navigateToSignup = true
+                    })
                 }
-                Button(action: {
-                    // Guest login action here
-                }) {
-                    Text("Continue as Guest")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                .padding(.horizontal, 24)
+                .showLoading(if: viewmodel.isLoading)
+                .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
+                .background(Color.white.ignoresSafeArea())
+                .disabled(viewmodel.showSuccessMessage)
+                
+                if viewmodel.showSuccessMessage {
+                    VStack {
+                        Spacer()
+                        Text("Login Successful!")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.green)
+                            .cornerRadius(10)
+                            .padding(.horizontal, 40)
+                            .padding(.bottom, 100)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
                 }
             }
-            .padding(.top, 10)
-            Spacer()
-            SocialLoginView(onGoogleTap: {}, onAppleTap: {}, onFacebookTap: {})
-            Spacer()
-            LoginFooterView(
-                onSignUp: {
-                    // Handle navigation to sign up
+            .animation(.easeInOut(duration: 0.3), value: viewmodel.showSuccessMessage)
+            .fullScreenCover(isPresented: $showHome) {
+              //  HomeView()
+            }
+            .navigationDestination(isPresented: $navigateToSignup) {
+                SignupView(viewmodel: SignupViewModel())
+            }
+            .onChange(of: viewmodel.isLoginSuccess) { _, newValue in
+                if newValue {
+                    showHome = true
                 }
-            )
+            }
         }
-        .padding(.horizontal, 24)
     }
 }
+
 #Preview {
-    LoginView()
+    LoginView(viewmodel: LoginViewModel())
 }

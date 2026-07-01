@@ -4,7 +4,15 @@
 //
 //  Created by Mahmoud Raafat Mustafa on 27/06/2026.
 //
+//
+//  LoginFooterView.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 27/06/2026.
+//
+
 import SwiftUI
+
 struct LoginFooterView: View {
     var onSignUp: () -> Void
     
@@ -23,4 +31,8 @@ struct LoginFooterView: View {
         .font(.footnote)
         .padding(.bottom, 20)
     }
+}
+
+#Preview {
+    LoginFooterView(onSignUp: {})
 }
