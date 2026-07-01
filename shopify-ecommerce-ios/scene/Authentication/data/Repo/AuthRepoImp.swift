@@ -17,8 +17,6 @@ class AuthRepoImp: AuthRepoProtocol {
         self.shopifyService = shopifyService
     }
     
-    
-    
     func registerByFireBase(email: String, password: String) async throws -> User? {
         return try await authService.registerUser(withEmail: email, password: password)
         
@@ -28,5 +26,12 @@ class AuthRepoImp: AuthRepoProtocol {
         return try await shopifyService.createCustomer(input: customerInput)
     }
     
+    func loginByFireBase(email: String, password: String) async throws -> User? {
+        return try await authService.loginUser(withEmail: email, password: password)
+    }
+    
+    func searchCustomerInShopify(email: String) async throws -> CustomerOutput {
+        return try await shopifyService.searchCustomer(email: email)
+    }
     
 }
