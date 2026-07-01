@@ -46,7 +46,7 @@ class SignupUseCase {
             firstName: "Ehab",
             lastName: "Salah",
             email: email,
-            phone: "+201144840790",
+            phone: "+201144840720",
             addresses: [addressInput]
         )
         

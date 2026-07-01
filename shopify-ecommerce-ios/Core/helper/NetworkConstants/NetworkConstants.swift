@@ -9,7 +9,6 @@ import Foundation
 
 class NetworkConstants {
     static let BaseURL = "https://mad46-ios-team4.myshopify.com/admin/api/2026-01"
-    static let CreateCustomerEndpoint = "/customers.json"
     
     static let AdminToken: String = {
         guard let token = Bundle.main.object(forInfoDictionaryKey: "ShopifyAdminToken") as? String else {

@@ -4,37 +4,44 @@
 //
 //  Created by Mahmoud Raafat Mustafa on 27/06/2026.
 //
+
 import SwiftUI
 
 struct LoginInputView: View {
     @Binding var email: String
     @Binding var password: String
+    let errorMessage: String?
     
-    @State private var emailHasError = false
-    @State private var passwordHasError = false
+    @State private var showPassword = false
     
     var body: some View {
         VStack(spacing: 8) {
+            // Email Field
+            VStack(alignment: .leading, spacing: 4) {
+                CustomTextField(
+                    placeholder: "Email Address",
+                    type: .email,
+                    hasError: errorMessage?.contains("email") ?? false,
+                    errorMessage: errorMessage?.contains("email") == true ? errorMessage : nil,
+                    text: $email
+                )
+                .padding(.horizontal, -28)
+            }
             
-            CustomTextField(
-                placeholder: "Username or Email",
-                type: .email,
-                hasError: emailHasError,
-                errorMessage: "Please enter a valid email.",// should be cahnged  for the specfic error message
-                text: $email
-            )
-            //this line should be remvoed when delete the padding in the CustomTextField
-            .padding(.horizontal, -28)
-            
-            CustomTextField(
-                placeholder: "Password",
-                type: .password,
-                hasError: passwordHasError,
-                errorMessage: "Password cannot be empty.", // should be cahnged  for the specfic error message
-                text: $password
-            )
-            //this line should be remvoed when delete the padding in the CustomTextField
-            .padding(.horizontal, -28)
+            // Password Field with visibility toggle
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    CustomTextField(
+                        placeholder: "Password",
+                        type: .password,
+                        hasError: errorMessage?.contains("password") ?? false,
+                        errorMessage: errorMessage?.contains("password") == true ? errorMessage : nil,
+                        text: $password
+                    )
+                    .padding(.horizontal, -28)
+                    
+                }
+            }
             
             Button(action: {
                 // Forgot password action

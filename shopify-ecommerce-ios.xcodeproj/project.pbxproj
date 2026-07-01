@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6D6FCC1D2FF2511800A82A9C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC1C2FF2511800A82A9C /* FirebaseAnalytics */; };
-		6D6FCC1F2FF2511800A82A9C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC1E2FF2511800A82A9C /* FirebaseAuth */; };
 		6D6FCC222FF2531B00A82A9C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC212FF2531B00A82A9C /* Alamofire */; };
 		6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC232FF2533100A82A9C /* Kingfisher */; };
+		B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8012FF520990008A453 /* FirebaseAnalytics */; };
+		B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8032FF520A20008A453 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +37,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6D1193462FF534260092187F /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */ = {
+		B3171CC62FF556E300F54964 /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -50,7 +50,7 @@
 		B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				6D1193462FF534260092187F /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */,
+				B3171CC62FF556E300F54964 /* Exceptions for "shopify-ecommerce-ios" folder in "shopify-ecommerce-ios" target */,
 			);
 			path = "shopify-ecommerce-ios";
 			sourceTree = "<group>";
@@ -74,8 +74,8 @@
 			files = (
 				6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */,
 				6D6FCC222FF2531B00A82A9C /* Alamofire in Frameworks */,
-				6D6FCC1D2FF2511800A82A9C /* FirebaseAnalytics in Frameworks */,
-				6D6FCC1F2FF2511800A82A9C /* FirebaseAuth in Frameworks */,
+				B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */,
+				B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,7 +96,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6D6FCC202FF2531B00A82A9C /* Frameworks */ = {
+		B361E8002FF520990008A453 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -110,7 +110,7 @@
 				B3AEA0552FEFCC8500BE7867 /* shopify-ecommerce-iosTests */,
 				B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */,
 				B3AEA0412FEFCC8200BE7867 /* Products */,
-				6D6FCC202FF2531B00A82A9C /* Frameworks */,
+				B361E8002FF520990008A453 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,10 +144,10 @@
 			);
 			name = "shopify-ecommerce-ios";
 			packageProductDependencies = (
-				6D6FCC1C2FF2511800A82A9C /* FirebaseAnalytics */,
-				6D6FCC1E2FF2511800A82A9C /* FirebaseAuth */,
 				6D6FCC212FF2531B00A82A9C /* Alamofire */,
 				6D6FCC232FF2533100A82A9C /* Kingfisher */,
+				B361E8012FF520990008A453 /* FirebaseAnalytics */,
+				B361E8032FF520A20008A453 /* FirebaseAuth */,
 			);
 			productName = "shopify-ecommerce-ios";
 			productReference = B3AEA0402FEFCC8200BE7867 /* shopify-ecommerce-ios.app */;
@@ -170,8 +170,6 @@
 				B3AEA0552FEFCC8500BE7867 /* shopify-ecommerce-iosTests */,
 			);
 			name = "shopify-ecommerce-iosTests";
-			packageProductDependencies = (
-			);
 			productName = "shopify-ecommerce-iosTests";
 			productReference = B3AEA0522FEFCC8500BE7867 /* shopify-ecommerce-iosTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -193,8 +191,6 @@
 				B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */,
 			);
 			name = "shopify-ecommerce-iosUITests";
-			packageProductDependencies = (
-			);
 			productName = "shopify-ecommerce-iosUITests";
 			productReference = B3AEA05C2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -234,7 +230,7 @@
 			packageReferences = (
 				B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				B3C7A3FA2FEFD375004F3F62 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				6D6FCC1B2FF2511800A82A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B3AEA0412FEFCC8200BE7867 /* Products */;
@@ -364,6 +360,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -423,6 +420,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -443,6 +441,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"shopify-ecommerce-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = P59Y75W95P;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "shopify-ecommerce-ios/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -474,6 +473,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"shopify-ecommerce-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = P59Y75W95P;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "shopify-ecommerce-ios/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -605,12 +605,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		6D6FCC1B2FF2511800A82A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 12.15.0;
+				kind = exactVersion;
+				version = 11.2.0;
 			};
 		};
 		B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
@@ -632,16 +632,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6D6FCC1C2FF2511800A82A9C /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6D6FCC1B2FF2511800A82A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		6D6FCC1E2FF2511800A82A9C /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6D6FCC1B2FF2511800A82A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
 		6D6FCC212FF2531B00A82A9C /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */;
@@ -651,6 +641,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B3C7A3FA2FEFD375004F3F62 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		B361E8012FF520990008A453 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		B361E8032FF520A20008A453 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
