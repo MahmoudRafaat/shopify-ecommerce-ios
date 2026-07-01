@@ -16,7 +16,7 @@ protocol ShopifyAuthServiceProtocol {
 class ShopifyAuthService: ShopifyAuthServiceProtocol {
 
     func createCustomer(input: CustomerInput) async throws -> CustomerOutput {
-        let request = AuthAPIRouter.createCustomer(customer: input)
+        let request = AuthEndpoints.createCustomer(customer: input)
         
         let task = AF.request(request)
             .validate()
@@ -34,7 +34,7 @@ class ShopifyAuthService: ShopifyAuthServiceProtocol {
     }
     
     func searchCustomer(email: String) async throws -> CustomerOutput {
-        let request = AuthAPIRouter.searchCustomer(email: email)
+        let request = AuthEndpoints.searchCustomer(email: email)
         
         let task = AF.request(request)
             .validate()

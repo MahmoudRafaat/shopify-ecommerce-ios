@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-enum AuthAPIRouter: URLRequestConvertible {
+enum AuthEndpoints: URLRequestConvertible {
     case createCustomer(customer: CustomerInput)
     case searchCustomer(email: String)
     
