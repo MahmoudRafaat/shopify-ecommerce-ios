@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6D6FCC222FF2531B00A82A9C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC212FF2531B00A82A9C /* Alamofire */; };
+		6D6FCC222FF2531B00A82A9C /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC232FF2533100A82A9C /* Kingfisher */; };
+		9D3861692FF6B4180009D227 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9D3861682FF6B4180009D227 /* Alamofire */; };
 		B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8012FF520990008A453 /* FirebaseAnalytics */; };
 		B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8032FF520A20008A453 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
@@ -72,8 +73,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D3861692FF6B4180009D227 /* Alamofire in Frameworks */,
 				6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */,
-				6D6FCC222FF2531B00A82A9C /* Alamofire in Frameworks */,
+				6D6FCC222FF2531B00A82A9C /* (null) in Frameworks */,
 				B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */,
 				B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */,
 			);
@@ -109,6 +111,7 @@
 				B3AEA0422FEFCC8200BE7867 /* shopify-ecommerce-ios */,
 				B3AEA0552FEFCC8500BE7867 /* shopify-ecommerce-iosTests */,
 				B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */,
+				C5F8D4952FF3F8C800E68249 /* Frameworks */,
 				B3AEA0412FEFCC8200BE7867 /* Products */,
 				B361E8002FF520990008A453 /* Frameworks */,
 			);
@@ -122,6 +125,13 @@
 				B3AEA05C2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C5F8D4952FF3F8C800E68249 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,10 +154,10 @@
 			);
 			name = "shopify-ecommerce-ios";
 			packageProductDependencies = (
-				6D6FCC212FF2531B00A82A9C /* Alamofire */,
 				6D6FCC232FF2533100A82A9C /* Kingfisher */,
 				B361E8012FF520990008A453 /* FirebaseAnalytics */,
 				B361E8032FF520A20008A453 /* FirebaseAuth */,
+				9D3861682FF6B4180009D227 /* Alamofire */,
 			);
 			productName = "shopify-ecommerce-ios";
 			productReference = B3AEA0402FEFCC8200BE7867 /* shopify-ecommerce-ios.app */;
@@ -632,15 +642,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6D6FCC212FF2531B00A82A9C /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
 		6D6FCC232FF2533100A82A9C /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B3C7A3FA2FEFD375004F3F62 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		9D3861682FF6B4180009D227 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 		B361E8012FF520990008A453 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

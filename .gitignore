@@ -8,6 +8,9 @@ DerivedData/
 # DS_Store (Mac system files)
 .DS_Store
 
+SeacretConstants.swiftshopify-ecommerce-ios/Home/SeacretConstants.swift
+shopify-ecommerce-ios/Home/SeacretConstants.swift
+shopify-ecommerce-ios/SeacretConstants.swift
 # Firebase configuration file
 **/GoogleService-Info.plist
 
