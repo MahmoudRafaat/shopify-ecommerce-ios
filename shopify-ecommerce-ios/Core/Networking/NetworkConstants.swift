@@ -7,20 +7,21 @@
 
 import Foundation
 
-class NetworkConstants {
-    static let BaseURL = "https://mad46-ios-team4.myshopify.com/admin/api/2026-01"
+
+struct NetworkConstants {
+    static let baseURL = "https://mad46-ios-team4.myshopify.com/admin/api/2026-01"
     
-    static let AdminToken: String = {
+    static func getAdminToken() throws -> String {
         guard let token = Bundle.main.object(forInfoDictionaryKey: "ShopifyAdminToken") as? String else {
-            fatalError("ShopifyAdminToken not found in Info.plist")
+            throw NetworkError.missingAdminToken
         }
         return token
-    }()
+    }
     
-    static let ApiKey: String = {
+    static func getApiKey() throws -> String {
         guard let key = Bundle.main.object(forInfoDictionaryKey: "ShopifyApiKey") as? String else {
-            fatalError("ShopifyApiKey not found in Info.plist")
+            throw NetworkError.missingApiKey
         }
         return key
-    }()
+    }
 }

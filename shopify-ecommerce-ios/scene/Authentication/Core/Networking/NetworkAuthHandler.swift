@@ -11,14 +11,14 @@ import Alamofire
 enum NetworkAuthHandler {
     case createCustomer(requestBody: CustomerRequest)
     case searchCustomer(email: String)
-
+    
     private var fullURL: String {
         switch self {
         case .createCustomer:
-            return NetworkConstants.BaseURL + AuthEndopints.createCustomer
+            return NetworkConstants.baseURL + AuthEndopints.createCustomer
         case .searchCustomer(let email):
             let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? email
-            return NetworkConstants.BaseURL + AuthEndopints.searchCustomer + "?query=email:\(encodedEmail)"
+            return NetworkConstants.baseURL + AuthEndopints.searchCustomer + "?query=email:\(encodedEmail)"
         }
     }
     
@@ -35,7 +35,7 @@ enum NetworkAuthHandler {
         
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
-            "X-Shopify-Access-Token": NetworkConstants.AdminToken
+            "X-Shopify-Access-Token": try NetworkConstants.getAdminToken()
         ]
         
         let task: DataRequest
@@ -65,7 +65,7 @@ enum NetworkAuthHandler {
         }
         
         try dataResponse.validateAndHandlError()
-
+        
         let response = try await task.serializingDecodable(Res.self).value
         return response
     }
