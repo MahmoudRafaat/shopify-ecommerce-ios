@@ -25,7 +25,7 @@ struct shopify_ecommerce_iosApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabBarView()
         }
         .modelContainer(sharedModelContainer)
     }

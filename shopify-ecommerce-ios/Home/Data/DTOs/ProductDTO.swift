@@ -44,11 +44,13 @@ struct ImageDTO: Codable {
 
 
 #Playground {
-    let apiKey = "aa8d104ab1b323002f6385dd093896ff"
-    let apiPassword = "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"
-    let hostname = "mad46-ios-team4.myshopify.com"
 
-    let urlString = "https://\(apiKey):\(apiPassword)@\(hostname)/admin/api/2026-01/products.json"
+    if let adminToken = Bundle.main.infoDictionary?["ShopifyAdminToken"] as? String {
+        print("My Token is: \(adminToken)")
+    } else {
+        print("Nooooo - Token not found")
+    }
+    let urlString = "https://\(SecretConstants.apiKey):\(SecretConstants.password)@\(SecretConstants.hostname)/admin/api/2026-01/products.json"
     
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase

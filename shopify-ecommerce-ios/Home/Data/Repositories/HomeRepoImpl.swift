@@ -19,7 +19,6 @@ class HomeRepoImpl: HomeRepo {
 
         return dtos.map { dto in
             let totalQuantity = dto.variants.reduce(0) { $0 + $1.inventoryQuantity }
-            print(totalQuantity)
             return Product(
                 id: dto.id,
                 image: dto.image?.src ?? "placeholder_image",

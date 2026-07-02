@@ -13,27 +13,32 @@ struct TabBarView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                HomeFactory.makeHomeView(diContainer: .init())
+                
+                HomeRootView(selectedTab: $selectedTab)
                     .tag(Tab.home)
-                .tag(Tab.home)
+                
                 NavigationStack {
                     Text("Wishlist Screen")
                 }
                 .tag(Tab.wishlist)
+                
                 NavigationStack {
                     Text("Cart Screen")
                 }
                 .tag(Tab.cart)
+                
                 NavigationStack {
-                    Text("Search Screen")
+                    SearchView()
                 }
                 .tag(Tab.search)
-                NavigationStack{
-                    SearchView()
+                
+                NavigationStack {
+                    Text("Settings")
                 }
                 .tag(Tab.setting)
             }
             .toolbar(.hidden, for: .tabBar)
+            
             CustomTabBarView(selectedTab: $selectedTab)
         }
         .ignoresSafeArea(.keyboard)

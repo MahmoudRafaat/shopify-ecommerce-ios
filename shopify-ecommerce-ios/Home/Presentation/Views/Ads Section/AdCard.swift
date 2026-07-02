@@ -38,8 +38,9 @@ struct AdCard: View {
             }
             .padding(14)
         }
-        .frame(width: 343, height: 189)
+        .frame(height: 189)
         .clipShape(RoundedRectangle(cornerRadius: 15))
+        .padding(16)
     }
 }
 

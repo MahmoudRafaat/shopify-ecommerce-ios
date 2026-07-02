@@ -9,33 +9,17 @@ import SwiftUI
 
 struct ProductCardView: View {
     let product: Product
-    
+    var onTap: () -> Void
     var body: some View {
         VStack(spacing: 8) {
-            if product.image != "placeholder_image" {
-                let url = URL(string: product.image)
-                
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(height: 124)
-                .frame(maxWidth: .infinity)
-                .clipped()
-                .cornerRadius(10)
-                
-            } else {
-                Image(.imgPlaceholder)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 124)
-                    .frame(maxWidth: .infinity)
-                    .clipped()
-                    .cornerRadius(10)
-            }
+            
+            CachedImageLoader(
+                urlString: product.image,
+                width: nil,
+                height: 124
+            )
+            .frame(maxWidth: .infinity)
+            .cornerRadius(10)
             
             
             VStack(alignment: .leading, spacing: 6) {
@@ -68,6 +52,9 @@ struct ProductCardView: View {
         .background(Color.white)
         .cornerRadius(10)
         .shadow(color: .gray.opacity(0.15), radius: 8, x: 0, y: 4)
+        .onTapGesture {
+            onTap()
+        }
     }
     
     private func starsView(productStars: Float) -> some View {
@@ -103,5 +90,6 @@ struct ProductCardView: View {
                                      description: "Neque porro quisquam est qui dolorem ipsum quia",
                                      price: 1500.0,
                                      isAvailabe: true,
-                                    productType: "accessories"))
+                                     productType: "accessories"),
+                    onTap: {})
 }

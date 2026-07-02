@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HeaderView: View {
     @State var searchText = ""
+
     var autoFocus: Bool = false
     var onSearchTap: (() -> Void)? = nil
     
@@ -29,7 +30,7 @@ struct HeaderView: View {
                     Text("Stylish")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color(red: 67/255, green: 146/255, blue: 249/255))
+                        .foregroundStyle(Color(.appBlue))
                 }
                 
                 Spacer()
@@ -56,18 +57,6 @@ struct HeaderView: View {
                             }
                     }
                 }
-            
-            
-            HStack {
-                Text("All Featured")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                Spacer()
-                
-                // ActionChipButton(title: "Sort", systemImage: "sort-icon") { ... }
-                // ActionChipButton(title: "Filter", systemImage: "filter-icon") { ... }
-            }
-            .padding(.horizontal, 16)
         }
         .onAppear {
             if autoFocus {

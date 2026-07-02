@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import Observation
 
-final class HomeCoordinator: ObservableObject {
+@Observable
+final class HomeCoordinator {
     
     enum Destination: Hashable {
         case productDetail(productId: Int)
         case categoriesScreen(categoryId: Int)
-        case searchScreen
     }
     
-    @Published var navigationPath = NavigationPath()
+    var navigationPath = NavigationPath()
     
     func goToProductDetail(id: Int) {
         navigationPath.append(Destination.productDetail(productId: id))
@@ -23,9 +24,5 @@ final class HomeCoordinator: ObservableObject {
     
     func goToCategoriesScreen(id: Int) {
         navigationPath.append(Destination.categoriesScreen(categoryId: id))
-    }
-    
-    func goToSearchScreen() {
-        navigationPath.append(Destination.searchScreen)
     }
 }

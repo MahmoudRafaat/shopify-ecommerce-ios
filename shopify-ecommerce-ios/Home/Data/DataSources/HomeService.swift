@@ -14,19 +14,14 @@ protocol HomeServiceProtocol: AnyObject {
 }
 
 class HomeRemoteDataSource: HomeServiceProtocol {
-    private let baseURL: String
-    
-    init(baseURL: String) {
-        self.baseURL = baseURL
-    }
     
     func loadProducts() async throws -> [ProductDTO] {
-        let response : ProductsResponse = try await NetworkService.request(endpoint: "products.json")
+        let response : ProductsResponse = try await NetworkService.getData(from: HomeEndpoint.products)
         return response.products
     }
     
     func loadCategories() async throws-> [CategoryDTO] {
-        let response : CategoryResponse = try await NetworkService.request(endpoint: "custom_collections.json")
+        let response : CategoryResponse = try await NetworkService.getData(from: HomeEndpoint.categories)
         return response.customCollections
     }
 }
