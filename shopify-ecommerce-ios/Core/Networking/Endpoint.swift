@@ -17,9 +17,6 @@ protocol Endpoint {
 
 
 extension Endpoint {
-    var method: HTTPMethod {
-        return .get
-    }
     
     var queryParameters: Parameters? {
         return nil

@@ -9,6 +9,7 @@ import Foundation
 
 
 struct NetworkConstants {
+    
     static let baseURL = "https://mad46-ios-team4.myshopify.com/admin/api/2026-01"
     
     static func getAdminToken() throws -> String {

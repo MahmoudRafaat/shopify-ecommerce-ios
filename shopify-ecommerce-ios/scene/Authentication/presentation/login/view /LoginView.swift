@@ -74,7 +74,7 @@ struct LoginView: View {
             }
             .animation(.easeInOut(duration: 0.3), value: viewmodel.showSuccessMessage)
             .fullScreenCover(isPresented: $showHome) {
-              //  HomeView()
+              TabBarView()
             }
             .navigationDestination(isPresented: $navigateToSignup) {
                 SignupView(viewmodel: SignupViewModel())

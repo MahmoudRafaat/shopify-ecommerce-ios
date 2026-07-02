@@ -8,14 +8,9 @@
 import Foundation
 import Alamofire
 
-enum NetworkError: Error {
-    case invalidURL
-    case serverError(String)
-}
-
 final class NetworkService {
     
-    private static var baseURL: String {
+     static var baseURL: String {
         return "https://\(SecretConstants.apiKey):\(SecretConstants.password)@\(SecretConstants.hostname)/admin/api/2026-01/"
     }
     
@@ -29,7 +24,7 @@ final class NetworkService {
         let urlString = baseURL + endpoint.path
         
         guard URL(string: urlString) != nil else {
-            throw NetworkError.invalidURL
+            throw NetworkError.invalidURl
         }
         
         return try await AF.request(
@@ -48,7 +43,7 @@ final class NetworkService {
         let urlString = baseURL + endpoint.path
         
         guard URL(string: urlString) != nil else {
-            throw NetworkError.invalidURL
+            throw NetworkError.invalidURl
         }
         
         return try await AF.request(

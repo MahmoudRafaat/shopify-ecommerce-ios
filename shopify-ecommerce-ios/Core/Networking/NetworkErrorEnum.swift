@@ -17,6 +17,7 @@ enum NetworkError: Error, LocalizedError {
     case unacceptableStatusCode(Int)
     case missingAdminToken
     case missingApiKey
+    case invalidURl
     
     var errorDescription: String? {
         switch self {
@@ -39,6 +40,8 @@ enum NetworkError: Error, LocalizedError {
             return "Configuration Error: Shopify Admin Token is missing in Info.plist."
         case .missingApiKey:
             return "Configuration Error: Shopify API Key is missing in Info.plist."
+        case .invalidURl:
+            return "Invalid URL"
         }
     }
 }
