@@ -70,7 +70,7 @@ struct OnboardingScreen: View {
                             if currentPage < OnboardingPage.allCases.count - 1 {
                                 currentPage += 1
                             } else {
-                                UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
+                                UserDefaults.standard.set(true, forKey: AppConstants.hasSeenOnboarding)
                                 print("Home Screen will appear")
                             }
                         }
