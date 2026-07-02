@@ -7,3 +7,12 @@ DerivedData/
 
 # DS_Store (Mac system files)
 .DS_Store
+
+# Firebase configuration file
+**/GoogleService-Info.plist
+
+# Keys and Tokens of Api 
+**/NetworkConstants.swift
+
+# Ignore Sensitive Keys
+Secrets.xcconfig
