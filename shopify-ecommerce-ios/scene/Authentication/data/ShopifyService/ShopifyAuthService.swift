@@ -16,12 +16,17 @@ protocol ShopifyAuthServiceProtocol {
 class ShopifyAuthService: ShopifyAuthServiceProtocol {
 
     func createCustomer(input: CustomerInput) async throws -> CustomerOutput {
-        let response: CustomerResponse = try await NetworkAuthHandler.createCustomer(requestBody: CustomerRequest(customer: input)).execute()
+        let response: CustomerResponse = try await NetworkService.request(
+            endpoint: AuthEndpoint.createCustomer,
+            body: CustomerRequest(customer: input)
+        )
         return response.customer
     }
     
     func searchCustomer(email: String) async throws -> CustomerOutput {
-        let response: CustomerSearchResponse = try await NetworkAuthHandler.searchCustomer(email: email).execute()
+        let response: CustomerSearchResponse = try await NetworkService.request(
+            endpoint: AuthEndpoint.searchCustomer(email: email)
+        )
         
         guard let customer = response.customers.first else {
             throw LoginError.firebaseUserNotFound

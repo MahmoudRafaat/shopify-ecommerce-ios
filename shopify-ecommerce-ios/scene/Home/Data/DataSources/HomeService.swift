@@ -16,12 +16,12 @@ protocol HomeServiceProtocol: AnyObject {
 class HomeRemoteDataSource: HomeServiceProtocol {
     
     func loadProducts() async throws -> [ProductDTO] {
-        let response : ProductsResponse = try await NetworkService.getData(from: HomeEndpoint.products)
+        let response: ProductsResponse = try await NetworkService.request(endpoint: HomeEndpoint.products)
         return response.products
     }
     
-    func loadCategories() async throws-> [CategoryDTO] {
-        let response : CategoryResponse = try await NetworkService.getData(from: HomeEndpoint.categories)
+    func loadCategories() async throws -> [CategoryDTO] {
+        let response: CategoryResponse = try await NetworkService.request(endpoint: HomeEndpoint.categories)
         return response.customCollections
     }
 }

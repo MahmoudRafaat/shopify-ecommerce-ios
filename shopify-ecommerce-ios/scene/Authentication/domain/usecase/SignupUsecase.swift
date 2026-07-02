@@ -15,7 +15,7 @@ class SignupUseCase {
         self.repository = repository
     }
     
-    func execute(email: String, password: String, phone: String) async throws {
+    func execute(email: String, password: String, phone: String?) async throws {
         var firebaseUser: User?
         do {
             firebaseUser = try await repository.registerByFireBase(email: email, password: password)
@@ -33,12 +33,12 @@ class SignupUseCase {
         try await createShopifyUser(email: (firebaseUser?.email)!, phone: phone)
     }
     
-    func createShopifyUser (email: String, phone: String) async throws {
+    func createShopifyUser (email: String, phone: String?) async throws {
         let addressInput = AddressInput(
             address1: "123 Oak St",
             city: "Ottawa",
             province: "ON",
-            phone: phone,
+            phone: phone,       // nil when user left the field empty
             zip: "123 ABC",
             country: "CA"
         )
@@ -46,7 +46,7 @@ class SignupUseCase {
             firstName: "Ehab",
             lastName: "Salah",
             email: email,
-            phone: "+2" + phone,
+            phone: phone,       // already validated as E.164 or nil
             addresses: [addressInput]
         )
         

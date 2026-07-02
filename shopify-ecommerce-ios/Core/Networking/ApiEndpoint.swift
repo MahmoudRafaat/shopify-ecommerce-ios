@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-protocol Endpoint {
+protocol ApiEndpoint {
     var path: String { get }
     var method: HTTPMethod { get }
     var queryParameters: Parameters? { get }
@@ -16,8 +16,7 @@ protocol Endpoint {
 }
 
 
-extension Endpoint {
-    
+extension ApiEndpoint {
     var queryParameters: Parameters? {
         return nil
     }
