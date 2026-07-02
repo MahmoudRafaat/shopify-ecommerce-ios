@@ -51,61 +51,42 @@ class SignupViewModel: SignupViewModelProtocol {
     }
     
     func signup() {
-        guard checkValidation() else { return }
-
+        checkValidation()
         self.isLoading = true
         Task {
             do {
-                // Pass nil when phone is empty so the field is omitted entirely
-                let sanitizedPhone: String? = phone.isEmpty ? nil : phone
-                try await signupUseCase.execute(
-                    email: email,
-                    password: password,
-                    phone: sanitizedPhone
-                )
+                try await signupUseCase.execute(email: email, password: password, phone: phone)
                 self.isSignupSuccess = true
+                self.isLoading = false
             } catch {
                 self.errorMessage = error.localizedDescription
+                self.isLoading = false
             }
-            self.isLoading = false
         }
     }
-
-    // MARK: - Validation
-
-    /// Returns `true` when every field is valid; sets per-field errors otherwise.
-    @discardableResult
-    func checkValidation() -> Bool {
+    
+    
+    func checkValidation(){
         emailError = nil
         phoneError = nil
         passwordError = nil
         confirmPasswordError = nil
         errorMessage = nil
-
+        
         var isValid = true
-
-        // --- Email ---
+        
         if email.isEmpty {
             emailError = "Email is required"
             isValid = false
-        } else if !isValidEmail(email) {
-            emailError = "Please enter a valid email address"
+        }
+        if phone.isEmpty {
+            phoneError = "Phone number is required"
             isValid = false
         }
-
-        // --- Phone (optional, but must be E.164 if provided) ---
-        if !phone.isEmpty && !isValidE164Phone(phone) {
-            phoneError = "Phone must be in E.164 format (e.g. +201234567890)"
-            isValid = false
-        }
-
-        // --- Password ---
         if password.isEmpty {
             passwordError = "Password is required"
             isValid = false
         }
-
-        // --- Confirm Password ---
         if confirmPassword.isEmpty {
             confirmPasswordError = "Confirm password is required"
             isValid = false
@@ -113,21 +94,12 @@ class SignupViewModel: SignupViewModelProtocol {
             confirmPasswordError = "Passwords do not match"
             isValid = false
         }
-
-        return isValid
+        
+        guard isValid else {
+            return
+        }
+        
     }
-
-    // MARK: - Private Helpers
-
-    /// Basic RFC-style email check.
-    private func isValidEmail(_ email: String) -> Bool {
-        let pattern = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
-        return email.range(of: pattern, options: .regularExpression) != nil
-    }
-
-    /// E.164: a leading `+` followed by 7-15 digits (e.g. +201234567890).
-    private func isValidE164Phone(_ phone: String) -> Bool {
-        let pattern = #"^\+[1-9]\d{6,14}$"#
-        return phone.range(of: pattern, options: .regularExpression) != nil
-    }
+    
+    
 }
