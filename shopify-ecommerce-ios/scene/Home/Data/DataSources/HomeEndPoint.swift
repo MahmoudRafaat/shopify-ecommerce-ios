@@ -20,4 +20,7 @@ enum HomeEndpoint: Endpoint {
             return "custom_collections.json"
         }
     }
+    var method: Alamofire.HTTPMethod {
+        return .get
+    }
 }
