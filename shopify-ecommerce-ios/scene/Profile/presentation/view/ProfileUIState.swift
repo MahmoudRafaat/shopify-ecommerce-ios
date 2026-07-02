@@ -9,7 +9,7 @@
 
 import Foundation
 
-struct CheckoutUIState {
+struct ProfileUIState {
     // Read-only fields (from user auth profile)
     var email: String = ""
     

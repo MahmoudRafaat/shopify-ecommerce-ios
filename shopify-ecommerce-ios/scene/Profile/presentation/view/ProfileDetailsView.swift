@@ -9,10 +9,10 @@
 
 import SwiftUI
 
-struct CheckoutDetailsView: View {
+struct ProfileDetailsView: View {
    
     
-    @State private var uiState = CheckoutUIState(
+    @State private var uiState = ProfileUIState(
         email: "mahmoud@gmail.com",
         name: "mahmoud raafat"
       
@@ -104,5 +104,5 @@ struct CheckoutDetailsView: View {
 }
 
 #Preview {
-    CheckoutDetailsView()
+    ProfileDetailsView()
 }
