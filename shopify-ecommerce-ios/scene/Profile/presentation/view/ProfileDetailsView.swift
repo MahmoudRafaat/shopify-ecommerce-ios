@@ -20,7 +20,7 @@ struct ProfileDetailsView: View {
     
     @State private var dummyPassword = "••••••••••"
     
-    // Brand Color
+    // primary Color
     let brandRed = Color(red: 0.95, green: 0.25, blue: 0.40)
     
     var body: some View {

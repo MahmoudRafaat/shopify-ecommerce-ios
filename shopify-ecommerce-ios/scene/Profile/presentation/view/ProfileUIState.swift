@@ -1,5 +1,5 @@
 //
-//  CheckoutUIState.swift
+//  ProfileUIState.swift
 //  shopify-ecommerce-ios
 //
 //  Created by Mahmoud Raafat Mustafa on 02/07/2026.
