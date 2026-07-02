@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CheckoutView: View {
-    @StateObject private var viewModel = CheckoutViewModel()
+    @State private var viewModel = CheckoutViewModel()
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {

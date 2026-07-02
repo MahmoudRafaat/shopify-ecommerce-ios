@@ -16,8 +16,11 @@ enum HomeEndpoint: Endpoint {
         switch self {
         case .products:
             return "products.json"
-        case .categories:
+        case .categories
             return "custom_collections.json"
         }
+    }
+    var method: Alamofire.HTTPMethod {
+        return .get
     }
 }
