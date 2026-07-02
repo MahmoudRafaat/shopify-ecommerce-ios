@@ -11,3 +11,11 @@ DerivedData/
 SeacretConstants.swiftshopify-ecommerce-ios/Home/SeacretConstants.swift
 shopify-ecommerce-ios/Home/SeacretConstants.swift
 shopify-ecommerce-ios/SeacretConstants.swift
+# Firebase configuration file
+**/GoogleService-Info.plist
+
+# Keys and Tokens of Api 
+**/NetworkConstants.swift
+
+# Ignore Sensitive Keys
+Secrets.xcconfig
