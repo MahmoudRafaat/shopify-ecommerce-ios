@@ -11,7 +11,8 @@ enum TextFieldtype{
     case email
     case password
     case name
-    
+    case address
+    case number
     var icon: String{
         switch self{
         case .name:
@@ -20,6 +21,8 @@ enum TextFieldtype{
             return "envelope.fill"
         case .password:
             return "lock.fill"
+        case .address: return "mappin.and.ellipse"
+                case .number: return "number.circle.fill"
         }
     }
     
@@ -27,6 +30,7 @@ enum TextFieldtype{
         switch self{
         case .email:
             return .emailAddress
+        case .number: return .numberPad
         default:
             return .default
         }
