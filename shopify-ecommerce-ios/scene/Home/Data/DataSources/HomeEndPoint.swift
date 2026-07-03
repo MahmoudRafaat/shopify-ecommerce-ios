@@ -23,4 +23,7 @@ enum HomeEndpoint: ApiEndpoint {
     var method: Alamofire.HTTPMethod {
         return .get
     }
+    var body: Data? {
+        nil
+    }
 }
