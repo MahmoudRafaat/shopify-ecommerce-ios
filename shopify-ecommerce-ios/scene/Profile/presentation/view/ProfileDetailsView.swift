@@ -53,7 +53,7 @@ struct ProfileDetailsView: View {
                     Divider().padding(.horizontal, 28)
                     
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Business Address Details")
+                        Text("Address Details")
                             .font(.title3).fontWeight(.bold)
                             .padding(.horizontal, 28)
                         
