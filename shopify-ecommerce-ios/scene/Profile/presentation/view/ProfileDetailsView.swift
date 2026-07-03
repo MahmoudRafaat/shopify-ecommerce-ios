@@ -17,9 +17,7 @@ struct ProfileDetailsView: View {
         name: "mahmoud raafat"
       
     )
-    
-    @State private var dummyPassword = "••••••••••"
-    
+        
     // primary Color
     let brandRed = Color(red: 0.95, green: 0.25, blue: 0.40)
     
@@ -36,15 +34,13 @@ struct ProfileDetailsView: View {
                             .font(.title3).fontWeight(.bold)
                             .padding(.horizontal, 28)
                         
-                        CustomTextField(placeholder: "Email", type: .email, hasError: false, text: $uiState.email)
-                            .disabled(true)
-                            .opacity(0.6)
-                        
-                        VStack(alignment: .trailing, spacing: 8) {
-                            CustomTextField(placeholder: "Password", type: .password, hasError: false, text: $dummyPassword)
+                       
+                        VStack(alignment: .trailing, spacing: 16) {
+                            CustomTextField(placeholder: "Email", type: .email, hasError: false, text: $uiState.email)
                                 .disabled(true)
                                 .opacity(0.6)
-                            
+                            CustomTextField(placeholder: "First Name", type: .name, hasError: false, text: $uiState.firstName)
+                            CustomTextField(placeholder: "Second Name", type: .name, hasError: false, text: $uiState.secondName)
                             Button("Change Password") {
                                 // Navigate to change password flow
                             }
@@ -97,7 +93,7 @@ struct ProfileDetailsView: View {
                 }
             }
             .background(Color(white: 0.99))
-            .navigationTitle("Checkout")
+            .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
         }
     }

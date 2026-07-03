@@ -15,6 +15,8 @@ struct ProfileUIState {
     
     // Editable fields
     var name: String = ""
+    var firstName: String = ""
+    var secondName: String = ""
     var pincode: String = ""
     var address: String = ""
     var city: String = ""
@@ -32,6 +34,8 @@ struct ProfileUIState {
                !city.isEmpty &&
                !bankAccountNumber.isEmpty &&
                !ifscCode.isEmpty &&
-               !name.isEmpty
+               !name.isEmpty &&
+        !firstName.isEmpty &&
+        !secondName.isEmpty
     }
 }
