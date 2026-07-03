@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct CheckoutProductItemView: View {
+    @Environment(CheckoutViewModel.self) var viewModel
+    
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
             // Product Image
@@ -24,8 +26,25 @@ struct CheckoutProductItemView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 
                 HStack(spacing: 12) {
-                    CheckoutDropdownView(title: "Size", value: "42") {}
-                    CheckoutDropdownView(title: "Qty", value: "1") {}
+                    CheckoutDropdownView(title: "Size", value: "42") {
+                        // Size selection – dismiss for now
+                    }
+                    
+                    Menu {
+                        ForEach(1...10, id: \.self) { qty in
+                            Button("\(qty)") {
+                                Task {
+                                    await viewModel.updateQuantity(to: qty)
+                                }
+                            }
+                        }
+                    } label: {
+                        CheckoutDropdownView(
+                            title: "Qty",
+                            value: "\(viewModel.currentQuantity)",
+                            action: {}
+                        )
+                    }
                 }
                 .font(.footnote)
                 

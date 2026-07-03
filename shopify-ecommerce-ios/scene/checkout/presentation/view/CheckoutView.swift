@@ -11,6 +11,10 @@ struct CheckoutView: View {
     @State private var viewModel = CheckoutViewModel()
     @Environment(\.presentationMode) var presentationMode
     
+    // Product info passed from previous screen
+    let variantId: Int
+    let quantity: Int
+    
     var body: some View {
         VStack(spacing: 0) {
             // Navigation Bar
@@ -27,15 +31,22 @@ struct CheckoutView: View {
             CheckoutViewBody()
             
             // Bottom Sticky Bar
-            CheckoutBottomBar(onProceedToPayment: {
-                viewModel.proceedToPayment()
-            })
+            CheckoutBottomBar()
         }
+        .environment(viewModel)
         .navigationBarHidden(true)
         .edgesIgnoringSafeArea(.bottom)
+        .showLoading(if: viewModel.isLoading)
+        .showCustomAlert(title: "Error", errorMessage: Bindable(viewModel).errorMessage)
+        .task {
+            await viewModel.createInitialDraftOrder(
+                variantId: variantId,
+                quantity: quantity
+            )
+        }
     }
 }
 
 #Preview {
-    CheckoutView()
+    CheckoutView(variantId: 0, quantity: 1)
 }
