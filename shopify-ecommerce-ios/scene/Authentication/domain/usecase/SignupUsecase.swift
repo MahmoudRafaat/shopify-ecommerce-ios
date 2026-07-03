@@ -50,6 +50,9 @@ class SignupUseCase {
             addresses: [addressInput]
         )
         
-        _ = try await repository.createCustomerInShopify(customerInput: customerInput)
+        let customer = try await repository.createCustomerInShopify(customerInput: customerInput)
+        if let customerId = customer.id {
+            UserDefaults.standard.set(customerId, forKey: AppConstants.customerId)
+        }
     }
 }

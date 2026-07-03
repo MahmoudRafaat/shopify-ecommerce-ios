@@ -24,7 +24,7 @@ struct OnboardingScreen: View {
                 }
                 Spacer()
                 Button("Skip") {
-                    // TODO: Navigate To Home Screen
+                    UserDefaults.standard.set(true, forKey: AppConstants.hasSeenOnboarding)
                     print("Home Screen will appear")
                 }
                 .font(Font.body.bold())
@@ -70,7 +70,7 @@ struct OnboardingScreen: View {
                             if currentPage < OnboardingPage.allCases.count - 1 {
                                 currentPage += 1
                             } else {
-                                // TODO: Navigate To Home Screen
+                                UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
                                 print("Home Screen will appear")
                             }
                         }
