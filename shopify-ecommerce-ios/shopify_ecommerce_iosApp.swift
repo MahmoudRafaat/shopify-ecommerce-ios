@@ -26,10 +26,19 @@ struct shopify_ecommerce_iosApp: App {
         }
     }()
     
+    @AppStorage(AppConstants.hasSeenOnboarding) private var hasSeenOnboarding = false
+    @AppStorage(AppConstants.isLoggedIn) private var isLoggedIn = false
+    
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                SignupView(viewmodel: SignupViewModel())
+            if !hasSeenOnboarding {
+                OnboardingScreen()
+            } else if isLoggedIn {
+                TabBarView()
+            } else {
+                NavigationStack {
+                    SignupView(viewmodel: SignupViewModel())
+                }
             }
         }
         .modelContainer(sharedModelContainer)
