@@ -12,8 +12,7 @@ struct CheckoutView: View {
     @Environment(\.presentationMode) var presentationMode
     
     // Product info passed from previous screen
-    let variantId: Int
-    let quantity: Int
+    let lineItems: [DraftLineItemRequest]
     
     var body: some View {
         VStack(spacing: 0) {
@@ -39,14 +38,11 @@ struct CheckoutView: View {
         .showLoading(if: viewModel.isLoading)
         .showCustomAlert(title: "Error", errorMessage: Bindable(viewModel).errorMessage)
         .task {
-            await viewModel.createInitialDraftOrder(
-                variantId: variantId,
-                quantity: quantity
-            )
+            await viewModel.createInitialDraftOrder(lineItems: lineItems)
         }
     }
 }
 
 #Preview {
-    CheckoutView(variantId: 0, quantity: 1)
+    CheckoutView(lineItems: [DraftLineItemRequest(variantId: 0, quantity: 1)])
 }

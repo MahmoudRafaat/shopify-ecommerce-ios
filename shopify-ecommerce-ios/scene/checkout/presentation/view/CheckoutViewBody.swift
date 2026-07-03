@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct CheckoutViewBody: View {
+    @Environment(CheckoutViewModel.self) var viewModel
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 24) {
-                CheckoutProductItemView()
+                ForEach(viewModel.cartLineItems, id: \.variantId) { item in
+                    CheckoutProductItemView(item: item)
+                }
                 
                 Divider()
                     .padding(.horizontal)

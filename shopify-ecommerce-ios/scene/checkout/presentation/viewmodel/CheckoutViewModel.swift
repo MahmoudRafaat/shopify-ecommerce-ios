@@ -9,51 +9,30 @@
 import Foundation
 import SwiftUI
 
-protocol CheckoutViewModelProtocol {
-    var isLoading: Bool { get }
-    var errorMessage: String? { get }
-    var draftOrderId: Int? { get }
-    var orderTotal: String { get }
-    var subtotal: String { get }
-    var tax: String { get }
-    var discountAmount: String { get }
-    var currentVariantId: Int { get }
-    var currentQuantity: Int { get }
-    var discountCode: String { get set }
-    
-    func createInitialDraftOrder(variantId: Int, quantity: Int) async
-    func updateQuantity(to newQuantity: Int) async
-    func updateSize(toVariantId newVariantId: Int) async
-    func applyDiscount(code: String) async
-    func proceedToPayment() async
-}
 
 @Observable
 final class CheckoutViewModel: CheckoutViewModelProtocol {
     
-    // MARK: - Dependencies
     private let useCases: CheckoutUseCases
     
     // MARK: - State
     var isLoading = false
     var errorMessage: String?
     
-    // Draft Order details
     var draftOrderId: Int?
     var orderTotal: String = "0.00"
     var subtotal: String = "0.00"
     var tax: String = "0.00"
     var discountAmount: String = "0.00"
     
-    // Request State
-    var currentVariantId: Int = 0
-    var currentQuantity: Int = 1
+    var cartLineItems: [DraftLineItemRequest] = []
     var discountCode: String = ""
     
     init(useCases: CheckoutUseCases = CheckoutUseCases(
         createDraftOrder: CreateDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
         updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        applyDiscount: ApplyDiscountUseCaseImpl(repository: CheckoutRepositoryImpl())
+        applyDiscount: ApplyDiscountUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        completeDraftOrder: CompleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl())
     )) {
         self.useCases = useCases
     }
@@ -61,70 +40,66 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     // MARK: - Intentions
     
     @MainActor
-    func createInitialDraftOrder(variantId: Int, quantity: Int) async {
-        self.currentVariantId = variantId
-        self.currentQuantity = quantity
-        
+    func createInitialDraftOrder(lineItems: [DraftLineItemRequest]) async {
+        self.cartLineItems = lineItems
         self.isLoading = true
         self.errorMessage = nil
         
         do {
-            let response = try await useCases.createDraftOrder.execute(
-                variantId: variantId,
-                quantity: quantity
-            )
+            let response = try await useCases.createDraftOrder.execute(lineItems: lineItems)
             updateUI(with: response)
         } catch {
             self.errorMessage = error.localizedDescription
         }
-        
         self.isLoading = false
     }
     
     @MainActor
-    func updateQuantity(to newQuantity: Int) async {
+    func updateQuantity(for variantId: Int, to newQuantity: Int) async {
         guard let orderId = draftOrderId else { return }
-        self.currentQuantity = newQuantity
-        
         self.isLoading = true
         self.errorMessage = nil
         
+        if let index = cartLineItems.firstIndex(where: { $0.variantId == variantId }) {
+            cartLineItems[index] = DraftLineItemRequest(variantId: variantId, quantity: newQuantity)
+        }
+        
         do {
-            let lineItems = [DraftLineItemRequest(variantId: currentVariantId, quantity: newQuantity)]
             let response = try await useCases.updateDraftOrderLineItems.execute(
                 draftOrderId: orderId,
-                lineItems: lineItems
+                lineItems: cartLineItems
             )
             updateUI(with: response)
         } catch {
             self.errorMessage = error.localizedDescription
         }
-        
         self.isLoading = false
     }
     
     @MainActor
-    func updateSize(toVariantId newVariantId: Int) async {
+    func updateSize(from oldVariantId: Int, toNewVariantId newVariantId: Int) async {
         guard let orderId = draftOrderId else { return }
-        self.currentVariantId = newVariantId
-        
         self.isLoading = true
         self.errorMessage = nil
         
+        if let index = cartLineItems.firstIndex(where: { $0.variantId == oldVariantId }) {
+            let currentQty = cartLineItems[index].quantity
+            cartLineItems[index] = DraftLineItemRequest(variantId: newVariantId, quantity: currentQty)
+        }
+        
         do {
-            let lineItems = [DraftLineItemRequest(variantId: newVariantId, quantity: currentQuantity)]
             let response = try await useCases.updateDraftOrderLineItems.execute(
                 draftOrderId: orderId,
-                lineItems: lineItems
+                lineItems: cartLineItems
             )
             updateUI(with: response)
         } catch {
             self.errorMessage = error.localizedDescription
         }
-        
         self.isLoading = false
     }
     
+
     @MainActor
     func applyDiscount(code: String) async {
         guard let orderId = draftOrderId, !code.isEmpty else { return }
@@ -145,14 +120,24 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         self.isLoading = false
     }
     
+    // MARK: - Private Helpers
     @MainActor
     func proceedToPayment() async {
         guard let orderId = draftOrderId else { return }
-        print("Proceeding to payment for draft order \(orderId)...")
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        do {
+            let response = try await useCases.completeDraftOrder.execute(draftOrderId: orderId)
+            
+            updateUI(with: response)
+            print("Successfully completed draft order into an actual order!")
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+        
+        self.isLoading = false
     }
-    
-    // MARK: - Private Helpers
-    
     private func updateUI(with response: DraftOrderResponse) {
         self.draftOrderId = response.id
         self.subtotal = response.subtotalPrice

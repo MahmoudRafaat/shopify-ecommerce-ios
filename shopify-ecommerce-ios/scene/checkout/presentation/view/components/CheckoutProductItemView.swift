@@ -2,11 +2,12 @@ import SwiftUI
 
 struct CheckoutProductItemView: View {
     @Environment(CheckoutViewModel.self) var viewModel
+    let item: DraftLineItemRequest
     
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
             // Product Image
-            Image(.checkout) // Assuming there's a placeholder in assets
+            Image(.checkout)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 125, height: 155)
@@ -26,22 +27,36 @@ struct CheckoutProductItemView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 
                 HStack(spacing: 12) {
-                    CheckoutDropdownView(title: "Size", value: "42") {
-                        // Size selection – dismiss for now
+                    Menu {
+                        // Dummy sizes mapped to variant IDs for demonstration
+                        let sizes = [("38", 101), ("40", 102), ("42", 103)]
+                        ForEach(sizes, id: \.1) { size, variantId in
+                            Button(size) {
+                                Task {
+                                    await viewModel.updateSize(from: item.variantId, toNewVariantId: variantId)
+                                }
+                            }
+                        }
+                    } label: {
+                        CheckoutDropdownView(
+                            title: "Size",
+                            value: "42",
+                            action: {}
+                        )
                     }
                     
                     Menu {
                         ForEach(1...10, id: \.self) { qty in
                             Button("\(qty)") {
                                 Task {
-                                    await viewModel.updateQuantity(to: qty)
+                                    await viewModel.updateQuantity(for: item.variantId, to: qty)
                                 }
                             }
                         }
                     } label: {
                         CheckoutDropdownView(
                             title: "Qty",
-                            value: "\(viewModel.currentQuantity)",
+                            value: "\(item.quantity)",
                             action: {}
                         )
                     }
@@ -67,5 +82,5 @@ struct CheckoutProductItemView: View {
 }
 
 #Preview {
-    CheckoutProductItemView()
+    CheckoutProductItemView(item: DraftLineItemRequest(variantId: 101, quantity: 1))
 }
