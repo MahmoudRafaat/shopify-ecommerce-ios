@@ -17,7 +17,7 @@ struct CheckoutViewBody: View {
                     .padding(.horizontal)
                 
                 CheckoutCouponView(onSelect: {
-                    // Handle coupon selection
+                    // Dismiss coupon execution for now
                 })
                 
                 Divider()
