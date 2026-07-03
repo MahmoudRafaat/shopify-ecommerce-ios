@@ -6,11 +6,6 @@
 //
 
 
-//
-//  SettingsView.swift
-//  shopify-ecommerce-ios
-//
-
 import SwiftUI
 
 struct SettingsView: View {
@@ -61,7 +56,6 @@ struct SettingsView: View {
                         SettingsRowView(icon: "questionmark.circle.fill", title: "Help Center")
                     }
                     
-                    // 5. Destructive Actions
                     SettingsGroup {
                         Button {
                             // Trigger View Model Log Out
@@ -77,7 +71,7 @@ struct SettingsView: View {
                     Spacer(minLength: 40)
                 }
             }
-            .background(Color(white: 0.98).ignoresSafeArea()) // Very light background
+            .background(Color(white: 0.98).ignoresSafeArea())
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
         }

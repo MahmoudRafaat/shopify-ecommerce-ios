@@ -67,7 +67,7 @@ struct SettingsRowView: View {
             case .toggle(let binding):
                 Toggle("", isOn: binding)
                     .labelsHidden()
-                    .tint(Color.pink) // Replace with our color
+                    .tint(Color.pink) 
                 
             case .destructive:
                 EmptyView()

@@ -6,21 +6,15 @@
 //
 
 
-//
-//  ProfileHeaderView.swift
-//  shopify-ecommerce-ios
-//
-
 import SwiftUI
 
 struct ProfileHeaderView: View {
     let name: String
     let email: String
-    // let imageUrl: URL? // Use AsyncImage in production
+    // let imageUrl: URL? // mabay use it later
     
     var body: some View {
         HStack(spacing: 16) {
-            // Avatar Placeholder
             Circle()
                 .fill(Color(white: 0.90))
                 .frame(width: 70, height: 70)
@@ -42,13 +36,12 @@ struct ProfileHeaderView: View {
             
             Spacer()
             
-            // Edit Profile Button
             Button {
                 // Navigate to edit profile
             } label: {
                 Image(systemName: "pencil.circle.fill")
                     .font(.title)
-                    .foregroundStyle(Color.pink) // Brand color
+                    .foregroundStyle(Color.pink)
             }
         }
         .padding(20)
