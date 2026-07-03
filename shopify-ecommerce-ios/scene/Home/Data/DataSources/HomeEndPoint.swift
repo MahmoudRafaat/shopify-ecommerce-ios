@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-enum HomeEndpoint: Endpoint {
+enum HomeEndpoint: ApiEndpoint {
     case products
     case categories
     
