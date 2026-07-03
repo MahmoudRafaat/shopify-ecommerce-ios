@@ -44,7 +44,13 @@ struct ProductCardView: View {
                         .foregroundStyle(Color.appLightRed)
                 }
                 
-                starsView(productStars: product.stars)
+                HStack{
+                    StarsView(rating: product.stars, starsSize: 10)
+                    Text("(\(product.reviewers))")
+                        .font(.system(size: 10, weight: .light))
+                        .foregroundColor(.gray)
+                        .padding(.leading, 2)
+                }
             }
             .padding(8)
         }
@@ -57,30 +63,6 @@ struct ProductCardView: View {
         }
     }
     
-    private func starsView(productStars: Float) -> some View {
-        return HStack(spacing: 2) {
-            ForEach(0..<5, id: \.self) { index in
-                let floatIndex = Float(index)
-                
-                if product.stars - floatIndex >= 1 {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
-                } else if product.stars - floatIndex >= 0.5 {
-                    Image(systemName: "star.leadinghalf.filled")
-                        .foregroundColor(.yellow)
-                } else {
-                    Image(systemName: "star")
-                        .foregroundColor(.gray.opacity(0.5))
-                }
-            }
-            .font(.system(size: 10))
-            
-            Text("(\(product.reviewers))")
-                .font(.system(size: 10, weight: .light))
-                .foregroundColor(.gray)
-                .padding(.leading, 2)
-        }
-    }
 }
 
 #Preview {
