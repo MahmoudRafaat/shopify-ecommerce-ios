@@ -8,7 +8,7 @@
 import Foundation
 
 protocol CreateDraftOrderUseCase {
-    func execute(variantId: Int, quantity: Int) async throws -> DraftOrderResponse
+    func execute(lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
 }
 
 protocol UpdateDraftOrderLineItemsUseCase {
@@ -19,12 +19,16 @@ protocol ApplyDiscountUseCase {
     func execute(draftOrderId: Int, discountCode: String) async throws -> DraftOrderResponse
 }
 
+protocol CompleteDraftOrderUseCase {
+    func execute(draftOrderId: Int) async throws -> DraftOrderResponse
+}
+
 
 struct CreateDraftOrderUseCaseImpl: CreateDraftOrderUseCase {
     let repository: CheckoutRepository
     
-    func execute(variantId: Int, quantity: Int) async throws -> DraftOrderResponse {
-        return try await repository.createDraftOrder(variantId: variantId, quantity: quantity)
+    func execute(lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse {
+        return try await repository.createDraftOrder(lineItems: lineItems)
     }
 }
 
@@ -52,6 +56,14 @@ struct ApplyDiscountUseCaseImpl: ApplyDiscountUseCase {
             valueType: "percentage" // Can be "fixed_amount" or "percentage"
         )
         return try await repository.applyDiscount(draftOrderId: draftOrderId, discount: discount)
+    }
+}
+
+struct CompleteDraftOrderUseCaseImpl: CompleteDraftOrderUseCase {
+    let repository: CheckoutRepository
+    
+    func execute(draftOrderId: Int) async throws -> DraftOrderResponse {
+        return try await repository.completeDraftOrder(draftOrderId: draftOrderId)
     }
 }
 

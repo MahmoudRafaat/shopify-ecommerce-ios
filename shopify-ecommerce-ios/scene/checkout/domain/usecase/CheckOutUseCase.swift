@@ -11,5 +11,6 @@ struct CheckoutUseCases {
     let createDraftOrder: CreateDraftOrderUseCase
     let updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCase
     let applyDiscount: ApplyDiscountUseCase
+    let completeDraftOrder: CompleteDraftOrderUseCase
 }
 
