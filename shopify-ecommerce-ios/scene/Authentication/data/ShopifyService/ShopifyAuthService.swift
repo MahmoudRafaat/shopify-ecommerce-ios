@@ -17,8 +17,7 @@ class ShopifyAuthService: ShopifyAuthServiceProtocol {
 
     func createCustomer(input: CustomerInput) async throws -> CustomerOutput {
         let response: CustomerResponse = try await NetworkService.request(
-            endpoint: AuthEndpoint.createCustomer,
-            body: CustomerRequest(customer: input)
+            endpoint: AuthEndpoint.createCustomer(request: CustomerRequest(customer: input))
         )
         return response.customer
     }

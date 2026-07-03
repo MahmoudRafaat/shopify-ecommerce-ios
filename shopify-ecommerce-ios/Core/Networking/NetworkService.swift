@@ -15,18 +15,8 @@ final class NetworkService {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
     }
-
-    private static var shopifyEncoder: JSONParameterEncoder {
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        return JSONParameterEncoder(encoder: encoder)
-    }
     
-    
-    static func request<T: Decodable, Body: Encodable>(
-        endpoint: ApiEndpoint,
-        body: Body? = nil as Empty?
-    ) async throws -> T {
+    static func request<T: Decodable>(endpoint: ApiEndpoint) async throws -> T {
         
         let urlString = Constants.baseURL + endpoint.path
         
@@ -40,8 +30,8 @@ final class NetworkService {
             urlRequest = try URLEncoding.default.encode(urlRequest, with: queryParameters)
         }
         
-        if let body = body {
-            urlRequest = try shopifyEncoder.encode(body, into: urlRequest)
+        if let body = endpoint.body {
+            urlRequest.httpBody = body
         }
         
         let response = await AF.request(urlRequest)

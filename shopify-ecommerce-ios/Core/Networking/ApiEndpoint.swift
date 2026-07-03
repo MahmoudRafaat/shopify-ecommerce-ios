@@ -13,8 +13,8 @@ protocol ApiEndpoint {
     var method: HTTPMethod { get }
     var queryParameters: Parameters? { get }
     var headers: HTTPHeaders? { get }
+    var body: Data? { get }
 }
-
 
 extension ApiEndpoint {
     var queryParameters: Parameters? {
