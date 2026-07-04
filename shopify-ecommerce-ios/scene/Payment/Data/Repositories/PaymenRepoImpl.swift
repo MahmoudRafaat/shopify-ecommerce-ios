@@ -8,7 +8,7 @@
 import Foundation
 
 class PaymentRepoImpl: PaymentRepo {
-    func getTotalPrice() async throws -> [Product] {
-        
+    func getTotalPrice() async throws -> String {
+        return "Total Price"
     }
 }

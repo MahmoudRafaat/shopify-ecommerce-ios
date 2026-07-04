@@ -8,9 +8,11 @@
 import Foundation
 
 protocol PaymentServiceProtocol: AnyObject {
-    func loadDraft() async throws -> [ProductDTO]
+    func loadDraft() async throws -> [OrderDTO]
 }
 
 class PaymentService: PaymentServiceProtocol {
-    
+    func loadDraft() async throws -> [OrderDTO] {
+     return [OrderDTO(id: 1, totalPrice: "20")]
+    }
 }
