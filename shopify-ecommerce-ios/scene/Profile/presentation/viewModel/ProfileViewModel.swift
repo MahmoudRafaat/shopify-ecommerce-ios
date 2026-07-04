@@ -18,6 +18,20 @@ class ProfileViewModel {
     var uiState = ProfileUIState()
     private(set) var customerId: Int?
     
+    var tempFirstName: String = ""
+    var tempLastName: String = ""
+    var tempAddress1: String = ""
+    var tempCity: String = ""
+    var tempProvince: String = ""
+    var tempCountry: String = ""
+    var tempZip: String = ""
+    var tempPhone: String = ""
+    var tempCardholderName: String = ""
+    var tempCardNumber: String = ""
+    var tempExpiryMonth: String = ""
+    var tempExpiryYear: String = ""
+    var tempCvv: String = ""
+    
     init(
         getProfileUseCase: GetProfileUseCaseProtocol = ProfileUseCase(),
         updateProfileUseCase: UpdateProfileUseCaseProtocol = ProfileUseCase(),
@@ -65,7 +79,11 @@ class ProfileViewModel {
     @MainActor
     func saveName() async {
         guard let customerId = customerId else { return }
-        guard uiState.isNameValid else {
+        
+        let firstName = tempFirstName
+        let lastName = tempLastName
+        
+        guard !firstName.isEmpty && !lastName.isEmpty else {
             uiState.errorMessage = "Please enter both first and last name"
             return
         }
@@ -76,60 +94,49 @@ class ProfileViewModel {
         do {
             try await updateProfileUseCase.updateName(
                 customerId: customerId,
-                firstName: uiState.firstName,
-                lastName: uiState.lastName
+                firstName: firstName,
+                lastName: lastName
             )
+            uiState.firstName = firstName
+            uiState.lastName = lastName
+            syncTempValues()
         } catch {
             uiState.errorMessage = "Failed to update name: \(error.localizedDescription)"
-            await loadProfile() // Revert to previous state
+            await loadProfile()
         }
         
         uiState.isSavingName = false
     }
     
     @MainActor
-    func saveEmail() async {
-        guard let customerId = customerId else { return }
-        guard uiState.isEmailValid else {
-            uiState.errorMessage = "Please enter a valid email address"
-            return
-        }
-        
-        uiState.isSavingEmail = true
-        uiState.errorMessage = nil
-        
-        do {
-            try await updateProfileUseCase.updateEmail(
-                customerId: customerId,
-                email: uiState.email
-            )
-        } catch {
-            uiState.errorMessage = "Failed to update email: \(error.localizedDescription)"
-            await loadProfile()
-        }
-        
-        uiState.isSavingEmail = false
-    }
-    
-    @MainActor
     func saveAddress() async {
         guard let customerId = customerId else { return }
-        guard uiState.isAddressValid else {
+        
+        let address1 = tempAddress1
+        let city = tempCity
+        let provinceCode = tempProvince
+        let countryCode = tempCountry
+        let zip = tempZip
+        let phone = tempPhone
+        
+        guard !address1.isEmpty && !city.isEmpty && !provinceCode.isEmpty && !countryCode.isEmpty && !zip.isEmpty else {
             uiState.errorMessage = "Please fill in all address fields"
             return
         }
         
         uiState.isSavingAddress = true
         uiState.errorMessage = nil
-        
+    
         let address = ProfileAddress(
             id: nil,
-            address1: uiState.address1,
-            city: uiState.city,
-            province: uiState.province,
-            country: uiState.country,
-            zip: uiState.zip,
-            phone: uiState.phone.isEmpty ? nil : uiState.phone,
+            address1: address1,
+            city: city,
+            province: provinceCode,
+            provinceCode: provinceCode,
+            country: countryCode,
+            countryCode: countryCode,
+            zip: zip,
+            phone: phone.isEmpty ? nil : phone,
             firstName: uiState.firstName,
             lastName: uiState.lastName,
             isDefault: true
@@ -142,17 +149,24 @@ class ProfileViewModel {
             )
             updateAddressUI(with: updatedAddress)
             uiState.hasAddress = true
+            syncTempValues()
         } catch {
             uiState.errorMessage = "Failed to update address: \(error.localizedDescription)"
         }
         
         uiState.isSavingAddress = false
     }
-    
     @MainActor
     func savePaymentDetails() async {
         guard let customerId = customerId else { return }
-        guard uiState.isPaymentValid else {
+        
+        let cardholderName = tempCardholderName
+        let cardNumber = tempCardNumber
+        let expiryMonth = tempExpiryMonth
+        let expiryYear = tempExpiryYear
+        let cvv = tempCvv
+        
+        guard !cardholderName.isEmpty && cardNumber.count >= 4 && !expiryMonth.isEmpty && !expiryYear.isEmpty && !cvv.isEmpty else {
             uiState.errorMessage = "Please fill in all payment fields"
             return
         }
@@ -161,11 +175,11 @@ class ProfileViewModel {
         uiState.errorMessage = nil
         
         let paymentDetails = PaymentDetails(
-            cardholderName: uiState.cardholderName,
-            cardNumber: uiState.cardNumber,
-            expiryMonth: uiState.expiryMonth,
-            expiryYear: uiState.expiryYear,
-            cvv: uiState.cvv,
+            cardholderName: cardholderName,
+            cardNumber: cardNumber,
+            expiryMonth: expiryMonth,
+            expiryYear: expiryYear,
+            cvv: cvv,
             isDefault: true
         )
         
@@ -174,7 +188,13 @@ class ProfileViewModel {
                 customerId: customerId,
                 paymentDetails: paymentDetails
             )
+            uiState.cardholderName = cardholderName
+            uiState.cardNumber = cardNumber
+            uiState.expiryMonth = expiryMonth
+            uiState.expiryYear = expiryYear
+            uiState.cvv = cvv
             uiState.hasPaymentDetails = true
+            syncTempValues()
         } catch {
             uiState.errorMessage = "Failed to update payment details: \(error.localizedDescription)"
         }
@@ -200,13 +220,17 @@ class ProfileViewModel {
         } else {
             uiState.hasPaymentDetails = false
         }
+        
+        syncTempValues()
     }
     
     private func updateAddressUI(with address: ProfileAddress) {
+        uiState.province = address.province
+            uiState.country = address.country
+            uiState.provinceCode = address.provinceCode
+            uiState.countryCode = address.countryCode
         uiState.address1 = address.address1
         uiState.city = address.city
-        uiState.province = address.province
-        uiState.country = address.country
         uiState.zip = address.zip
         uiState.phone = address.phone ?? ""
         uiState.hasAddress = true
@@ -219,5 +243,21 @@ class ProfileViewModel {
         uiState.expiryYear = payment.expiryYear
         uiState.cvv = payment.cvv
         uiState.hasPaymentDetails = true
+    }
+    
+    private func syncTempValues() {
+        tempFirstName = uiState.firstName
+        tempLastName = uiState.lastName
+        tempAddress1 = uiState.address1
+        tempCity = uiState.city
+        tempProvince = uiState.provinceCode
+        tempCountry = uiState.countryCode
+        tempZip = uiState.zip
+        tempPhone = uiState.phone
+        tempCardholderName = uiState.cardholderName
+        tempCardNumber = uiState.cardNumber
+        tempExpiryMonth = uiState.expiryMonth
+        tempExpiryYear = uiState.expiryYear
+        tempCvv = uiState.cvv
     }
 }

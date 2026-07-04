@@ -1,8 +1,23 @@
 
+import SwiftUI
+
 struct AddressSection: View {
     let uiState: ProfileUIState
     @Binding var isEditing: Bool
+  
+    
+    @Binding var tempAddress1: String
+    @Binding var tempCity: String
+    @Binding var tempProvince: String
+    @Binding var tempCountry: String
+    @Binding var tempZip: String
+    @Binding var tempPhone: String
+    let brandColor: Color
     let onSave: () -> Void
+
+    private var isAddressValid: Bool {
+        !tempAddress1.isEmpty && !tempCity.isEmpty && !tempProvince.isEmpty && !tempCountry.isEmpty && !tempZip.isEmpty
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -14,6 +29,12 @@ struct AddressSection: View {
                 
                 if uiState.isLoggedIn && !isEditing {
                     Button(uiState.hasAddress ? "Edit" : "Add") {
+                        tempAddress1 = uiState.address1
+                        tempCity = uiState.city
+                        tempProvince = uiState.provinceCode
+                        tempCountry = uiState.countryCode
+                        tempZip = uiState.zip
+                        tempPhone = uiState.phone
                         isEditing = true
                     }
                     .font(.system(size: 14))
@@ -28,7 +49,7 @@ struct AddressSection: View {
                         placeholder: "Address Line",
                         type: .address,
                         hasError: false,
-                        text: .constant(uiState.address1)
+                        text: $tempAddress1
                     )
                     .disabled(uiState.isSavingAddress || !uiState.isLoggedIn)
                     .opacity(uiState.isLoggedIn ? 1 : 0.6)
@@ -37,25 +58,25 @@ struct AddressSection: View {
                         placeholder: "City",
                         type: .address,
                         hasError: false,
-                        text: .constant(uiState.city)
+                        text: $tempCity
                     )
                     .disabled(uiState.isSavingAddress || !uiState.isLoggedIn)
                     .opacity(uiState.isLoggedIn ? 1 : 0.6)
                     
                     CustomTextField(
-                        placeholder: "Province/State",
+                        placeholder: "Province/State Code (e.g., ON)",
                         type: .address,
                         hasError: false,
-                        text: .constant(uiState.province)
+                        text: $tempProvince
                     )
                     .disabled(uiState.isSavingAddress || !uiState.isLoggedIn)
                     .opacity(uiState.isLoggedIn ? 1 : 0.6)
                     
                     CustomTextField(
-                        placeholder: "Country",
+                        placeholder: "Country Code (e.g., CA)",
                         type: .address,
                         hasError: false,
-                        text: .constant(uiState.country)
+                        text: $tempCountry
                     )
                     .disabled(uiState.isSavingAddress || !uiState.isLoggedIn)
                     .opacity(uiState.isLoggedIn ? 1 : 0.6)
@@ -64,19 +85,12 @@ struct AddressSection: View {
                         placeholder: "ZIP/Postal Code",
                         type: .number,
                         hasError: false,
-                        text: .constant(uiState.zip)
+                        text: $tempZip
                     )
                     .disabled(uiState.isSavingAddress || !uiState.isLoggedIn)
                     .opacity(uiState.isLoggedIn ? 1 : 0.6)
                     
-                    CustomTextField(
-                        placeholder: "Phone (Optional)",
-                        type: .phone,
-                        hasError: false,
-                        text: .constant(uiState.phone)
-                    )
-                    .disabled(uiState.isSavingAddress || !uiState.isLoggedIn)
-                    .opacity(uiState.isLoggedIn ? 1 : 0.6)
+                   
                 }
                 
                 HStack(spacing: 12) {
@@ -102,22 +116,20 @@ struct AddressSection: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
-                    .background(uiState.isAddressValid && uiState.isLoggedIn ? Color.blue : Color.gray)
+                    .background(isAddressValid && uiState.isLoggedIn ? brandColor : Color.gray)
+
                     .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .disabled(!uiState.isAddressValid || uiState.isSavingAddress || !uiState.isLoggedIn)
+                    .disabled(!isAddressValid || uiState.isSavingAddress || !uiState.isLoggedIn)
                 }
                 .padding(.horizontal, 28)
             } else {
                 if uiState.hasAddress {
                     VStack(alignment: .leading, spacing: 8) {
-                        AddressRow(icon: "location.fill", text: uiState.address1)
-                        AddressRow(icon: "city.fill", text: uiState.city)
                         AddressRow(icon: "map.fill", text: uiState.province)
+                
                         AddressRow(icon: "globe", text: uiState.country)
-                        AddressRow(icon: "envelope.fill", text: uiState.zip)
-                        if !uiState.phone.isEmpty {
-                            AddressRow(icon: "phone.fill", text: uiState.phone)
-                        }
+                        
+                      
                     }
                     .padding(.horizontal, 28)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -130,6 +142,40 @@ struct AddressSection: View {
                     )
                 }
             }
+        }
+        .onChange(of: uiState.address1) { _, newValue in
+            if !isEditing { tempAddress1 = newValue }
+        }
+        .onChange(of: uiState.city) { _, newValue in
+            if !isEditing { tempCity = newValue }
+        }
+        .onChange(of: uiState.provinceCode) { _, newValue in
+            if !isEditing { tempProvince = newValue }
+        }
+        .onChange(of: uiState.countryCode) { _, newValue in
+            if !isEditing { tempCountry = newValue }
+        }
+        .onChange(of: uiState.zip) { _, newValue in
+            if !isEditing { tempZip = newValue }
+        }
+        .onChange(of: uiState.phone) { _, newValue in
+            if !isEditing { tempPhone = newValue }
+        }
+    }
+}
+struct AddressRow: View {
+    let icon: String
+    let text: String
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .frame(width: 20)
+            
+            Text(text)
+                .font(.subheadline)
         }
     }
 }

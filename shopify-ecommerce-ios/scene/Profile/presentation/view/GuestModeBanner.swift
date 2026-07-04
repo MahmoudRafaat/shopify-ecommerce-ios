@@ -1,6 +1,16 @@
-// MARK: - Guest Mode Banner
+//
+//  GuestModeBanner.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 04/07/2026.
+//
+
+import SwiftUI
 
 struct GuestModeBanner: View {
+    let brandColor: Color
+    let onSignIn: () -> Void
+    
     var body: some View {
         VStack(spacing: 12) {
             Image(systemName: "person.crop.circle.badge.exclamationmark")
@@ -18,14 +28,14 @@ struct GuestModeBanner: View {
                 .padding(.horizontal, 32)
             
             Button {
-                // Navigate to login
+                onSignIn()  
             } label: {
                 Text("Sign In")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
-                    .background(Color.blue)
+                    .background(brandColor)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal, 32)

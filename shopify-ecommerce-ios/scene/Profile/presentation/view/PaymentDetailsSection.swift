@@ -1,7 +1,32 @@
+//
+//  PaymentDetailsSection.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 04/07/2026.
+//
+
+import SwiftUI
+
 struct PaymentDetailsSection: View {
     let uiState: ProfileUIState
     @Binding var isEditing: Bool
+ 
+    
+    @Binding var tempCardholderName: String
+    @Binding var tempCardNumber: String
+    @Binding var tempExpiryMonth: String
+    @Binding var tempExpiryYear: String
+    @Binding var tempCvv: String
+    let brandColor: Color
     let onSave: () -> Void
+
+    private var isPaymentValid: Bool {
+        !tempCardholderName.isEmpty &&
+        tempCardNumber.count >= 4 &&
+        !tempExpiryMonth.isEmpty &&
+        !tempExpiryYear.isEmpty &&
+        !tempCvv.isEmpty
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -13,6 +38,11 @@ struct PaymentDetailsSection: View {
                 
                 if uiState.isLoggedIn && !isEditing {
                     Button(uiState.hasPaymentDetails ? "Edit" : "Add") {
+                        tempCardholderName = uiState.cardholderName
+                        tempCardNumber = uiState.cardNumber
+                        tempExpiryMonth = uiState.expiryMonth
+                        tempExpiryYear = uiState.expiryYear
+                        tempCvv = uiState.cvv
                         isEditing = true
                     }
                     .font(.system(size: 14))
@@ -27,7 +57,7 @@ struct PaymentDetailsSection: View {
                         placeholder: "Cardholder Name",
                         type: .name,
                         hasError: false,
-                        text: .constant(uiState.cardholderName)
+                        text: $tempCardholderName
                     )
                     .disabled(uiState.isSavingPayment || !uiState.isLoggedIn)
                     .opacity(uiState.isLoggedIn ? 1 : 0.6)
@@ -36,7 +66,7 @@ struct PaymentDetailsSection: View {
                         placeholder: "Card Number",
                         type: .number,
                         hasError: false,
-                        text: .constant(uiState.cardNumber)
+                        text: $tempCardNumber
                     )
                     .disabled(uiState.isSavingPayment || !uiState.isLoggedIn)
                     .opacity(uiState.isLoggedIn ? 1 : 0.6)
@@ -46,7 +76,7 @@ struct PaymentDetailsSection: View {
                             placeholder: "MM",
                             type: .number,
                             hasError: false,
-                            text: .constant(uiState.expiryMonth)
+                            text: $tempExpiryMonth
                         )
                         .disabled(uiState.isSavingPayment || !uiState.isLoggedIn)
                         .opacity(uiState.isLoggedIn ? 1 : 0.6)
@@ -56,7 +86,7 @@ struct PaymentDetailsSection: View {
                             placeholder: "YY",
                             type: .number,
                             hasError: false,
-                            text: .constant(uiState.expiryYear)
+                            text: $tempExpiryYear
                         )
                         .disabled(uiState.isSavingPayment || !uiState.isLoggedIn)
                         .opacity(uiState.isLoggedIn ? 1 : 0.6)
@@ -68,7 +98,7 @@ struct PaymentDetailsSection: View {
                         placeholder: "CVV",
                         type: .number,
                         hasError: false,
-                        text: .constant(uiState.cvv)
+                        text: $tempCvv
                     )
                     .disabled(uiState.isSavingPayment || !uiState.isLoggedIn)
                     .opacity(uiState.isLoggedIn ? 1 : 0.6)
@@ -97,9 +127,11 @@ struct PaymentDetailsSection: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
-                    .background(uiState.isPaymentValid && uiState.isLoggedIn ? Color.blue : Color.gray)
+                    .background(isPaymentValid && uiState.isLoggedIn ? brandColor : Color.gray)
+
+
                     .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .disabled(!uiState.isPaymentValid || uiState.isSavingPayment || !uiState.isLoggedIn)
+                    .disabled(!isPaymentValid || uiState.isSavingPayment || !uiState.isLoggedIn)
                 }
                 .padding(.horizontal, 28)
             } else {
@@ -120,6 +152,37 @@ struct PaymentDetailsSection: View {
                     )
                 }
             }
+        }
+        .onChange(of: uiState.cardholderName) { _, newValue in
+            if !isEditing { tempCardholderName = newValue }
+        }
+        .onChange(of: uiState.cardNumber) { _, newValue in
+            if !isEditing { tempCardNumber = newValue }
+        }
+        .onChange(of: uiState.expiryMonth) { _, newValue in
+            if !isEditing { tempExpiryMonth = newValue }
+        }
+        .onChange(of: uiState.expiryYear) { _, newValue in
+            if !isEditing { tempExpiryYear = newValue }
+        }
+        .onChange(of: uiState.cvv) { _, newValue in
+            if !isEditing { tempCvv = newValue }
+        }
+    }
+}
+struct PaymentRow: View {
+    let icon: String
+    let text: String
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .frame(width: 20)
+            
+            Text(text)
+                .font(.subheadline)
         }
     }
 }
