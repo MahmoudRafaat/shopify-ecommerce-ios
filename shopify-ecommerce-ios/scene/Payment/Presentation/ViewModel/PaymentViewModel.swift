@@ -9,9 +9,13 @@ import Foundation
 import Observation
 
 @Observable
-class CartViewModel {
-    
-    var cartProducts: [ProductCardState] = []
+class PaymentViewModel {
+    let paymentMethods : [PaymentMethodState] = [
+        PaymentMethodState(id: 1, icon: "visa", numbers: "*********2109"),
+        PaymentMethodState(id: 2, icon: "paypal", numbers: "*********3309"),
+        PaymentMethodState(id: 3, icon: "dollars", numbers: "Cash On Delivery"),
+    ]
+    var cartProducts: [CartProduct] = []
     
     init() {
         loadMockData()
@@ -19,7 +23,8 @@ class CartViewModel {
     
     private func loadMockData() {
         cartProducts = [
-            ProductCardState(
+            CartProduct(
+                id: 1,
                 image: "watch",
                 name: "Nike Air Max 270",
                 colors: ["Black", "White"],
@@ -29,7 +34,8 @@ class CartViewModel {
                 oldPrice: 150.00,
                 numberOfItems: 1
             ),
-            ProductCardState(
+            CartProduct(
+                id: 2,
                 image: "watch",
                 name: "Apple Watch Series 9",
                 colors: ["Midnight", "Starlight", "Red"],
@@ -39,7 +45,8 @@ class CartViewModel {
                 oldPrice: 399.00,
                 numberOfItems: 2
             ),
-            ProductCardState(
+            CartProduct(
+                id: 3,
                 image: "watch",
                 name: "Sony Noise Cancelling Headphones",
                 colors: ["Silver", "Black"],
@@ -49,7 +56,8 @@ class CartViewModel {
                 oldPrice: 348.50,
                 numberOfItems: 1
             ),
-            ProductCardState(
+            CartProduct(
+                id: 4,
                 image: "watch",
                 name: "Cotton Basic T-Shirt",
                 colors: ["Gray", "Navy Blue"],
@@ -59,7 +67,8 @@ class CartViewModel {
                 oldPrice: 19.99,
                 numberOfItems: 3
             ),
-            ProductCardState(
+            CartProduct(
+                id: 5,
                 image: "watch",
                 name: "Leather Minimalist Wallet",
                 colors: ["Brown"],
