@@ -11,8 +11,8 @@ struct CheckoutView: View {
     @State private var viewModel = CheckoutViewModel()
     @Environment(\.presentationMode) var presentationMode
     
-    // Product info passed from previous screen
-    let lineItems: [DraftLineItemRequest]
+    // Product info passed from previous screen (Mocked for testing)
+    var lineItems: [DraftLineItemRequest] 
     
     var body: some View {
         VStack(spacing: 0) {
@@ -25,13 +25,6 @@ struct CheckoutView: View {
                     // Handle wishlist action
                 }
             )
-            HStack(spacing: 12){
-                AddressView(address: "216 St Paul's Rd, London N1 2LL, UK", contact: "+44-784232", editAction: {})
-                AddButtonView(action: {})
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            
             // Checkout Content Body
             CheckoutViewBody()
             
@@ -43,6 +36,10 @@ struct CheckoutView: View {
         .edgesIgnoringSafeArea(.bottom)
         .showLoading(if: viewModel.isLoading)
         .showCustomAlert(title: "Error", errorMessage: Bindable(viewModel).errorMessage)
+        .sheet(isPresented: Bindable(viewModel).isAddressSheetPresented) {
+            AddAddressSheet()
+                .environment(viewModel)
+        }
         .task {
             await viewModel.createInitialDraftOrder(lineItems: lineItems)
         }
@@ -50,5 +47,8 @@ struct CheckoutView: View {
 }
 
 #Preview {
-    CheckoutView(lineItems: [DraftLineItemRequest(variantId: 0, quantity: 1)])
+    CheckoutView(lineItems: [
+        DraftLineItemRequest(variantId: 46128795517064, quantity: 1),
+        DraftLineItemRequest(variantId: 8955349303432, quantity: 2)
+    ])
 }

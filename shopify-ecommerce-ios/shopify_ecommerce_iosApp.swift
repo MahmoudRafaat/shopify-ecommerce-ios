@@ -31,15 +31,19 @@ struct shopify_ecommerce_iosApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if !hasSeenOnboarding {
-                OnboardingScreen()
-            } else if isLoggedIn {
-                TabBarView()
-            } else {
-                NavigationStack {
-                    SignupView(viewmodel: SignupViewModel())
-                }
-            }
+            //            if !hasSeenOnboarding {
+            //                OnboardingScreen()
+            //            } else if isLoggedIn {
+            //                TabBarView()
+            //            } else {
+            //                NavigationStack {
+            //                    SignupView(viewmodel: SignupViewModel())
+            //                }
+            //            }
+            CheckoutView(lineItems: [
+                DraftLineItemRequest(variantId: 46128795517064, quantity: 1)
+//                DraftLineItemRequest(variantId: 8955349303432, quantity: 2)
+            ])
         }
         .modelContainer(sharedModelContainer)
     }

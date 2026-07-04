@@ -13,6 +13,9 @@ struct CheckoutViewBody: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 24) {
+
+                AddressSection()
+                
                 ForEach(viewModel.cartLineItems, id: \.variantId) { item in
                     CheckoutProductItemView(item: item)
                 }
