@@ -25,6 +25,12 @@ struct CheckoutView: View {
                     // Handle wishlist action
                 }
             )
+            HStack(spacing: 12){
+                AddressView(address: "216 St Paul's Rd, London N1 2LL, UK", contact: "+44-784232", editAction: {})
+                AddButtonView(action: {})
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
             
             // Checkout Content Body
             CheckoutViewBody()
