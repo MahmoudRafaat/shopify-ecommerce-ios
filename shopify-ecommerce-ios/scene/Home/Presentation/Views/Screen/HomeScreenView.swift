@@ -117,35 +117,3 @@ struct HomeScreenView: View {
     HomeRootView(selectedTab: .constant(.home))
 }
 
-
-
-
-struct UserAddress {
-    let streteNumber : String
-    let buildingNumber : String
-    let city : String
-    let country : String
-    let phoneNumber : String
-}
-
-struct userInfo {
-    let image: String
-    let name: String
-}
-
-
-/*
- struct Super view {
-    let viewModel = ViewModel
-    body {
-        SubView1(viewModel.user.name, viewModel.user.image)
-        SubView2(viewModel.user.streteNumber,
-        viewModel.user.buildingNumber,
-        viewModel.user.city,
-        viewModel.user.country,
-        viewModel.user.phoneNumber)
-    }
- }
- 
- 
- */

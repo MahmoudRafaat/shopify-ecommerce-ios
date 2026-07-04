@@ -30,9 +30,10 @@ struct LoginView: View {
                         }
                         .disabled(viewmodel.isLoading)
                         
-                        Button(action: {
-                            // Guest login action here
-                        }) {
+                        NavigationLink {
+                            TabBarView()
+                                .navigationBarBackButtonHidden(true)
+                        } label: {
                             Text("Continue as Guest")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)

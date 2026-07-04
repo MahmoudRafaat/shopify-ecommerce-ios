@@ -8,15 +8,15 @@
 import Foundation
 
 enum NetworkError: Error, LocalizedError {
-    case badRequest          // 400
-    case unauthorized        // 401
-    case notFound            // 404
-    case shopifyError(String) // 422
-    case serverError         // 500
+    
+    case badRequest                 // 400
+    case unauthorized               // 401
+    case notFound                   // 404
+    case shopifyError(String)       // 422
+    case serverError                // 500
+    
     case unknown(Int)
     case unacceptableStatusCode(Int)
-    case missingAdminToken
-    case missingApiKey
     case invalidURl
     
     var errorDescription: String? {
@@ -35,11 +35,6 @@ enum NetworkError: Error, LocalizedError {
             return "An unexpected error occurred (Code: \(statusCode)). Please try again later."
         case .unacceptableStatusCode(let code):
             return "The server returned an unacceptable status code: \(code)."
-        // Configuration Errors
-        case .missingAdminToken:
-            return "Configuration Error: Shopify Admin Token is missing in Info.plist."
-        case .missingApiKey:
-            return "Configuration Error: Shopify API Key is missing in Info.plist."
         case .invalidURl:
             return "Invalid URL"
         }

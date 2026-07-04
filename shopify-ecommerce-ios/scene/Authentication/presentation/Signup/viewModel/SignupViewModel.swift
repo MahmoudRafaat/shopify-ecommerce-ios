@@ -56,6 +56,7 @@ class SignupViewModel: SignupViewModelProtocol {
         Task {
             do {
                 try await signupUseCase.execute(email: email, password: password, phone: phone)
+                UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)
                 self.isSignupSuccess = true
                 self.isLoading = false
             } catch {

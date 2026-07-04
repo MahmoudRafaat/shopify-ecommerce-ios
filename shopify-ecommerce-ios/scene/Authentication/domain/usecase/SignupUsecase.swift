@@ -34,22 +34,15 @@ class SignupUseCase {
     }
     
     func createShopifyUser (email: String, phone: String) async throws {
-        let addressInput = AddressInput(
-            address1: "123 Oak St",
-            city: "Ottawa",
-            province: "ON",
-            phone: phone,
-            zip: "123 ABC",
-            country: "CA"
-        )
+        
         let customerInput = CustomerInput(
-            firstName: "Ehab",
-            lastName: "Salah",
             email: email,
             phone: "+2" + phone,
-            addresses: [addressInput]
         )
         
-        _ = try await repository.createCustomerInShopify(customerInput: customerInput)
+        let customer = try await repository.createCustomerInShopify(customerInput: customerInput)
+        if let customerId = customer.id {
+            UserDefaults.standard.set(customerId, forKey: AppConstants.customerId)
+        }
     }
 }
