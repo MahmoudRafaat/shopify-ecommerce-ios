@@ -9,11 +9,8 @@ import Foundation
 import Alamofire
 
 enum ProfileEndpoint: ApiEndpoint {
-    // Customer endpoints
     case getCustomer(id: Int)
     case updateCustomer(id: Int, address: ProfileAddress)
-    
-    // Metafield endpoints
     case getMetafields(customerId: Int)
     case createMetafield(customerId: Int, namespace: String, key: String, value: String, type: String)
     case updateMetafield(customerId: Int, metafieldId: Int, value: String)
@@ -72,7 +69,7 @@ enum ProfileEndpoint: ApiEndpoint {
             
         case .createMetafield(_, let namespace, let key, let value, let type):
             let request = CreateMetafieldRequest(
-                metafield: MetafieldRequest(
+                metafield: CreateMetafield(
                     namespace: namespace,
                     key: key,
                     value: value,
@@ -83,12 +80,7 @@ enum ProfileEndpoint: ApiEndpoint {
             
         case .updateMetafield(_, _, let value):
             let request = UpdateMetafieldRequest(
-                metafield: MetafieldRequest(
-                    namespace: "custom",
-                    key: "",
-                    value: value,
-                    type: ""
-                )
+                metafield: UpdateMetafield(value: value)
             )
             return encode(request)
         }
@@ -105,5 +97,4 @@ enum ProfileEndpoint: ApiEndpoint {
         }
     }
 }
-
 

@@ -85,7 +85,9 @@ class ProfileRepository: ProfileRepositoryProtocol {
     }
     
     private func setMetafield(customerId: Int, key: String, value: String, type: String) async throws {
+        
         let existing = try await getMetafields(customerId: customerId)
+        
         let existingMetafield = existing.first { $0.key == key }
         
         if let existingId = existingMetafield?.id {
@@ -131,7 +133,6 @@ extension ProfileRepository {
     func updateAddress(customerId: Int, address: ProfileAddress) async throws -> ProfileAddress {
         let endpoint = ProfileEndpoint.updateCustomer(id: customerId, address: address)
         let response: CustomerResponseDTO = try await networkService.request(endpoint: endpoint)
-        print("🟢 GET CUSTOMER RESPONSE:", response)
         guard let defaultAddress = response.customer.defaultAddress else {
             throw NetworkError.unknown(0)
         }

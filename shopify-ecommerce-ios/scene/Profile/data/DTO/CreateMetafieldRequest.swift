@@ -5,19 +5,31 @@
 //  Created by Mahmoud Raafat Mustafa on 04/07/2026.
 //
 
-
-
 struct CreateMetafieldRequest: Codable {
-    let metafield: MetafieldRequest
+    let metafield: CreateMetafield
 }
 
-struct UpdateMetafieldRequest: Codable {
-    let metafield: MetafieldRequest
-}
-
-struct MetafieldRequest: Codable {
+struct CreateMetafield: Codable {
     let namespace: String
     let key: String
     let value: String
     let type: String
 }
+
+struct UpdateMetafieldRequest: Codable {
+    let metafield: UpdateMetafield
+}
+
+struct UpdateMetafield: Codable {
+    let value: String
+}
+
+
+
+
+
+
+
+
+
+
