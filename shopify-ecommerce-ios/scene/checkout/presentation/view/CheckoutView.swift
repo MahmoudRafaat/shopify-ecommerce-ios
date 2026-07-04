@@ -25,11 +25,19 @@ struct CheckoutView: View {
                     // Handle wishlist action
                 }
             )
-            // Checkout Content Body
-            CheckoutViewBody()
             
-            // Bottom Sticky Bar
-            CheckoutBottomBar()
+            if viewModel.isOrderDeleted || viewModel.cartLineItems.isEmpty && viewModel.draftOrderId == nil && !viewModel.isLoading {
+                // Empty State
+                EmptyCartView(onGoBack: {
+                    presentationMode.wrappedValue.dismiss()
+                })
+            } else {
+                // Checkout Content Body
+                CheckoutViewBody()
+                
+                // Bottom Sticky Bar
+                CheckoutBottomBar()
+            }
         }
         .environment(viewModel)
         .navigationBarHidden(true)
