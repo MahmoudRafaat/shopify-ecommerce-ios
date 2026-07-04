@@ -114,6 +114,9 @@ struct HomeScreenView: View {
 }
 
 #Preview {
-    HomeRootView(selectedTab: .constant(.home))
+    HomeRootView(
+        selectedTab: .constant(.home),
+        viewModel: HomeFactory.makeHomeViewModel()
+    )
 }
 
