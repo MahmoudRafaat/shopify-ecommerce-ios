@@ -53,35 +53,3 @@ struct SettingsRowView: View {
     }
 }
 
-enum SettingsRowStyle {
-    case navigation
-    case toggle(Binding<Bool>)
-    case destructive
-    
-    var iconColor: Color {
-        switch self {
-        case .destructive:
-            return .red
-        default:
-            return Color(.darkGray)
-        }
-    }
-    
-    var titleColor: Color {
-        switch self {
-        case .destructive:
-            return .red
-        default:
-            return .primary
-        }
-    }
-    
-    var titleWeight: Font.Weight {
-        switch self {
-        case .destructive:
-            return .semibold
-        default:
-            return .regular
-        }
-    }
-}
