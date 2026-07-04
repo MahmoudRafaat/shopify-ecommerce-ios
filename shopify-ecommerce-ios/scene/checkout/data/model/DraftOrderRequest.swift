@@ -9,6 +9,10 @@ import Foundation
 
 struct DraftOrderRequestWrapper: Codable {
     let draftOrder: DraftOrderRequest
+    
+    enum CodingKeys: String, CodingKey {
+        case draftOrder = "draft_order"
+    }
 }
 
 struct DraftOrderRequest: Codable {
@@ -17,11 +21,24 @@ struct DraftOrderRequest: Codable {
     var customer: DraftCustomerRequest? = nil
     var useCustomerDefaultAddress: Bool? = nil
     var appliedDiscount: DraftAppliedDiscountRequest? = nil
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case lineItems = "line_items"
+        case customer
+        case useCustomerDefaultAddress = "use_customer_default_address"
+        case appliedDiscount = "applied_discount"
+    }
 }
 
 struct DraftLineItemRequest: Codable {
     let variantId: Int
     let quantity: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case variantId = "variant_id"
+        case quantity
+    }
 }
 
 struct DraftCustomerRequest: Codable {
@@ -34,4 +51,12 @@ struct DraftAppliedDiscountRequest: Codable {
     let title: String
     let amount: String
     let valueType: String // "fixed_amount" or "percentage"
+    
+    enum CodingKeys: String, CodingKey {
+        case description
+        case value
+        case title
+        case amount
+        case valueType = "value_type"
+    }
 }
