@@ -27,12 +27,15 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     
     var cartLineItems: [DraftLineItemRequest] = []
     var discountCode: String = ""
+    var currentAddress: DraftAddressRequest? = nil
+    var isAddressSheetPresented: Bool = false
     
     init(useCases: CheckoutUseCases = CheckoutUseCases(
         createDraftOrder: CreateDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
         updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCaseImpl(repository: CheckoutRepositoryImpl()),
         applyDiscount: ApplyDiscountUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        completeDraftOrder: CompleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl())
+        completeDraftOrder: CompleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        updateDraftOrderAddress: UpdateDraftOrderAddressUseCaseImpl(repository: CheckoutRepositoryImpl())
     )) {
         self.useCases = useCases
     }
@@ -112,6 +115,26 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
                 draftOrderId: orderId,
                 discountCode: code
             )
+            updateUI(with: response)
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+        
+        self.isLoading = false
+    }
+    
+    @MainActor
+    func updateAddress(address: DraftAddressRequest) async {
+        guard let orderId = draftOrderId else { return }
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        do {
+            let response = try await useCases.updateDraftOrderAddress.execute(
+                draftOrderId: orderId,
+                address: address
+            )
+            self.currentAddress = address
             updateUI(with: response)
         } catch {
             self.errorMessage = error.localizedDescription

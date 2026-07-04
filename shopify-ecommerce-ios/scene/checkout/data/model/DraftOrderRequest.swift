@@ -21,6 +21,8 @@ struct DraftOrderRequest: Codable {
     var customer: DraftCustomerRequest? = nil
     var useCustomerDefaultAddress: Bool? = nil
     var appliedDiscount: DraftAppliedDiscountRequest? = nil
+    var shippingAddress: DraftAddressRequest? = nil
+    var billingAddress: DraftAddressRequest? = nil
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -28,6 +30,8 @@ struct DraftOrderRequest: Codable {
         case customer
         case useCustomerDefaultAddress = "use_customer_default_address"
         case appliedDiscount = "applied_discount"
+        case shippingAddress = "shipping_address"
+        case billingAddress = "billing_address"
     }
 }
 
@@ -58,5 +62,23 @@ struct DraftAppliedDiscountRequest: Codable {
         case title
         case amount
         case valueType = "value_type"
+    }
+}
+
+struct DraftAddressRequest: Codable {
+    var firstName: String?
+    var lastName: String?
+    var address1: String?
+    var city: String?
+    var country: String?
+    var phone: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case address1
+        case city
+        case country
+        case phone
     }
 }

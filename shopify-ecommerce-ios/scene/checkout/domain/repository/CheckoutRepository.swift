@@ -5,4 +5,5 @@ protocol CheckoutRepository {
     func updateDraftOrderLineItems(draftOrderId: Int, lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
     func applyDiscount(draftOrderId: Int, discount: DraftAppliedDiscountRequest) async throws -> DraftOrderResponse
     func completeDraftOrder(draftOrderId: Int) async throws -> DraftOrderResponse
+    func updateDraftOrderAddress(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse
 }

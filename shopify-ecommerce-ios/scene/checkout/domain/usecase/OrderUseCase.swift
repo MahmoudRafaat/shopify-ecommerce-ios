@@ -23,6 +23,10 @@ protocol CompleteDraftOrderUseCase {
     func execute(draftOrderId: Int) async throws -> DraftOrderResponse
 }
 
+protocol UpdateDraftOrderAddressUseCase {
+    func execute(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse
+}
+
 
 struct CreateDraftOrderUseCaseImpl: CreateDraftOrderUseCase {
     let repository: CheckoutRepository
@@ -64,6 +68,14 @@ struct CompleteDraftOrderUseCaseImpl: CompleteDraftOrderUseCase {
     
     func execute(draftOrderId: Int) async throws -> DraftOrderResponse {
         return try await repository.completeDraftOrder(draftOrderId: draftOrderId)
+    }
+}
+
+struct UpdateDraftOrderAddressUseCaseImpl: UpdateDraftOrderAddressUseCase {
+    let repository: CheckoutRepository
+    
+    func execute(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse {
+        return try await repository.updateDraftOrderAddress(draftOrderId: draftOrderId, address: address)
     }
 }
 

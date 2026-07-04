@@ -50,4 +50,16 @@ final class CheckoutRepositoryImpl: CheckoutRepository {
         let response = try await networkService.completeDraftOrder(id: draftOrderId)
         return response.draftOrder
     }
+    
+    func updateDraftOrderAddress(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse {
+        let request = DraftOrderRequestWrapper(draftOrder: DraftOrderRequest(
+            id: draftOrderId,
+            useCustomerDefaultAddress: false, // We're providing a custom one now
+            shippingAddress: address,
+            billingAddress: address
+        ))
+        
+        let response = try await networkService.updateDraftOrder(id: draftOrderId, request: request)
+        return response.draftOrder
+    }
 }

@@ -16,7 +16,7 @@ enum HomeEndpoint: ApiEndpoint {
         switch self {
         case .products:
             return "products.json"
-        case .categories
+        case .categories:
             return "custom_collections.json"
         }
     }
