@@ -38,7 +38,24 @@ struct HomeRootView: View {
                 .navigationDestination(for: HomeCoordinator.Destination.self) { destination in
                     switch destination {
                     case .productDetail(let productId):
-                        Text("Product Detail View for ID: \(productId)")
+                        let remoteDataSource = ProductDetailsRemoteDataSourceImpl()
+
+                             let repository = ProductDetailsRepositoryImpl(
+                                 remoteDataSource: remoteDataSource
+                             )
+
+                             let useCase = GetProductDetailsUseCaseImpl(
+                                 repository: repository
+                             )
+
+                             let viewModel = ProductDetailsViewModel(
+                                 productId: productId,
+                                 getProductDetailsUseCase: useCase
+                             )
+
+                             ProductDetailsScreen(
+                                 viewModel: viewModel
+                             ).environment(coordinator)
                     case .categoriesScreen(let categoryId):
                         Text("Categories View for ID: \(categoryId)")
                     }

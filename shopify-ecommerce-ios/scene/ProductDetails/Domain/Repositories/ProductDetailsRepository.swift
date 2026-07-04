@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ProductDetailsRepository {
-    func getProduct(by id: Int) async throws -> Product
+    func getProduct(by id: Int) async throws -> ProductDetails
 }

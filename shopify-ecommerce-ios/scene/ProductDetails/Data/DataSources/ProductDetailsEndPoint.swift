@@ -18,7 +18,6 @@ enum ProductDetailsEndpoint: ApiEndpoint {
             return "/products/\(id).json"
         }
     }
-
     var method: HTTPMethod {
         .get
     }

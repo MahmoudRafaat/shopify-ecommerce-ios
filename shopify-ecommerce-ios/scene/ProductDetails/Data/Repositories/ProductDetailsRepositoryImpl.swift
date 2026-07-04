@@ -9,13 +9,17 @@ import Foundation
 
 final class ProductDetailsRepositoryImpl: ProductDetailsRepository {
 
-    private let service: ProductDetailsServiceProtocol
+    private let remoteDataSource: ProductDetailsRemoteDataSource
 
-    init(service: ProductDetailsServiceProtocol) {
-        self.service = service
-    }
+    init(
+            remoteDataSource: ProductDetailsRemoteDataSource
+        ) {
+            self.remoteDataSource = remoteDataSource
+        }
 
-    func getProduct(by id: Int) async throws -> Product {
-        fatalError("Not implemented yet")
+    func getProduct(by id: Int) async throws -> ProductDetails {
+        let dto = try await remoteDataSource.getProduct(by: id)
+        
+        return dto.toDomain()
     }
 }

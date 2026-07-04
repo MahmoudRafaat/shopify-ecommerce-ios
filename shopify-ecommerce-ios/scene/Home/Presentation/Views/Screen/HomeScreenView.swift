@@ -89,7 +89,10 @@ struct HomeScreenView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 16)
                                     
-                                    ProductsScrollView(products: section.products)
+                                    ProductsScrollView(products: section.products,onProductTap: { productID in
+                                        coordinator.goToProductDetail(id: productID)
+                                        
+                                    })
                                 }
                             } else {
                                 EmptyView()

@@ -8,15 +8,15 @@
 import Foundation
 
 
-protocol ProductDetailsServiceProtocol {
+protocol ProductDetailsRemoteDataSource {
     func getProduct(by id: Int) async throws -> ProductDTO
 }
 
-final class ProductDetailsService: ProductDetailsServiceProtocol {
+final class ProductDetailsRemoteDataSourceImpl: ProductDetailsRemoteDataSource {
 
     func getProduct(by id: Int) async throws -> ProductDTO {
         let response : ProductDetailsResponse = try await NetworkService.request(endpoint: ProductDetailsEndpoint.getProduct(id: id))
-        
+        print (response)
         return response.product
     }
 }

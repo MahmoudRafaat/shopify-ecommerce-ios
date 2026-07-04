@@ -19,6 +19,7 @@ final class HomeCoordinator {
     var navigationPath = NavigationPath()
     
     func goToProductDetail(id: Int) {
+        print("GOING TO PRODUCT:", id)
         navigationPath.append(Destination.productDetail(productId: id))
     }
     

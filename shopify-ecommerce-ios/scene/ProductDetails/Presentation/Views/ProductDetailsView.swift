@@ -10,6 +10,8 @@ import SwiftUI
 struct ProductDetailsView: View {
 
     let state: ProductDetailsUIState
+    let onSizeSelected: (String) -> Void
+    @Environment(HomeCoordinator.self) var coordinator
 
     var body: some View {
 
@@ -23,7 +25,7 @@ struct ProductDetailsView: View {
 
                 ProductSizeSection(
                     state: state.sizeSection,
-                    onSizeSelected: { _ in }
+                    onSizeSelected: onSizeSelected
                 )
 
                 ProductInfoSection(
@@ -59,7 +61,11 @@ private extension ProductDetailsView {
                 .padding(.horizontal, 16)
 
             ProductsScrollView(
-                products: state.similarProducts
+                products: state.similarProducts,
+                onProductTap: { productID in
+                    coordinator.goToProductDetail(id: productID)
+                    
+                }
             )
         }
     }
@@ -149,6 +155,6 @@ private extension ProductDetailsView {
                     productType: "Watch"
                 )
             ]
-        )
+        ), onSizeSelected: {_ in}
     )
 }
