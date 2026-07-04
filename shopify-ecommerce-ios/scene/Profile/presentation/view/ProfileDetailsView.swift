@@ -111,47 +111,6 @@ struct ProfileDetailsView: View {
     }
 }
 
-struct DetailRow: View {
-    let label: String
-    let value: String
-    
-    var body: some View {
-        HStack(alignment: .top) {
-            Text(label + ":")
-                .font(.subheadline)
-                .foregroundColor(.gray)
-                .frame(width: 70, alignment: .leading)
-            
-            Text(value.isEmpty ? "Not set" : value)
-                .font(.subheadline)
-                .foregroundColor(value.isEmpty ? .gray.opacity(0.7) : .primary)
-        }
-    }
-}
 
 
 
-struct EmptyStateView: View {
-    let icon: String
-    let title: String
-    let message: String
-    
-    var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 36))
-                .foregroundColor(.gray)
-            
-            Text(title)
-                .font(.headline)
-                .foregroundColor(.gray)
-            
-            Text(message)
-                .font(.subheadline)
-                .foregroundColor(.gray.opacity(0.7))
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 20)
-    }
-}
