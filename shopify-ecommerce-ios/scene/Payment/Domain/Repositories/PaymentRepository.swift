@@ -8,5 +8,5 @@
 import Foundation
 
 protocol PaymentRepo {
-    func getTotalPrice() async throws -> String
+    func getTotalPrice() async throws -> PaymentOrder
 }
