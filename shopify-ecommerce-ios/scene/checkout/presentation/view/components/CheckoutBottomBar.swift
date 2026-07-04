@@ -22,9 +22,11 @@ struct CheckoutBottomBar: View {
             Spacer()
             
             CustomButton(text: "Proceed to Payment"){
-                Task {
-                    await viewModel.proceedToPayment()
+                guard let orderID = viewModel.draftOrderId else {
+                    print("Draft order ID is nil")
+                    return
                 }
+                // Navigate to the payment view with the draft order ID
             }
             .padding(.trailing, 16)
         }
