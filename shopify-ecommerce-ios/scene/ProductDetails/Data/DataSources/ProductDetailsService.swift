@@ -15,6 +15,8 @@ protocol ProductDetailsServiceProtocol {
 final class ProductDetailsService: ProductDetailsServiceProtocol {
 
     func getProduct(by id: Int) async throws -> ProductDTO {
-        fatalError("Not implemented yet")
+        let response : ProductDetailsResponse = try await NetworkService.request(endpoint: ProductDetailsEndpoint.getProduct(id: id))
+        
+        return response.product
     }
 }

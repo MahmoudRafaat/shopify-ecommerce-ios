@@ -6,7 +6,24 @@
 //
 
 import Foundation
+import Alamofire
 
-enum ProductDetailsEndPoint {
+enum ProductDetailsEndpoint: ApiEndpoint {
+
     case getProduct(id: Int)
+
+    var path: String {
+        switch self {
+        case .getProduct(let id):
+            return "/products/\(id).json"
+        }
+    }
+
+    var method: HTTPMethod {
+        .get
+    }
+
+    var body: Data? {
+        nil
+    }
 }
