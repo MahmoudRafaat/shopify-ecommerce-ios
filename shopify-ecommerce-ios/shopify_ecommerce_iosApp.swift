@@ -10,22 +10,36 @@ import SwiftData
 
 @main
 struct shopify_ecommerce_iosApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
+    @AppStorage(AppConstants.hasSeenOnboarding) private var hasSeenOnboarding = false
+    @AppStorage(AppConstants.isLoggedIn) private var isLoggedIn = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if !hasSeenOnboarding {
+                OnboardingScreen()
+            } else if isLoggedIn {
+                TabBarView()
+            } else {
+                NavigationStack {
+                    SignupView(viewmodel: SignupViewModel())
+                }
+            }
         }
         .modelContainer(sharedModelContainer)
     }
