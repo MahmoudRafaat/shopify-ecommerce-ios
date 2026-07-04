@@ -1,3 +1,11 @@
+//
+//  PaymentDetails.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 04/07/2026.
+//
+
+
 struct PaymentDetails: Codable {
     let cardholderName: String
     let cardNumber: String
