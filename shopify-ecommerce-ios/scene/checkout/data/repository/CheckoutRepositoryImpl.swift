@@ -62,4 +62,18 @@ final class CheckoutRepositoryImpl: CheckoutRepository {
         let response = try await networkService.updateDraftOrder(id: draftOrderId, request: request)
         return response.draftOrder
     }
+    func removeLineItem(draftOrderId: Int, variantId: Int, currentLineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse {
+        // Shopify removes a line item by sending a PUT with the updated array excluding the item
+        let updatedLineItems = currentLineItems.filter { $0.variantId != variantId }
+        let request = DraftOrderRequestWrapper(draftOrder: DraftOrderRequest(
+            id: draftOrderId,
+            lineItems: updatedLineItems
+        ))
+        
+        let response = try await networkService.updateDraftOrder(id: draftOrderId, request: request)
+        return response.draftOrder
+    }
+    func deleteDraftOrder(draftOrderId: Int) async throws {
+        try await networkService.deleteDraftOrder(id: draftOrderId)
+    }
 }

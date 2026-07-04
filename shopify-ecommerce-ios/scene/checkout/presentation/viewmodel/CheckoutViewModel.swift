@@ -29,13 +29,16 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     var discountCode: String = ""
     var currentAddress: DraftAddressRequest? = nil
     var isAddressSheetPresented: Bool = false
+    var isOrderDeleted: Bool = false
     
     init(useCases: CheckoutUseCases = CheckoutUseCases(
         createDraftOrder: CreateDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
         updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCaseImpl(repository: CheckoutRepositoryImpl()),
         applyDiscount: ApplyDiscountUseCaseImpl(repository: CheckoutRepositoryImpl()),
         completeDraftOrder: CompleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        updateDraftOrderAddress: UpdateDraftOrderAddressUseCaseImpl(repository: CheckoutRepositoryImpl())
+        updateDraftOrderAddress: UpdateDraftOrderAddressUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        removeLineItem: RemoveLineItemUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        deleteDraftOrder: DeleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl())
     )) {
         self.useCases = useCases
     }
@@ -113,6 +116,41 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
             )
             self.currentAddress = address
             updateUI(with: response)
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+        
+        self.isLoading = false
+    }
+    
+    @MainActor
+    func removeLineItem(variantId: Int) async {
+        guard let orderId = draftOrderId else { return }
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        let remainingItems = cartLineItems.filter { $0.variantId != variantId }
+        
+        do {
+            if remainingItems.isEmpty {
+                // Last item removed — delete the entire draft order
+                try await useCases.deleteDraftOrder.execute(draftOrderId: orderId)
+                cartLineItems = []
+                draftOrderId = nil
+                orderTotal = "0.00"
+                subtotal = "0.00"
+                tax = "0.00"
+                discountAmount = "0.00"
+                isOrderDeleted = true
+            } else {
+                let response = try await useCases.removeLineItem.execute(
+                    draftOrderId: orderId,
+                    variantId: variantId,
+                    currentLineItems: cartLineItems
+                )
+                cartLineItems = remainingItems
+                updateUI(with: response)
+            }
         } catch {
             self.errorMessage = error.localizedDescription
         }

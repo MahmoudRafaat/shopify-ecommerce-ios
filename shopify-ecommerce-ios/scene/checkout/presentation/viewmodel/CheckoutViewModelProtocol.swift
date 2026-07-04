@@ -19,10 +19,12 @@ protocol CheckoutViewModelProtocol {
     var discountCode: String { get set }
     var currentAddress: DraftAddressRequest? { get }
     var isAddressSheetPresented: Bool { get set }
+    var isOrderDeleted: Bool { get }
     
     func createInitialDraftOrder(lineItems: [DraftLineItemRequest]) async
     func updateQuantity(for variantId: Int, to newQuantity: Int) async
     func applyDiscount(code: String) async
     func proceedToPayment() async
     func updateAddress(address: DraftAddressRequest) async
+    func removeLineItem(variantId: Int) async
 }

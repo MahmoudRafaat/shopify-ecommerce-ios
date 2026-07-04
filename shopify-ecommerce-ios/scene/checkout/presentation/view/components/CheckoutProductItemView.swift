@@ -16,10 +16,25 @@ struct CheckoutProductItemView: View {
             
             // Product Details
             VStack(alignment: .leading, spacing: 8) {
-                Text("Women's Casual Wear")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
+                HStack(alignment: .top) {
+                    Text("Women's Casual Wear")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                    
+                    Spacer()
+                    
+                    Button {
+                        Task {
+                            await viewModel.removeLineItem(variantId: item.variantId)
+                        }
+                    } label: {
+                        Image(systemName: "trash")
+                            .font(.system(size: 16))
+                            .foregroundColor(.red)
+                    }
+                    .buttonStyle(.plain)
+                }
                 
                 Text("Checked Single-Breasted Blazer")
                     .font(.subheadline)

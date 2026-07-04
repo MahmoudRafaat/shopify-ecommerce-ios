@@ -27,6 +27,14 @@ protocol UpdateDraftOrderAddressUseCase {
     func execute(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse
 }
 
+protocol RemoveLineItemUseCase {
+    func execute(draftOrderId: Int, variantId: Int, currentLineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
+}
+
+protocol DeleteDraftOrderUseCase {
+    func execute(draftOrderId: Int) async throws
+}
+
 
 struct CreateDraftOrderUseCaseImpl: CreateDraftOrderUseCase {
     let repository: CheckoutRepository
@@ -76,6 +84,22 @@ struct UpdateDraftOrderAddressUseCaseImpl: UpdateDraftOrderAddressUseCase {
     
     func execute(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse {
         return try await repository.updateDraftOrderAddress(draftOrderId: draftOrderId, address: address)
+    }
+}
+
+struct RemoveLineItemUseCaseImpl: RemoveLineItemUseCase {
+    let repository: CheckoutRepository
+    
+    func execute(draftOrderId: Int, variantId: Int, currentLineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse {
+        return try await repository.removeLineItem(draftOrderId: draftOrderId, variantId: variantId, currentLineItems: currentLineItems)
+    }
+}
+
+struct DeleteDraftOrderUseCaseImpl: DeleteDraftOrderUseCase {
+    let repository: CheckoutRepository
+    
+    func execute(draftOrderId: Int) async throws {
+        try await repository.deleteDraftOrder(draftOrderId: draftOrderId)
     }
 }
 
