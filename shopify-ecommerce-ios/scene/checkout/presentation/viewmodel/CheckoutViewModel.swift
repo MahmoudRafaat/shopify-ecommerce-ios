@@ -79,29 +79,6 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         self.isLoading = false
     }
     
-    @MainActor
-    func updateSize(from oldVariantId: Int, toNewVariantId newVariantId: Int) async {
-        guard let orderId = draftOrderId else { return }
-        self.isLoading = true
-        self.errorMessage = nil
-        
-        if let index = cartLineItems.firstIndex(where: { $0.variantId == oldVariantId }) {
-            let currentQty = cartLineItems[index].quantity
-            cartLineItems[index] = DraftLineItemRequest(variantId: newVariantId, quantity: currentQty)
-        }
-        
-        do {
-            let response = try await useCases.updateDraftOrderLineItems.execute(
-                draftOrderId: orderId,
-                lineItems: cartLineItems
-            )
-            updateUI(with: response)
-        } catch {
-            self.errorMessage = error.localizedDescription
-        }
-        self.isLoading = false
-    }
-    
 
     @MainActor
     func applyDiscount(code: String) async {

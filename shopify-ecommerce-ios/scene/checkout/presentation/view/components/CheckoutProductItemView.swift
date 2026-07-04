@@ -28,24 +28,6 @@ struct CheckoutProductItemView: View {
                 
                 HStack(spacing: 12) {
                     Menu {
-                        // Dummy sizes mapped to variant IDs for demonstration
-                        let sizes = [("38", 101), ("40", 102), ("42", 103)]
-                        ForEach(sizes, id: \.1) { size, variantId in
-                            Button(size) {
-                                Task {
-                                    await viewModel.updateSize(from: item.variantId, toNewVariantId: variantId)
-                                }
-                            }
-                        }
-                    } label: {
-                        CheckoutDropdownView(
-                            title: "Size",
-                            value: "42",
-                            action: {}
-                        )
-                    }
-                    
-                    Menu {
                         ForEach(1...10, id: \.self) { qty in
                             Button("\(qty)") {
                                 Task {
