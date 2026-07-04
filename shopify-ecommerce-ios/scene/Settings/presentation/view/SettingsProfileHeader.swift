@@ -1,3 +1,13 @@
+//
+//  SettingsProfileHeader.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 04/07/2026.
+//
+
+import SwiftUI
+
+
 
 
 struct SettingsProfileHeader: View {
@@ -17,10 +27,14 @@ struct SettingsProfileHeader: View {
                 }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(isLoggedIn ? name : "Guest User")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(isLoggedIn ? .primary : .gray)
+                
+                if !isLoggedIn {
+                    Text("Guest User")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.gray)
+                }
+                
                 
                 Text(isLoggedIn ? email : "Sign in to manage your account")
                     .font(.subheadline)

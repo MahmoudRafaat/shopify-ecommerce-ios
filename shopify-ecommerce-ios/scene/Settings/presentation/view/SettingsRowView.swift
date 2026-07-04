@@ -1,3 +1,12 @@
+//
+//  SettingsRowView.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 04/07/2026.
+//
+
+
+import SwiftUI
 
 struct SettingsRowView: View {
     let icon: String
@@ -40,7 +49,6 @@ struct SettingsRowView: View {
             .padding(.horizontal, 20)
             .background(Color.white)
         }
-        .buttonStyle(PlainButtonStyle())
         .disabled(action == nil)
     }
 }

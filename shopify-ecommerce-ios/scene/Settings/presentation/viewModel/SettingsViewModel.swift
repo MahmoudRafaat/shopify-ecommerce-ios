@@ -5,6 +5,7 @@
 //  Created by Mahmoud Raafat Mustafa on 04/07/2026.
 //
 
+
 import Foundation
 import Observation
 import FirebaseAuth
@@ -71,22 +72,14 @@ class SettingsViewModel {
     
     func navigateToProfile() {
         // Navigate to Profile screen
-        // This will be handled in the view via coordinator or navigation
+     
     }
     
-    func navigateToShippingAddresses() {
-        // Navigate to Address section in Profile
-    }
-    
-    func navigateToPaymentMethods() {
-        // Navigate to Payment section in Profile
-    }
+
     
     func navigateToMyOrders() {
         // Navigate to Orders screen
     }
     
-    func navigateToChangePassword() {
-        // Navigate to Change Password screen
-    }
+ 
 }

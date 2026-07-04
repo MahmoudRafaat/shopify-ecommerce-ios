@@ -1,3 +1,12 @@
+//
+//  SettingsGuestModeBanner.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 04/07/2026.
+//
+
+import SwiftUI
+
 struct SettingsGuestModeBanner: View {
     let brandColor: Color
     let onSignIn: () -> Void
