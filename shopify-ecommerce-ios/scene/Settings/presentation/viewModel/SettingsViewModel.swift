@@ -31,17 +31,23 @@ class SettingsViewModel {
     }
     
     func loadUserData() {
+        self.uiState.isLoading = true
         let isLoggedIn = checkLoginUseCase.execute()
         uiState.isLoggedIn = isLoggedIn
         uiState.isGuestMode = !isLoggedIn
-        
+      
+            self.uiState.isLoading = false
         if isLoggedIn, let user = getUserUseCase.execute() {
             uiState.userEmail = user.email ?? ""
             uiState.userName = user.displayName ?? "User"
         } else {
             uiState.userEmail = ""
             uiState.userName = "Guest"
+            self.uiState.isGuestMode = true
+
         }
+        self.uiState.isLoading = false
+
     }
     
     func handleLogout() {
@@ -55,9 +61,6 @@ class SettingsViewModel {
         do {
             try logoutUseCase.execute()
             uiState.isLoggedIn = false
-            uiState.isGuestMode = true
-            uiState.userEmail = ""
-            uiState.userName = "Guest"
             uiState.errorMessage = nil
         } catch {
             uiState.errorMessage = error.localizedDescription

@@ -11,7 +11,6 @@ import SwiftUI
 
 
 struct SettingsProfileHeader: View {
-    let name: String
     let email: String
     let isLoggedIn: Bool
     
@@ -26,20 +25,10 @@ struct SettingsProfileHeader: View {
                         .foregroundStyle(isLoggedIn ? .pink : .gray)
                 }
             
-            VStack(alignment: .leading, spacing: 4) {
-                
-                if !isLoggedIn {
-                    Text("Guest User")
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.gray)
-                }
-                
-                
                 Text(isLoggedIn ? email : "Sign in to manage your account")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-            }
+            
             
             Spacer()
             

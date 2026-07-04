@@ -69,7 +69,6 @@ struct SettingsView: View {
             viewModel.navigateToProfile()
         } label: {
             SettingsProfileHeader(
-                name: viewModel.uiState.userName,
                 email: viewModel.uiState.userEmail,
                 isLoggedIn: viewModel.uiState.isLoggedIn
             )
