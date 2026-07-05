@@ -32,7 +32,6 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     var isAddressSheetPresented: Bool = false
     var isOrderDeleted: Bool = false
     
-    // Coupons state
     var activeCoupons: [String: PriceRuleResponse] = [:]
     var isCouponSheetPresented: Bool = false
     var selectedCoupon: PriceRuleResponse?
@@ -41,6 +40,8 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     init(useCases: CheckoutUseCases = CheckoutUseCases(
         createDraftOrder: CreateDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
         getDraftOrder: GetDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        getCustomerCartMetafield: GetCustomerCartMetafieldUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        setCustomerCartMetafield: SetCustomerCartMetafieldUseCaseImpl(repository: CheckoutRepositoryImpl()),
         updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCaseImpl(repository: CheckoutRepositoryImpl()),
         applyDiscount: ApplyDiscountUseCaseImpl(repository: CheckoutRepositoryImpl()),
         completeDraftOrder: CompleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
@@ -67,20 +68,25 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
             let coupons = try await fetchCouponsTask
             self.activeCoupons = coupons
             
-            if let savedCartId = CartSessionManager.shared.getCartId() {
+            if let cartMetafield = try await useCases.getCustomerCartMetafield.execute(),
+               let savedCartId = Int?(cartMetafield.value), savedCartId > 0 {
                 do {
                     let draftOrderResponse = try await useCases.getDraftOrder.execute(draftOrderId: savedCartId)
+                    // If order is completed, we should create a new one
+                    if draftOrderResponse.status == "completed" {
+                        throw NSError(domain: "CartCompleted", code: 400, userInfo: nil)
+                    }
                     updateUI(with: draftOrderResponse)
                     self.isLoading = false
                     return
                 } catch {
-                    CartSessionManager.shared.clearCartId()
+                    // Fall through to create a new cart
                 }
             }
             
             // Create a new draft order
             let draftOrderResponse = try await useCases.createDraftOrder.execute(lineItems: lineItems)
-            CartSessionManager.shared.saveCartId(draftOrderResponse.id)
+            try await useCases.setCustomerCartMetafield.execute(draftOrderId: draftOrderResponse.id)
             updateUI(with: draftOrderResponse)
             
         } catch {
@@ -183,7 +189,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
             if remainingItems.isEmpty {
                 // Last item removed — delete the entire draft order
                 try await useCases.deleteDraftOrder.execute(draftOrderId: orderId)
-                CartSessionManager.shared.clearCartId()
+                try await useCases.setCustomerCartMetafield.execute(draftOrderId: 0)
                 cartLineItems = []
                 draftOrderId = nil
                 orderTotal = "0.00"
@@ -218,7 +224,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         do {
             let response = try await useCases.completeDraftOrder.execute(draftOrderId: orderId)
             
-            CartSessionManager.shared.clearCartId()
+            try await useCases.setCustomerCartMetafield.execute(draftOrderId: 0)
             updateUI(with: response)
             print("Successfully completed draft order into an actual order!")
         } catch {

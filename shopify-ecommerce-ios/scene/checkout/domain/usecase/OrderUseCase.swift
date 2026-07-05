@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct CreateDraftOrderUseCaseImpl: CreateDraftOrderUseCase {
     let repository: CheckoutRepository
     
@@ -21,6 +20,22 @@ struct GetDraftOrderUseCaseImpl: GetDraftOrderUseCase {
     
     func execute(draftOrderId: Int) async throws -> DraftOrderResponse {
         return try await repository.getDraftOrder(draftOrderId: draftOrderId)
+    }
+}
+
+struct GetCustomerCartMetafieldUseCaseImpl: GetCustomerCartMetafieldUseCase {
+    let repository: CheckoutRepository
+    
+    func execute() async throws -> MetafieldResponse? {
+        return try await repository.getCustomerCartMetafield()
+    }
+}
+
+struct SetCustomerCartMetafieldUseCaseImpl: SetCustomerCartMetafieldUseCase {
+    let repository: CheckoutRepository
+    
+    func execute(draftOrderId: Int) async throws {
+        try await repository.setCustomerCartMetafield(draftOrderId: draftOrderId)
     }
 }
 

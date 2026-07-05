@@ -11,4 +11,6 @@ protocol CheckoutRepository {
     func deleteDraftOrder(draftOrderId: Int) async throws
     func getDraftOrder(draftOrderId: Int) async throws -> DraftOrderResponse
     func fetchActiveDiscountCodes() async throws -> [String: PriceRuleResponse]
+    func getCustomerCartMetafield() async throws -> MetafieldResponse?
+    func setCustomerCartMetafield(draftOrderId: Int) async throws
 }

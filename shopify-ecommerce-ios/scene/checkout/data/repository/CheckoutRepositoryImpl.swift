@@ -134,4 +134,34 @@ final class CheckoutRepositoryImpl: CheckoutRepository {
             return discountCodeToPriceRule
         }
     }
+    
+    func getCustomerCartMetafield() async throws -> MetafieldResponse? {
+        guard let customerIdString = Constants.customerId,
+              let customerId = Int(customerIdString) else {
+            throw NetworkError.badRequest
+        }
+        let response = try await networkService.getCustomerMetafields(customerId: customerId)
+        return response.metafields.first { $0.namespace == "cart_session" && $0.key == "active_draft_id" }
+    }
+    
+    func setCustomerCartMetafield(draftOrderId: Int) async throws {
+        guard let customerIdString = Constants.customerId,
+              let customerId = Int(customerIdString) else {
+            throw NetworkError.badRequest
+        }
+        
+        let metafield = MetafieldRequest(
+            namespace: "cart_session",
+            key: "active_draft_id",
+            type: "number_integer",
+            value: draftOrderId
+        )
+        let request = MetafieldRequestWrapper(metafield: metafield)
+        
+        if let existing = try await getCustomerCartMetafield() {
+            _ = try await networkService.updateCustomerMetafield(customerId: customerId, metafieldId: existing.id, request: request)
+        } else {
+            _ = try await networkService.createCustomerMetafield(customerId: customerId, request: request)
+        }
+    }
 }

@@ -46,3 +46,11 @@ protocol DeleteDraftOrderUseCase {
 protocol FetchActiveDiscountCodesUseCase {
     func execute() async throws -> [String: PriceRuleResponse]
 }
+
+protocol GetCustomerCartMetafieldUseCase {
+    func execute() async throws -> MetafieldResponse?
+}
+
+protocol SetCustomerCartMetafieldUseCase {
+    func execute(draftOrderId: Int) async throws
+}

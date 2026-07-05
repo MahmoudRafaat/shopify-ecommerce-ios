@@ -9,6 +9,9 @@ protocol CheckoutNetworkServiceProtocol {
     func removeDiscount(id: Int) async throws -> DraftOrderResponseWrapper
     func getPriceRules() async throws -> PriceRulesResponseWrapper
     func getDiscountCodes(priceRuleId: Int) async throws -> DiscountCodesResponseWrapper
+    func getCustomerMetafields(customerId: Int) async throws -> MetafieldsResponseWrapper
+    func createCustomerMetafield(customerId: Int, request: MetafieldRequestWrapper) async throws -> SingleMetafieldResponseWrapper
+    func updateCustomerMetafield(customerId: Int, metafieldId: Int, request: MetafieldRequestWrapper) async throws -> SingleMetafieldResponseWrapper
 }
 
 final class CheckoutNetworkService: CheckoutNetworkServiceProtocol {
@@ -57,6 +60,24 @@ final class CheckoutNetworkService: CheckoutNetworkServiceProtocol {
     func getDiscountCodes(priceRuleId: Int) async throws -> DiscountCodesResponseWrapper {
         return try await NetworkService.request(
             endpoint: CheckoutEndpoint.getDiscountCodes(priceRuleId: priceRuleId)
+        )
+    }
+    
+    func getCustomerMetafields(customerId: Int) async throws -> MetafieldsResponseWrapper {
+        return try await NetworkService.request(
+            endpoint: CheckoutEndpoint.getCustomerMetafields(customerId: customerId)
+        )
+    }
+    
+    func createCustomerMetafield(customerId: Int, request: MetafieldRequestWrapper) async throws -> SingleMetafieldResponseWrapper {
+        return try await NetworkService.request(
+            endpoint: CheckoutEndpoint.createCustomerMetafield(customerId: customerId, request: request)
+        )
+    }
+    
+    func updateCustomerMetafield(customerId: Int, metafieldId: Int, request: MetafieldRequestWrapper) async throws -> SingleMetafieldResponseWrapper {
+        return try await NetworkService.request(
+            endpoint: CheckoutEndpoint.updateCustomerMetafield(customerId: customerId, metafieldId: metafieldId, request: request)
         )
     }
 }

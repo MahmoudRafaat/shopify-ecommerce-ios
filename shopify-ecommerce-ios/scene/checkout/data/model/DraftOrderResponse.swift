@@ -21,6 +21,7 @@ struct DraftOrderResponse: Codable {
     let subtotalPrice: String
     let totalTax: String
     let totalPrice: String
+    let status: String?
     let lineItems: [DraftLineItemResponse]
     let appliedDiscount: DraftAppliedDiscountResponse?
     
@@ -30,6 +31,7 @@ struct DraftOrderResponse: Codable {
         case subtotalPrice = "subtotal_price"
         case totalTax = "total_tax"
         case totalPrice = "total_price"
+        case status
         case lineItems = "line_items"
         case appliedDiscount = "applied_discount"
     }
