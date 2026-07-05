@@ -8,35 +8,35 @@
 import Foundation
 
 protocol CreateDraftOrderUseCase {
-    func execute(lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
+    func execute(products: [ProductDataModel]) async throws -> CheckoutOrderInfo
 }
 
 protocol GetDraftOrderUseCase {
-    func execute(draftOrderId: Int) async throws -> DraftOrderResponse
+    func execute(draftOrderId: Int) async throws -> CheckoutOrderInfo
 }
 
 protocol UpdateDraftOrderLineItemsUseCase {
-    func execute(draftOrderId: Int, lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
+    func execute(draftOrderId: Int, lineItems: [OrderItemUIModel]) async throws -> CheckoutOrderInfo
 }
 
 protocol ApplyDiscountUseCase {
-    func execute(draftOrderId: Int, discountCode: String, priceRule: PriceRuleResponse) async throws -> DraftOrderResponse
+    func execute(draftOrderId: Int, discountCode: String, priceRule: PriceRuleResponse) async throws -> CheckoutOrderInfo
 }
 
 protocol RemoveDiscountUseCase {
-    func execute(draftOrderId: Int) async throws -> DraftOrderResponse
+    func execute(draftOrderId: Int) async throws -> CheckoutOrderInfo
 }
 
 protocol CompleteDraftOrderUseCase {
-    func execute(draftOrderId: Int) async throws -> DraftOrderResponse
+    func execute(draftOrderId: Int) async throws -> CheckoutOrderInfo
 }
 
 protocol UpdateDraftOrderAddressUseCase {
-    func execute(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse
+    func execute(draftOrderId: Int, address: DraftAddressRequest) async throws -> CheckoutOrderInfo
 }
 
 protocol RemoveLineItemUseCase {
-    func execute(draftOrderId: Int, variantId: Int, currentLineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
+    func execute(draftOrderId: Int, variantId: Int, currentLineItems: [OrderItemUIModel]) async throws -> CheckoutOrderInfo
 }
 
 protocol DeleteDraftOrderUseCase {

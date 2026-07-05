@@ -44,6 +44,7 @@ struct DraftLineItemResponse: Codable {
     let quantity: Int
     let price: String
     let name: String
+    let properties: [LineItemProperty]?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -52,6 +53,7 @@ struct DraftLineItemResponse: Codable {
         case quantity
         case price
         case name
+        case properties
     }
 }
 

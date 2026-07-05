@@ -11,8 +11,8 @@ struct CheckoutView: View {
     @State private var viewModel = CheckoutViewModel()
     @Environment(\.presentationMode) var presentationMode
     
-    // Product info passed from previous screen (Mocked for testing)
-    var lineItems: [DraftLineItemRequest] 
+    // Product info passed from previous screen
+    var products: [ProductDataModel] 
     
     var body: some View {
         VStack(spacing: 0) {
@@ -53,14 +53,14 @@ struct CheckoutView: View {
                 .environment(viewModel)
         }
         .task {
-            await viewModel.loadOrCreateCart(lineItems: lineItems)
+            await viewModel.loadOrCreateCart(products: products)
         }
     }
 }
 
 #Preview {
-    CheckoutView(lineItems: [
-        DraftLineItemRequest(variantId: 46128795517064, quantity: 1),
-        DraftLineItemRequest(variantId: 8955349303432, quantity: 2)
+    CheckoutView(products: [
+        ProductDataModel(variantId: 46128795517064, quantity: 1, imageUrl: nil),
+        ProductDataModel(variantId: 8955349303432, quantity: 2, imageUrl: nil)
     ])
 }

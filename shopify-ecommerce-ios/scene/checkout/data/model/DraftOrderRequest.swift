@@ -38,11 +38,18 @@ struct DraftOrderRequest: Codable {
 struct DraftLineItemRequest: Codable {
     let variantId: Int
     let quantity: Int
+    let properties: [LineItemProperty]?
     
     enum CodingKeys: String, CodingKey {
         case variantId = "variant_id"
         case quantity
+        case properties
     }
+}
+
+struct LineItemProperty: Codable {
+    let name: String
+    let value: String
 }
 
 struct DraftCustomerRequest: Codable {

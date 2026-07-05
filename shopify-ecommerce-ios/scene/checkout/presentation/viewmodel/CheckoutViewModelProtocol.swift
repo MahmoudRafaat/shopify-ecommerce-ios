@@ -16,7 +16,7 @@ protocol CheckoutViewModelProtocol {
     var originalSubtotal: String { get }
     var tax: String { get }
     var discountAmount: String { get }
-    var cartLineItems: [DraftLineItemRequest] { get }
+    var cartLineItems: [OrderItemUIModel] { get }
     var discountCode: String { get set }
     var currentAddress: DraftAddressRequest? { get }
     var isAddressSheetPresented: Bool { get set }
@@ -27,7 +27,7 @@ protocol CheckoutViewModelProtocol {
     var selectedCoupon: PriceRuleResponse? { get set }
     var selectedCouponCode: String? { get set }
     
-    func loadOrCreateCart(lineItems: [DraftLineItemRequest]) async
+    func loadOrCreateCart(products: [ProductDataModel]) async
     func updateQuantity(for variantId: Int, to newQuantity: Int) async
     func applyDiscount() async
     func removeDiscount() async

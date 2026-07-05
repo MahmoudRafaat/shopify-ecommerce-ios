@@ -26,7 +26,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     var tax: String = "0.00"
     var discountAmount: String = "0.00"
     
-    var cartLineItems: [DraftLineItemRequest] = []
+    var cartLineItems: [OrderItemUIModel] = []
     var discountCode: String = ""
     var currentAddress: DraftAddressRequest? = nil
     var isAddressSheetPresented: Bool = false
@@ -57,8 +57,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     // MARK: - Intentions
     
     @MainActor
-    func loadOrCreateCart(lineItems: [DraftLineItemRequest]) async {
-        self.cartLineItems = lineItems
+    func loadOrCreateCart(products: [ProductDataModel]) async {
         self.isLoading = true
         self.errorMessage = nil
         
@@ -85,7 +84,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
             }
             
             // Create a new draft order
-            let draftOrderResponse = try await useCases.createDraftOrder.execute(lineItems: lineItems)
+            let draftOrderResponse = try await useCases.createDraftOrder.execute(products: products)
             try await useCases.setCustomerCartMetafield.execute(draftOrderId: draftOrderResponse.id)
             updateUI(with: draftOrderResponse)
             
@@ -101,18 +100,30 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         self.isLoading = true
         self.errorMessage = nil
         
-        if let index = cartLineItems.firstIndex(where: { $0.variantId == variantId }) {
-            cartLineItems[index] = DraftLineItemRequest(variantId: variantId, quantity: newQuantity)
-        }
-        
-        do {
-            let response = try await useCases.updateDraftOrderLineItems.execute(
-                draftOrderId: orderId,
-                lineItems: cartLineItems
+        if let index = cartLineItems.firstIndex(where: { $0.id == variantId }) {
+            let existingItem = cartLineItems[index]
+            
+            let updatedModel = OrderItemUIModel(
+                id: existingItem.id,
+                title: existingItem.title,
+                variantTitle: existingItem.variantTitle,
+                price: existingItem.price,
+                quantity: newQuantity,
+                imageUrl: existingItem.imageUrl
             )
-            updateUI(with: response)
-        } catch {
-            self.errorMessage = error.localizedDescription
+            
+            var allItems = cartLineItems
+            allItems[index] = updatedModel
+            
+            do {
+                let response = try await useCases.updateDraftOrderLineItems.execute(
+                    draftOrderId: orderId,
+                    lineItems: allItems
+                )
+                updateUI(with: response)
+            } catch {
+                self.errorMessage = error.localizedDescription
+            }
         }
         self.isLoading = false
     }
@@ -121,7 +132,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     @MainActor
     func applyDiscount() async {
         guard let orderId = draftOrderId,
-                let code = selectedCouponCode,
+              let code = selectedCouponCode,
               let rule = selectedCoupon else { return }
         
         self.isLoading = true
@@ -183,7 +194,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         self.isLoading = true
         self.errorMessage = nil
         
-        let remainingItems = cartLineItems.filter { $0.variantId != variantId }
+        let remainingItems = cartLineItems.filter { $0.id != variantId }
         
         do {
             if remainingItems.isEmpty {
@@ -202,7 +213,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
                 let response = try await useCases.removeLineItem.execute(
                     draftOrderId: orderId,
                     variantId: variantId,
-                    currentLineItems: cartLineItems
+                    currentLineItems: remainingItems
                 )
                 cartLineItems = remainingItems
                 updateUI(with: response)
@@ -233,26 +244,13 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         
         self.isLoading = false
     }
-    private func updateUI(with response: DraftOrderResponse) {
+    private func updateUI(with response: CheckoutOrderInfo) {
         self.draftOrderId = response.id
-        self.subtotal = response.subtotalPrice
-        self.tax = response.totalTax
-        self.orderTotal = response.totalPrice
-        
-        let totalItemsPrice = response.lineItems.reduce(0.0) { sum, item in
-            sum + ((Double(item.price) ?? 0.0) * Double(item.quantity))
-        }
-        self.originalSubtotal = String(format: "%.2f", totalItemsPrice)
-        
-        if let discount = response.appliedDiscount {
-            self.discountAmount = discount.amount
-        } else {
-            self.discountAmount = "0.00"
-        }
-        
-        self.cartLineItems = response.lineItems.compactMap { item in
-            guard let variantId = item.variantId else { return nil }
-            return DraftLineItemRequest(variantId: variantId, quantity: item.quantity)
-        }
+        self.subtotal = response.subtotal
+        self.tax = response.tax
+        self.orderTotal = response.total
+        self.originalSubtotal = response.originalSubtotal
+        self.discountAmount = response.discountAmount
+        self.cartLineItems = response.lineItems
     }
 }

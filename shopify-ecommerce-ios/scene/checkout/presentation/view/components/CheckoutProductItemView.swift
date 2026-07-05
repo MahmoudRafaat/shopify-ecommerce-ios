@@ -1,32 +1,33 @@
 import SwiftUI
-
+import Kingfisher
 struct CheckoutProductItemView: View {
     @Environment(CheckoutViewModel.self) var viewModel
-    let item: DraftLineItemRequest
+    let item: OrderItemUIModel
     
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
             // Product Image
-            Image(.checkout)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 125, height: 155)
-                .cornerRadius(8)
-                .clipped()
+            CachedImageLoader(
+                urlString: item.imageUrl ?? "",
+                width: 125,
+                height: 155
+            )
+            .cornerRadius(8)
             
             // Product Details
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top) {
-                    Text("Women's Casual Wear")
+                    Text(item.title)
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
+                        .lineLimit(2)
                     
                     Spacer()
                     
                     Button {
                         Task {
-                            await viewModel.removeLineItem(variantId: item.variantId)
+                            await viewModel.removeLineItem(variantId: item.id)
                         }
                     } label: {
                         Image(systemName: "trash")
@@ -36,7 +37,7 @@ struct CheckoutProductItemView: View {
                     .buttonStyle(.plain)
                 }
                 
-                Text("Checked Single-Breasted Blazer")
+                Text(item.variantTitle)
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .fixedSize(horizontal: false, vertical: true)
@@ -46,7 +47,7 @@ struct CheckoutProductItemView: View {
                         ForEach(1...10, id: \.self) { qty in
                             Button("\(qty)") {
                                 Task {
-                                    await viewModel.updateQuantity(for: item.variantId, to: qty)
+                                    await viewModel.updateQuantity(for: item.id, to: qty)
                                 }
                             }
                         }
@@ -79,5 +80,5 @@ struct CheckoutProductItemView: View {
 }
 
 #Preview {
-    CheckoutProductItemView(item: DraftLineItemRequest(variantId: 101, quantity: 1))
+//    CheckoutProductItemView(item: OrderItemUIModel(id: 101, title: "Mock", variantTitle: "Mock Variant", price: "10.0", quantity: 1, imageUrl: nil))
 }

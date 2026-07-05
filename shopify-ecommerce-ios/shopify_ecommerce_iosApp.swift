@@ -40,9 +40,8 @@ struct shopify_ecommerce_iosApp: App {
             //                    SignupView(viewmodel: SignupViewModel())
             //                }
             //            }
-            CheckoutView(lineItems: [
-                DraftLineItemRequest(variantId: 46128795517064, quantity: 1),
-//                DraftLineItemRequest(variantId: 8955349303432, quantity: 2)
+            CheckoutView(products: [
+                ProductDataModel(variantId: 46128795517064, quantity: 1, imageUrl: nil),
             ])
         }
         .modelContainer(sharedModelContainer)

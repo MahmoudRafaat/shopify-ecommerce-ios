@@ -16,7 +16,7 @@ struct CheckoutViewBody: View {
 
                 AddressSection()
                 
-                ForEach(viewModel.cartLineItems, id: \.variantId) { item in
+                ForEach(viewModel.cartLineItems) { item in
                     CheckoutProductItemView(item: item)
                 }
                 
