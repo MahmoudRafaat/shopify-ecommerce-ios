@@ -75,5 +75,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView(searchText: "", autoFocus: false)
+    HeaderView(searchText: .constant(""), autoFocus: false)
 }

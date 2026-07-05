@@ -22,17 +22,36 @@ struct ProductCardView: View {
             .cornerRadius(10)
             
             
-            VStack(alignment: .leading, spacing: 6) {
-                Text(uiState.name)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(product.name)
                     .font(.system(size: 12, weight: .semibold))
                     .lineLimit(1)
                 
-                Text(uiState.description)
+                HStack(spacing: 4) {
+                    Text(product.vendor)
+                        .foregroundStyle(Color.white)
+                        .padding(.vertical, 2)
+                        .padding(.horizontal, 6)
+                        .background(.appBlue)
+                        .cornerRadius(4)
+                    Text("·")
+                    Text(product.productType)
+                        .foregroundStyle(Color.gray)
+                        .padding(.vertical, 2)
+                        .padding(.horizontal, 6)
+                        .background(.gray.opacity(0.15))
+                        .cornerRadius(4)
+                }
+                .font(.system(size: 10))
+                .foregroundColor(.secondary)
+                .lineLimit(1)
+                
+                Text(product.description)
                     .font(.system(size: 10))
                     .foregroundColor(.gray)
-                    .lineLimit(2)
-                
-                Text(uiState.price, format: .currency(code: "USD"))
+                    .lineLimit(1)
+                Spacer()
+                Text(product.price, format: .currency(code: "USD"))
                     .font(.system(size: 12, weight: .bold))
                 HStack(spacing: 4) {
                     Text(uiState.oldPrice, format: .currency(code: "USD"))
@@ -47,6 +66,7 @@ struct ProductCardView: View {
                 starsView(productStars: uiState.stars)
             }
             .padding(8)
+            
         }
         .frame(maxWidth: .infinity)
         .frame(height: 250)
@@ -89,6 +109,7 @@ struct ProductCardView: View {
                                      image: "watch",
                                      name: "Women Printed Kurta",
                                      description: "Neque porro quisquam est qui dolorem ipsum quia",
+                                     vendor: "NIKE",
                                      price: 1500.0,
                                      isAvailabe: true,
                                      productType: "accessories")),

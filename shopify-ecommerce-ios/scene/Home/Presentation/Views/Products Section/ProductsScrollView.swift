@@ -49,7 +49,7 @@ struct ProductsScrollView: View {
             id: 1,
             image: "watch",
             name: "2021 Pilot's Watch",
-            description: "IWC Schaffhausen 2021 Pilot's Watch \"SIHH 2019\" 44mm",
+            description: "IWC Schaffhausen 2021 Pilot's Watch \"SIHH 2019\" 44mm", vendor: "Nike",
             price: 1500.0,
 
             isAvailabe: true,
@@ -59,7 +59,7 @@ struct ProductsScrollView: View {
             id: 2,
             image: "watch",
             name: "Elegant Summer Dress",
-            description: "Comfortable and stylish outfit for everyday wear",
+            description: "Comfortable and stylish outfit for everyday wear", vendor: "Adidas",
             price: 2200.0,
  
             isAvailabe: true,
@@ -69,7 +69,7 @@ struct ProductsScrollView: View {
             id: 3,
             image: "watch",
             name: "Classic Women Outfit",
-            description: "Premium fabric with modern design collection",
+            description: "Premium fabric with modern design collection", vendor: "Nike",
             price: 1800.0,
             isAvailabe: false,
             productType: "T-shirt"
