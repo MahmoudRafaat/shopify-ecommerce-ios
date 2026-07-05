@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Playgrounds
 import Alamofire
 
 struct ProductDTO: Codable {
@@ -43,33 +42,4 @@ struct ImageDTO: Codable {
 }
 
 
-#Playground {
 
-    if let adminToken = Bundle.main.infoDictionary?["ShopifyAdminToken"] as? String {
-        print("My Token is: \(adminToken)")
-    } else {
-        print("Nooooo - Token not found")
-    }
-    let urlString = "https://\(SecretConstants.apiKey):\(SecretConstants.password)@\(SecretConstants.hostname)/admin/api/2026-01/products.json"
-    
-    let decoder = JSONDecoder()
-    decoder.keyDecodingStrategy = .convertFromSnakeCase
-
-    AF.request(urlString)
-        .validate()
-        .responseDecodable(of: ProductsResponse.self, decoder: decoder) { response in
-            
-            switch response.result {
-            case .success(let productsResponse):
-                let productDTOs = productsResponse.products
-                print("Success Decoded \(productDTOs.count) products.")
-                
-                if let firstProductDTO = productDTOs.first {
-                    print("Product Type: \(firstProductDTO.productType)")
-                }
-                
-            case .failure(let error):
-                print("Network or Decoding Error: \(error)")
-            }
-        }
-}

@@ -12,6 +12,7 @@ struct Product : Identifiable {
     let image: String
     let name: String
     let description: String
+    let vendor: String
     let price: Float
     let isAvailabe: Bool
     let discount: Int = 20

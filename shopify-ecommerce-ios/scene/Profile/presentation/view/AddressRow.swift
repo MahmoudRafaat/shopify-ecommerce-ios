@@ -1,0 +1,25 @@
+//
+//  AddressRow.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 04/07/2026.
+//
+
+import SwiftUI
+
+struct AddressRow: View {
+    let icon: String
+    let text: String
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .frame(width: 20)
+            
+            Text(text)
+                .font(.subheadline)
+        }
+    }
+}

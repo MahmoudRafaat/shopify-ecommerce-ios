@@ -11,6 +11,9 @@ import SwiftData
 @main
 struct shopify_ecommerce_iosApp: App {
     
+    // Checking internet Connction Variable
+    @State private var networkMonitor = NetworkMonitor()
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var sharedModelContainer: ModelContainer = {
@@ -31,19 +34,17 @@ struct shopify_ecommerce_iosApp: App {
     
     var body: some Scene {
         WindowGroup {
-            //            if !hasSeenOnboarding {
-            //                OnboardingScreen()
-            //            } else if isLoggedIn {
-            //                TabBarView()
-            //            } else {
-            //                NavigationStack {
-            //                    SignupView(viewmodel: SignupViewModel())
-            //                }
-            //            }
-            CheckoutView(products: [
-                ProductDataModel(variantId: 46128795517064, quantity: 1, imageUrl: nil),
-            ])
+            if !hasSeenOnboarding {
+                OnboardingScreen()
+            } else if isLoggedIn {
+                TabBarView()
+            } else {
+                NavigationStack {
+                    SignupView(viewmodel: SignupViewModel())
+                }
+            }
         }
         .modelContainer(sharedModelContainer)
+        .environment(networkMonitor)
     }
 }

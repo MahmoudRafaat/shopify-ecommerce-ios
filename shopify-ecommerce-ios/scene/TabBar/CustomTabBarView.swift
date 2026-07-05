@@ -11,7 +11,7 @@ struct CustomTabBarView: View {
     @Binding var selectedTab: Tab
     
     // TODO: Change After Merge to Dev
-    let themeRed : Color = .red
+    let themeRed : Color = .appPrimary
     
     var body: some View {
         HStack {

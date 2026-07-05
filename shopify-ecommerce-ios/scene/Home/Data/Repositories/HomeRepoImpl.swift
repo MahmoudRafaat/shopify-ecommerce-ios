@@ -24,6 +24,7 @@ class HomeRepoImpl: HomeRepo {
                 image: dto.image?.src ?? "placeholder_image",
                 name: dto.title,
                 description: dto.bodyHtml ?? "No description available.",
+                vendor: dto.vendor,
                 price: Float(dto.variants.first?.price ?? "0.0") ?? 0.0,
                 isAvailabe: totalQuantity > 0,
                 productType: dto.productType

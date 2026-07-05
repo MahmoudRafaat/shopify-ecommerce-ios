@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct ProductCardView: View {
-    let product: Product
+    let uiState: ProductUIState
     var onTap: () -> Void
     var body: some View {
         VStack(spacing: 8) {
             
             CachedImageLoader(
-                urlString: product.image,
+                urlString: uiState.image,
                 width: nil,
                 height: 124
             )
@@ -22,33 +22,54 @@ struct ProductCardView: View {
             .cornerRadius(10)
             
             
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(product.name)
                     .font(.system(size: 12, weight: .semibold))
                     .lineLimit(1)
                 
+                HStack(spacing: 4) {
+                    Text(product.vendor)
+                        .foregroundStyle(Color.white)
+                        .padding(.vertical, 2)
+                        .padding(.horizontal, 6)
+                        .background(.appBlue)
+                        .cornerRadius(4)
+                    Text("·")
+                    Text(product.productType)
+                        .foregroundStyle(Color.gray)
+                        .padding(.vertical, 2)
+                        .padding(.horizontal, 6)
+                        .background(.gray.opacity(0.15))
+                        .cornerRadius(4)
+                }
+                .font(.system(size: 10))
+                .foregroundColor(.secondary)
+                .lineLimit(1)
+                
                 Text(product.description)
                     .font(.system(size: 10))
                     .foregroundColor(.gray)
-                    .lineLimit(2)
-                
+                    .lineLimit(1)
+                Spacer()
                 Text(product.price, format: .currency(code: "USD"))
                     .font(.system(size: 12, weight: .bold))
                 HStack(spacing: 4) {
-                    Text(product.oldPrice, format: .currency(code: "USD"))
+                    Text(uiState.oldPrice, format: .currency(code: "USD"))
                         .font(.system(size: 10, weight: .regular))
                         .strikethrough()
                         .foregroundStyle(Color.gray)
-                    Text("\(product.discount)%Off")
+                    Text("\(uiState.discount)%Off")
                         .font(.system(size: 10, weight: .regular))
                         .foregroundStyle(Color.appLightRed)
                 }
                 
-                starsView(productStars: product.stars)
+                starsView(productStars: uiState.stars)
             }
             .padding(8)
+            
         }
-        .frame(width: 170, height: 250)
+        .frame(maxWidth: .infinity)
+        .frame(height: 250)
         .background(Color.white)
         .cornerRadius(10)
         .shadow(color: .gray.opacity(0.15), radius: 8, x: 0, y: 4)
@@ -62,10 +83,10 @@ struct ProductCardView: View {
             ForEach(0..<5, id: \.self) { index in
                 let floatIndex = Float(index)
                 
-                if product.stars - floatIndex >= 1 {
+                if uiState.stars - floatIndex >= 1 {
                     Image(systemName: "star.fill")
                         .foregroundColor(.yellow)
-                } else if product.stars - floatIndex >= 0.5 {
+                } else if uiState.stars - floatIndex >= 0.5 {
                     Image(systemName: "star.leadinghalf.filled")
                         .foregroundColor(.yellow)
                 } else {
@@ -75,7 +96,7 @@ struct ProductCardView: View {
             }
             .font(.system(size: 10))
             
-            Text("(\(product.reviewers))")
+            Text("(\(uiState.reviewers))")
                 .font(.system(size: 10, weight: .light))
                 .foregroundColor(.gray)
                 .padding(.leading, 2)
@@ -84,12 +105,13 @@ struct ProductCardView: View {
 }
 
 #Preview {
-    ProductCardView(product: Product(id: 1,
+    ProductCardView(uiState: ProductUIState(product: Product(id: 1,
                                      image: "watch",
                                      name: "Women Printed Kurta",
                                      description: "Neque porro quisquam est qui dolorem ipsum quia",
+                                     vendor: "NIKE",
                                      price: 1500.0,
                                      isAvailabe: true,
-                                     productType: "accessories"),
+                                     productType: "accessories")),
                     onTap: {})
 }
