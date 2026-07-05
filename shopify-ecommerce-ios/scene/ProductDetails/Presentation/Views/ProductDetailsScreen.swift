@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct ProductDetailsScreen: View {
 
     @StateObject
@@ -22,41 +21,24 @@ struct ProductDetailsScreen: View {
     var body: some View {
 
         Group {
+            switch viewModel.screenState {
 
-            if viewModel.isLoading {
+            case .loading:
+                LoadingView()
 
-                ProgressView()
-
-            } else if let state = viewModel.uiState {
-
+            case .success(let state):
                 ProductDetailsView(
                     state: state,
                     onSizeSelected: viewModel.selectSize(_:)
                 )
 
-            } else if let errorMessage = viewModel.errorMessage {
-
-                Text(errorMessage)
-
-            } else {
-                
-                VStack {
-                    Text("No Data Yet")
-                        .foregroundStyle(.red)
-
-                    Text("isLoading: \(viewModel.isLoading.description)")
-                    Text("error: \(viewModel.errorMessage ?? "nil")")
-                }
+            case .error(let message):
+                Text(message)
+                    .foregroundStyle(.red)
             }
         }
         .task {
-            print("Screen appeared")
             await viewModel.loadProduct()
         }
     }
 }
-
-//#Preview {
-//    ProductDetailsScreen(
-//        )
-//}

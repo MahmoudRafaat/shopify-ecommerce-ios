@@ -60,13 +60,13 @@ private extension ProductDetailsView {
                 .fontWeight(.bold)
                 .padding(.horizontal, 16)
 
-            ProductsScrollView(
-                products: state.similarProducts,
-                onProductTap: { productID in
-                    coordinator.goToProductDetail(id: productID)
-                    
-                }
-            )
+//            ProductsScrollView(
+//                products: state.similarProducts,
+//                onProductTap: { productID in
+//                    coordinator.goToProductDetail(id: productID)
+//                    
+//                }
+//            )
         }
     }
 }
@@ -135,26 +135,27 @@ private extension ProductDetailsView {
                 buyTitle: "Buy Now"
             ),
 
-            similarProducts: [
-                Product(
-                    id: 1,
-                    image: "watch",
-                    name: "2021 Pilot's Watch",
-                    description: "IWC Schaffhausen Pilot Watch",
-                    price: 1500,
-                    isAvailabe: true,
-                    productType: "Watch"
-                ),
-                Product(
-                    id: 2,
-                    image: "watch",
-                    name: "Classic Watch",
-                    description: "Luxury collection",
-                    price: 2200,
-                    isAvailabe: true,
-                    productType: "Watch"
-                )
-            ]
-        ), onSizeSelected: {_ in}
+//            similarProducts: [
+//                Product(
+//                    id: 1,
+//                    image: "watch",
+//                    name: "2021 Pilot's Watch",
+//                    description: "IWC Schaffhausen Pilot Watch",
+//                    price: 1500,
+//                    isAvailabe: true,
+//                    productType: "Watch"
+//                ),
+//                Product(
+//                    id: 2,
+//                    image: "watch",
+//                    name: "Classic Watch",
+//                    description: "Luxury collection",
+//                    price: 2200,
+//                    isAvailabe: true,
+//                    productType: "Watch"
+//                )
+//            ]
+        )
+        , onSizeSelected: {_ in}
     )
 }

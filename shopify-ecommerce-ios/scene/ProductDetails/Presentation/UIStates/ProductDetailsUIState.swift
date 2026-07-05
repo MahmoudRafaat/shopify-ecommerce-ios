@@ -5,30 +5,49 @@
 //  Created by Yomna on 03/07/2026.
 //
 
-// ProductDetailsUIState.swift
-
 import Foundation
 
-struct ProductDetailsUIState {
+struct ProductDetailsUIState: Equatable {
     let imageSection: ProductImageSectionState
     let sizeSection: ProductSizeSectionState
     let infoSection: ProductInfoSectionState
     let deliverySection: DeliveryBannerState
     let actionsSection: ProductActionsState
 
-    let similarProducts: [Product]
+//    let similarProducts: [Product]
 }
-struct ProductImageSectionState {
+
+extension ProductDetailsUIState {
+
+    /// Returns a copy of this state with a new size selected.
+    /// Keeps partial-update logic in one place instead of scattered
+    /// across view models / call sites.
+    func withSelectedSize(_ size: String) -> Self {
+        ProductDetailsUIState(
+            imageSection: imageSection,
+            sizeSection: ProductSizeSectionState(
+                selectedSize: size,
+                availableSizes: sizeSection.availableSizes
+            ),
+            infoSection: infoSection,
+            deliverySection: deliverySection,
+            actionsSection: actionsSection,
+//            similarProducts: [Product]
+        )
+    }
+}
+
+struct ProductImageSectionState: Equatable {
     let images: [String]
     let selectedIndex: Int
 }
 
-struct ProductSizeSectionState {
+struct ProductSizeSectionState: Equatable {
     let selectedSize: String
     let availableSizes: [String]
 }
 
-struct ProductInfoSectionState {
+struct ProductInfoSectionState: Equatable {
     let title: String
     let subtitle: String
 
@@ -44,24 +63,33 @@ struct ProductInfoSectionState {
     let tags: [ProductTag]
 }
 
-struct ProductTag: Identifiable {
-    let id = UUID()
+struct ProductTag: Identifiable, Equatable {
+    // Derived from content instead of UUID() so identity stays stable
+    // across reloads/remaps — avoids spurious SwiftUI re-animation
+    // in ForEach when the same tag is rebuilt from the domain layer.
+    let id: String
 
     let icon: String
     let title: String
+
+    init(icon: String, title: String) {
+        self.icon = icon
+        self.title = title
+        self.id = "\(icon)-\(title)"
+    }
 }
 
-struct ProductActionsState {
+struct ProductActionsState: Equatable {
     let cartTitle: String
     let buyTitle: String
 }
 
-struct DeliveryBannerState {
+struct DeliveryBannerState: Equatable {
     let title: String
     let subtitle: String
 }
 
-struct SimilarProductCardState: Identifiable {
+struct SimilarProductCardState: Identifiable, Equatable {
 
     let id: Int
 

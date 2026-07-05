@@ -8,7 +8,6 @@
 import Foundation
 
 enum ProductDetailsScreenState {
-    case idle
     case loading
     case success(ProductDetailsUIState)
     case error(String)

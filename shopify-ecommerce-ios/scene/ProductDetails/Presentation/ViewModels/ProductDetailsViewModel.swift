@@ -6,16 +6,20 @@
 //
 
 import Foundation
+import os
 
 @MainActor
 final class ProductDetailsViewModel: ObservableObject {
 
-    @Published private(set) var uiState: ProductDetailsUIState?
-    @Published private(set) var isLoading = false
-    @Published private(set) var errorMessage: String?
+    @Published private(set) var screenState: ProductDetailsScreenState = .loading
 
     private let productId: Int
     private let getProductDetailsUseCase: GetProductDetailsUseCase
+
+    private let logger = Logger(
+        subsystem: "shopify-ecommerce-ios",
+        category: "ProductDetailsViewModel"
+    )
 
     init(
         productId: Int,
@@ -26,41 +30,22 @@ final class ProductDetailsViewModel: ObservableObject {
     }
 
     func loadProduct() async {
-        print("LOADING PRODUCT \(productId)")
+        logger.debug("Loading product \(self.productId)")
 
-        isLoading = true
-        errorMessage = nil
+        screenState = .loading
 
         do {
-
-            let product = try await
-                getProductDetailsUseCase
-                .execute(productId: productId)
-
-            uiState = product.toUIState()
-
+            let product = try await getProductDetailsUseCase.execute(productId: productId)
+            screenState = .success(product.toUIState())
         } catch {
-
-            errorMessage = error.localizedDescription
+            logger.error("Failed to load product \(self.productId): \(error.localizedDescription)")
+            screenState = .error(error.localizedDescription)
         }
-
-        isLoading = false
     }
+
     func selectSize(_ size: String) {
-        guard let currentState = uiState else { return }
+        guard case .success(let currentState) = screenState else { return }
 
-        uiState = ProductDetailsUIState(
-            imageSection: currentState.imageSection,
-
-            sizeSection: ProductSizeSectionState(
-                selectedSize: size,
-                availableSizes: currentState.sizeSection.availableSizes
-            ),
-
-            infoSection: currentState.infoSection,
-            deliverySection: currentState.deliverySection,
-            actionsSection: currentState.actionsSection,
-            similarProducts: currentState.similarProducts
-        )
+        screenState = .success(currentState.withSelectedSize(size))
     }
 }

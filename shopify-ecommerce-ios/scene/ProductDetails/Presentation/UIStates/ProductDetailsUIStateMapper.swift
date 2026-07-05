@@ -54,7 +54,7 @@ extension ProductDetails {
                 buyTitle: "Buy Now"
             ),
 
-            similarProducts: []
+//            similarProducts: []
         )
     }
 }
