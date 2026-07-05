@@ -31,6 +31,7 @@ struct ProductsScrollView: View {
                             }
                     }
                 }
+                .frame(width: 170)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 20)

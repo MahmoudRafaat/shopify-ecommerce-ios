@@ -48,7 +48,8 @@ struct ProductCardView: View {
             }
             .padding(8)
         }
-        .frame(width: 170, height: 250)
+        .frame(maxWidth: .infinity)
+        .frame(height: 250)
         .background(Color.white)
         .cornerRadius(10)
         .shadow(color: .gray.opacity(0.15), radius: 8, x: 0, y: 4)

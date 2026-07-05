@@ -40,9 +40,10 @@ struct HomeRootView: View {
                     case .productDetail(let productId):
                         Text("Product Detail View for ID: \(productId)")
                     case .categoriesScreen(let categoryId):
-                        Text("Categories View for ID: \(categoryId)")
+                        CollectionScreenView(id: categoryId)
                     }
                 }
         }
+        .environment(coordinator)
     }
 }
