@@ -9,25 +9,10 @@ import SwiftUI
 import Observation
 
 struct HomeRootView: View {
-    
     @Binding var selectedTab: Tab
-    
     @State private var coordinator = HomeCoordinator()
-    @State private var viewModel: HomeViewModel
     
-    init(selectedTab: Binding<Tab>) {
-        self._selectedTab = selectedTab
-        
-        let remoteService = HomeRemoteDataSource()
-        let repository = HomeRepoImpl(service: remoteService)
-        let getProductsUseCase = GetProductsUseCase(repository: repository)
-        let getCategoriesUseCase = GetCategoriesUseCase(repository: repository)
-        
-        _viewModel = State(initialValue: HomeViewModel(
-            getProductsUseCase: getProductsUseCase,
-            getCategoriesUseCase: getCategoriesUseCase
-        ))
-    }
+    @State var viewModel: HomeViewModel
     
     var body: some View {
         @Bindable var bindableCoordinator = coordinator
@@ -48,4 +33,11 @@ struct HomeRootView: View {
                 }
         }
     }
+}
+
+#Preview {
+    HomeRootView(
+        selectedTab: .constant(.home),
+        viewModel: HomeFactory.makeHomeViewModel()
+    )
 }
