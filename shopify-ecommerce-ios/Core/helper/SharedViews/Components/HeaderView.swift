@@ -73,7 +73,3 @@ struct HeaderView: View {
         }
     }
 }
-
-#Preview {
-    HeaderView(searchText: .constant(""), autoFocus: false)
-}

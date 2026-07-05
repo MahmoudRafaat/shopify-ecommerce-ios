@@ -27,7 +27,8 @@ class CollectionRepoImpl: CollectionRepo {
                 description: dto.bodyHtml ?? "No description available.",
                 price: Float(dto.variants.first?.price ?? "0.0") ?? 0.0,
                 isAvailabe: totalQuantity > 0,
-                productType: dto.productType
+                productType: dto.productType,
+                vendor: dto.vendor ?? ""
             )
         }
     }

@@ -15,4 +15,5 @@ struct ProductCollection : Identifiable {
     let price: Float
     let isAvailabe: Bool
     let productType: String
+    let vendor: String
 }

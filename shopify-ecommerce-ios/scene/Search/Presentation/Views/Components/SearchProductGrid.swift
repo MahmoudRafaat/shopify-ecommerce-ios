@@ -21,7 +21,7 @@ struct SearchProductGrid: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(Array(products.enumerated()), id: \.element.id) { index, product in
-                    ProductCardView(product: Product(id: product.id, image: product.image, name: product.name, description: product.description, vendor: product.vendor, price: product.price, isAvailabe: product.isAvailabe, productType: product.productType), onTap: {})
+                    ProductCardView(uiState: ProductUIState(searchProduct: product), onTap: {})
                         .opacity(isAnimating ? 1 : 0)
                         .scaleEffect(isAnimating ? 1 : 0.8)
                         .animation(

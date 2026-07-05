@@ -16,6 +16,7 @@ struct ProductUIState : Identifiable {
     let isAvailabe: Bool
     let discount: Int = 20
     let productType: String
+    let vendor: String
     
     var oldPrice: Float {
         return price / (1 - (Float(discount) / 100.0))
@@ -32,6 +33,7 @@ struct ProductUIState : Identifiable {
         self.price = product.price
         self.isAvailabe = product.isAvailabe
         self.productType = product.productType
+        self.vendor = product.vendor
     }
     
     init(product: ProductCollection) {
@@ -42,5 +44,17 @@ struct ProductUIState : Identifiable {
         self.price = product.price
         self.isAvailabe = product.isAvailabe
         self.productType = product.productType
+        self.vendor = product.vendor
+    }
+    
+    init (searchProduct: SearchProduct) {
+        self.id = searchProduct.id
+        self.image = searchProduct.image
+        self.name = searchProduct.name
+        self.description = searchProduct.description
+        self.price = searchProduct.price
+        self.isAvailabe = searchProduct.isAvailabe
+        self.productType = searchProduct.productType
+        self.vendor = searchProduct.vendor
     }
 }

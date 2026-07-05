@@ -23,19 +23,19 @@ struct ProductCardView: View {
             
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(product.name)
+                Text(uiState.name)
                     .font(.system(size: 12, weight: .semibold))
                     .lineLimit(1)
                 
                 HStack(spacing: 4) {
-                    Text(product.vendor)
+                    Text(uiState.vendor)
                         .foregroundStyle(Color.white)
                         .padding(.vertical, 2)
                         .padding(.horizontal, 6)
                         .background(.appBlue)
                         .cornerRadius(4)
                     Text("·")
-                    Text(product.productType)
+                    Text(uiState.productType)
                         .foregroundStyle(Color.gray)
                         .padding(.vertical, 2)
                         .padding(.horizontal, 6)
@@ -46,12 +46,12 @@ struct ProductCardView: View {
                 .foregroundColor(.secondary)
                 .lineLimit(1)
                 
-                Text(product.description)
+                Text(uiState.description)
                     .font(.system(size: 10))
                     .foregroundColor(.gray)
                     .lineLimit(1)
                 Spacer()
-                Text(product.price, format: .currency(code: "USD"))
+                Text(uiState.price, format: .currency(code: "USD"))
                     .font(.system(size: 12, weight: .bold))
                 HStack(spacing: 4) {
                     Text(uiState.oldPrice, format: .currency(code: "USD"))

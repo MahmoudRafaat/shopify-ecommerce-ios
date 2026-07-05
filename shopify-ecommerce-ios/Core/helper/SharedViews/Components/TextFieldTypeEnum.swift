@@ -11,7 +11,6 @@ enum TextFieldtype{
     case email
     case password
     case name
-    case address
     case number
     case phone
     case address
@@ -26,8 +25,8 @@ enum TextFieldtype{
             return "envelope.fill"
         case .password:
             return "lock.fill"
-        case .address: return "mappin.and.ellipse"
-                case .number: return "number.circle.fill"
+        case .number:
+            return "number.circle.fill"
         case .phone:
             return "phone.fill"
         case .address:

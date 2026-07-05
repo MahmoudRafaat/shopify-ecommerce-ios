@@ -13,7 +13,7 @@ struct MetafieldsResponse: Codable {
     let metafields: [MetafieldDTO]
 }
 
-struct MetafieldResponse: Codable {
+struct PaymentMetafieldResponse: Codable {
     let metafield: MetafieldDTO
 }
 

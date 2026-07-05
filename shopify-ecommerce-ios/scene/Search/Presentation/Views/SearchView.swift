@@ -18,7 +18,7 @@ struct SearchView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HeaderView(searchText: $viewModel.searchText, autoFocus: true)
+            HeaderView(searchText: "", autoFocus: true)
                 .background(Color(.systemBackground))
             chipBar
             contentView

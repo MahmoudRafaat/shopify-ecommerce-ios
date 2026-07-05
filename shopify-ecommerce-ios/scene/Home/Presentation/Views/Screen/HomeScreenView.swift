@@ -18,7 +18,7 @@ struct HomeScreenView: View {
         ScrollView {
             VStack(spacing: 24) {
                 
-                HeaderView(searchText: .constant(""), onSearchTap: {
+                HeaderView(searchText: "", onSearchTap: {
                     selectedTab = .search
                     
             },
