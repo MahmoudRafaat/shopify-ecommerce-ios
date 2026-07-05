@@ -55,6 +55,7 @@ struct HomeRootView: View {
                                  }
                              }
                     case .categoriesScreen(let categoryId):
+                        CollectionScreenView(id: categoryId)
                         Text("Categories View for ID: \(categoryId)")
                     case .settings:
                        SettingsView()
@@ -62,6 +63,7 @@ struct HomeRootView: View {
                     }
                 }
         }
+        .environment(coordinator)
     }
 }
 

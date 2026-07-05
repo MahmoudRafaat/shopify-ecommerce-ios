@@ -17,9 +17,7 @@ struct ProductsScrollView: View {
             HStack(spacing: 16) {
                 ForEach(Array(products.enumerated()), id: \.element.id) { index, product in
                     if product.isAvailabe == true {
-                        ProductCardView(product: product, onTap: {
-                            onProductTap(product.id)
-                        })
+                        ProductCardView(uiState: ProductUIState(product: product), onTap: {})
                             .opacity(isAnimating ? 1 : 0)
                             .scaleEffect(isAnimating ? 1 : 0.8)
                             .animation(
@@ -34,6 +32,7 @@ struct ProductsScrollView: View {
                             }
                     }
                 }
+                .frame(width: 170)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 20)
