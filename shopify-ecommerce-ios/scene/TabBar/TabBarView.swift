@@ -14,7 +14,7 @@ struct TabBarView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 
-                HomeRootView(selectedTab: $selectedTab)
+                HomeRootView(selectedTab: $selectedTab, viewModel: HomeFactory.makeHomeViewModel())
                     .tag(Tab.home)
                 
                 NavigationStack {
