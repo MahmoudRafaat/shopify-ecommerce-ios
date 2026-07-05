@@ -1,5 +1,5 @@
 //
-//  OrderDTO.swift
+//  PaymentOrder.swift
 //  shopify-ecommerce-ios
 //
 //  Created by albaraa alsayed on 19/01/1448 AH.
@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct OrderDTO : Decodable {
+struct PaymentOrder : Identifiable {
     let id: Int
-    let totalPrice : String
+    let total: String
+    let shipping: String
 }

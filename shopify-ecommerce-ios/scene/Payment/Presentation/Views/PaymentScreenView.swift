@@ -16,9 +16,9 @@ struct PaymentScreenView: View {
         ScrollView{
             VStack (alignment: .leading, spacing: 28){
                 VStack(spacing: 18){
-                    titleWithPrice(title: "Order Total", price: "20.00", color: .gray)
+                    titleWithPrice(title: "Order Total", price: "\(viewModel.totalPrice)", color: .gray)
                     titleWithPrice(title: "Shipping", price: "00.00", color: .gray)
-                    titleWithPrice(title: "Order Total", price: "20.00", color: .primary)
+                    titleWithPrice(title: "Order Total", price: "\(viewModel.totalPrice)", color: .primary)
                 }
                 Divider()
                 Text("Payment Method")
@@ -30,6 +30,9 @@ struct PaymentScreenView: View {
                 }
             }
             .padding(24)
+        }
+        .task {
+            await viewModel.getTotalPrice()
         }
         Spacer()
         CustomButton(text: "Checkout") {
@@ -78,5 +81,9 @@ struct PaymentScreenView: View {
 }
 
 #Preview {
-    PaymentScreenView(viewModel: PaymentViewModel())
+    let service : PaymentService = PaymentService()
+    let repository : PaymentRepo = PaymentRepoImpl(service: service)
+    let useCase : GetTotalPriceUseCase = GetTotalPriceUseCaseImp(repository: repository)
+    let viewModel : PaymentViewModel = PaymentViewModel(getTotalPriceUseCase: useCase)
+    PaymentScreenView(viewModel: viewModel)
 }
