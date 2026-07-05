@@ -12,7 +12,8 @@ final class PaymentFactory {
     static func makePaymentViewModel() -> PaymentViewModel {
         let service : PaymentService = PaymentService()
         let repository : PaymentRepo = PaymentRepoImpl(service: service)
-        let useCase : GetTotalPriceUseCase = GetTotalPriceUseCaseImp(repository: repository)
-        return PaymentViewModel(getTotalPriceUseCase: useCase)
+        let totalPriceUseCase : GetTotalPriceUseCase = GetTotalPriceUseCaseImp(repository: repository)
+        let paymentCardsUseCase : GetPaymentCardUseCase = GetPaymentCardUseCaseImp(repository: repository)
+        return PaymentViewModel(getTotalPriceUseCase: totalPriceUseCase, getPaymentCardUseCase: paymentCardsUseCase)
     }
 }
