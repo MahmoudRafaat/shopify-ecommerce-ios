@@ -11,6 +11,9 @@ import SwiftData
 @main
 struct shopify_ecommerce_iosApp: App {
     
+    // Checking internet Connction Variable
+    @State private var networkMonitor = NetworkMonitor()
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var sharedModelContainer: ModelContainer = {
@@ -42,5 +45,6 @@ struct shopify_ecommerce_iosApp: App {
             }
         }
         .modelContainer(sharedModelContainer)
+        .environment(networkMonitor)
     }
 }

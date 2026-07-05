@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TabBarView: View {
+    @Environment(NetworkMonitor.self) private var networkMonitor: NetworkMonitor
     @State private var selectedTab: Tab = .home
     
     var body: some View {
@@ -47,5 +48,7 @@ struct TabBarView: View {
 }
 
 #Preview {
+    @Previewable @State var networkMonitor = NetworkMonitor()
     TabBarView()
+        .environment(networkMonitor)
 }
