@@ -37,7 +37,7 @@ class SignupUseCase {
         
         let customerInput = CustomerInput(
             email: email,
-            phone: "+2" + phone,
+            phone: "+2" + phone
         )
         
         let customer = try await repository.createCustomerInShopify(customerInput: customerInput)

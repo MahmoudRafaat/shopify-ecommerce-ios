@@ -20,7 +20,11 @@ struct HomeScreenView: View {
                 
                 HeaderView(onSearchTap: {
                     selectedTab = .search
-                })
+                    
+            },
+                onMenuTap: {
+                      coordinator.goToSettings()
+                        })
                 
                 Text("All Featured")
                     .font(.title2)
@@ -89,7 +93,10 @@ struct HomeScreenView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 16)
                                     
-                                    ProductsScrollView(products: section.products)
+                                    ProductsScrollView(products: section.products,onProductTap: { productID in
+                                        coordinator.goToProductDetail(id: productID)
+                                        
+                                    })
                                 }
                             } else {
                                 EmptyView()
@@ -114,6 +121,9 @@ struct HomeScreenView: View {
 }
 
 #Preview {
-    HomeRootView(selectedTab: .constant(.home))
+    HomeRootView(
+        selectedTab: .constant(.home),
+        viewModel: HomeFactory.makeHomeViewModel()
+    )
 }
 

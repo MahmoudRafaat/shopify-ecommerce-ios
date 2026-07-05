@@ -10,6 +10,7 @@ import SwiftUI
 struct ProductsScrollView: View {
     let products: [Product]
     @State private var isAnimating = false
+    let onProductTap: (Int) -> Void
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -73,5 +74,5 @@ struct ProductsScrollView: View {
             isAvailabe: false,
             productType: "T-shirt"
         )
-    ])
+    ], onProductTap: {productID in print("Product id")})
 }
