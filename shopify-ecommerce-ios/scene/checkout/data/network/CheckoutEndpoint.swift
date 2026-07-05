@@ -7,6 +7,8 @@ enum CheckoutEndpoint: ApiEndpoint {
     case updateDraftOrder(id: Int, request: DraftOrderRequestWrapper)
     case completeDraftOrder(id: Int)
     case deleteDraftOrder(id: Int)
+    case getPriceRules
+    case getDiscountCodes(priceRuleId: Int)
     
     var path: String {
         switch self {
@@ -18,6 +20,10 @@ enum CheckoutEndpoint: ApiEndpoint {
             return "draft_orders/\(id)/complete.json"
         case .deleteDraftOrder(let id):
             return "draft_orders/\(id).json"
+        case .getPriceRules:
+            return "price_rules.json"
+        case .getDiscountCodes(let priceRuleId):
+            return "price_rules/\(priceRuleId)/discount_codes.json"
         }
     }
     
@@ -29,6 +35,8 @@ enum CheckoutEndpoint: ApiEndpoint {
             return .put
         case .deleteDraftOrder:
             return .delete
+        case .getPriceRules, .getDiscountCodes:
+            return .get
         }
     }
     
@@ -39,7 +47,7 @@ enum CheckoutEndpoint: ApiEndpoint {
             return try? encoder.encode(request)
         case .updateDraftOrder(_, let request):
             return try? encoder.encode(request)
-        case .completeDraftOrder, .deleteDraftOrder:
+        case .completeDraftOrder, .deleteDraftOrder, .getPriceRules, .getDiscountCodes:
             return nil
         }
     }

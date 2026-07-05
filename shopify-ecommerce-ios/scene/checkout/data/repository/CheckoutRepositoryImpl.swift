@@ -76,4 +76,52 @@ final class CheckoutRepositoryImpl: CheckoutRepository {
     func deleteDraftOrder(draftOrderId: Int) async throws {
         try await networkService.deleteDraftOrder(id: draftOrderId)
     }
+    
+    func fetchActiveDiscountCodes() async throws -> [String: PriceRuleResponse] {
+        let priceRulesWrapper = try await networkService.getPriceRules()
+        
+        let formatter = ISO8601DateFormatter()
+        let now = Date()
+        
+        let activePriceRules = priceRulesWrapper.priceRules.filter { rule in
+            guard let startsAtStr = rule.startsAt, let startsAt = formatter.date(from: startsAtStr) else {
+                return false
+            }
+            
+            if startsAt > now {
+                return false
+            }
+            
+            if let endsAtStr = rule.endsAt, let endsAt = formatter.date(from: endsAtStr) {
+                if endsAt <= now {
+                    return false
+                }
+            }
+            
+            return true
+        }
+        
+        return try await withThrowingTaskGroup(of: [DiscountCodeResponse]?.self, returning: [String: PriceRuleResponse].self) { group in
+            for rule in activePriceRules {
+                group.addTask {
+                    let discountCodesWrapper = try await self.networkService.getDiscountCodes(priceRuleId: rule.id)
+                    return discountCodesWrapper.discountCodes
+                }
+            }
+            
+            var discountCodeToPriceRule: [String: PriceRuleResponse] = [:]
+            
+            for try await discountCodes in group {
+                if let discountCodes = discountCodes {
+                    for codeResponse in discountCodes {
+                        if let matchingRule = activePriceRules.first(where: { $0.id == codeResponse.priceRuleId }) {
+                            discountCodeToPriceRule[codeResponse.code] = matchingRule
+                        }
+                    }
+                }
+            }
+            
+            return discountCodeToPriceRule
+        }
+    }
 }

@@ -8,4 +8,5 @@ protocol CheckoutRepository {
     func updateDraftOrderAddress(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse
     func removeLineItem(draftOrderId: Int, variantId: Int, currentLineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
     func deleteDraftOrder(draftOrderId: Int) async throws
+    func fetchActiveDiscountCodes() async throws -> [String: PriceRuleResponse]
 }

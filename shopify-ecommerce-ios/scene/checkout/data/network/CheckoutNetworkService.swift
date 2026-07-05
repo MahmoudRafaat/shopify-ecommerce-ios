@@ -5,6 +5,8 @@ protocol CheckoutNetworkServiceProtocol {
     func updateDraftOrder(id: Int, request: DraftOrderRequestWrapper) async throws -> DraftOrderResponseWrapper
     func completeDraftOrder(id: Int) async throws -> DraftOrderResponseWrapper
     func deleteDraftOrder(id: Int) async throws
+    func getPriceRules() async throws -> PriceRulesResponseWrapper
+    func getDiscountCodes(priceRuleId: Int) async throws -> DiscountCodesResponseWrapper
 }
 
 final class CheckoutNetworkService: CheckoutNetworkServiceProtocol {
@@ -29,6 +31,18 @@ final class CheckoutNetworkService: CheckoutNetworkServiceProtocol {
     func deleteDraftOrder(id: Int) async throws {
         let _: EmptyResponse = try await NetworkService.request(
             endpoint: CheckoutEndpoint.deleteDraftOrder(id: id)
+        )
+    }
+    
+    func getPriceRules() async throws -> PriceRulesResponseWrapper {
+        return try await NetworkService.request(
+            endpoint: CheckoutEndpoint.getPriceRules
+        )
+    }
+    
+    func getDiscountCodes(priceRuleId: Int) async throws -> DiscountCodesResponseWrapper {
+        return try await NetworkService.request(
+            endpoint: CheckoutEndpoint.getDiscountCodes(priceRuleId: priceRuleId)
         )
     }
 }

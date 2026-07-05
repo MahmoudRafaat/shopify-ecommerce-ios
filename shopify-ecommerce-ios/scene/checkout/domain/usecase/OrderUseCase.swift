@@ -35,6 +35,10 @@ protocol DeleteDraftOrderUseCase {
     func execute(draftOrderId: Int) async throws
 }
 
+protocol FetchActiveDiscountCodesUseCase {
+    func execute() async throws -> [String: PriceRuleResponse]
+}
+
 
 struct CreateDraftOrderUseCaseImpl: CreateDraftOrderUseCase {
     let repository: CheckoutRepository
@@ -100,6 +104,14 @@ struct DeleteDraftOrderUseCaseImpl: DeleteDraftOrderUseCase {
     
     func execute(draftOrderId: Int) async throws {
         try await repository.deleteDraftOrder(draftOrderId: draftOrderId)
+    }
+}
+
+struct FetchActiveDiscountCodesUseCaseImpl: FetchActiveDiscountCodesUseCase {
+    let repository: CheckoutRepository
+    
+    func execute() async throws -> [String: PriceRuleResponse] {
+        return try await repository.fetchActiveDiscountCodes()
     }
 }
 
