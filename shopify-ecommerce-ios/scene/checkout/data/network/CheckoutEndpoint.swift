@@ -7,6 +7,7 @@ enum CheckoutEndpoint: ApiEndpoint {
     case updateDraftOrder(id: Int, request: DraftOrderRequestWrapper)
     case completeDraftOrder(id: Int)
     case deleteDraftOrder(id: Int)
+    case getDraftOrder(id: Int)
     case removeDiscount(id: Int)
     case getPriceRules
     case getDiscountCodes(priceRuleId: Int)
@@ -19,7 +20,7 @@ enum CheckoutEndpoint: ApiEndpoint {
             return "draft_orders/\(id).json"
         case .completeDraftOrder(let id):
             return "draft_orders/\(id)/complete.json"
-        case .deleteDraftOrder(let id):
+        case .deleteDraftOrder(let id), .getDraftOrder(let id):
             return "draft_orders/\(id).json"
         case .removeDiscount(let id):
             return "draft_orders/\(id).json"
@@ -38,7 +39,7 @@ enum CheckoutEndpoint: ApiEndpoint {
             return .put
         case .deleteDraftOrder:
             return .delete
-        case .getPriceRules, .getDiscountCodes:
+        case .getPriceRules, .getDiscountCodes, .getDraftOrder:
             return .get
         }
     }
@@ -57,7 +58,7 @@ enum CheckoutEndpoint: ApiEndpoint {
                 ]
             ]
             return try? JSONSerialization.data(withJSONObject: parameters)
-        case .completeDraftOrder, .deleteDraftOrder, .getPriceRules, .getDiscountCodes:
+        case .completeDraftOrder, .deleteDraftOrder, .getPriceRules, .getDiscountCodes, .getDraftOrder:
             return nil
         }
     }

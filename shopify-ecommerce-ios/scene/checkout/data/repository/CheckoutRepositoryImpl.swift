@@ -82,6 +82,11 @@ final class CheckoutRepositoryImpl: CheckoutRepository {
         try await networkService.deleteDraftOrder(id: draftOrderId)
     }
     
+    func getDraftOrder(draftOrderId: Int) async throws -> DraftOrderResponse {
+        let response = try await networkService.getDraftOrder(id: draftOrderId)
+        return response.draftOrder
+    }
+    
     func fetchActiveDiscountCodes() async throws -> [String: PriceRuleResponse] {
         let priceRulesWrapper = try await networkService.getPriceRules()
         

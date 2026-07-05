@@ -27,7 +27,7 @@ protocol CheckoutViewModelProtocol {
     var selectedCoupon: PriceRuleResponse? { get set }
     var selectedCouponCode: String? { get set }
     
-    func createInitialDraftOrder(lineItems: [DraftLineItemRequest]) async
+    func loadOrCreateCart(lineItems: [DraftLineItemRequest]) async
     func updateQuantity(for variantId: Int, to newQuantity: Int) async
     func applyDiscount() async
     func removeDiscount() async

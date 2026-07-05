@@ -53,7 +53,7 @@ struct CheckoutView: View {
                 .environment(viewModel)
         }
         .task {
-            await viewModel.createInitialDraftOrder(lineItems: lineItems)
+            await viewModel.loadOrCreateCart(lineItems: lineItems)
         }
     }
 }

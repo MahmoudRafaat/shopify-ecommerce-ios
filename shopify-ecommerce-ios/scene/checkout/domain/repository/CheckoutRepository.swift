@@ -9,5 +9,6 @@ protocol CheckoutRepository {
     func removeDiscount(draftOrderId: Int) async throws -> DraftOrderResponse
     func removeLineItem(draftOrderId: Int, variantId: Int, currentLineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
     func deleteDraftOrder(draftOrderId: Int) async throws
+    func getDraftOrder(draftOrderId: Int) async throws -> DraftOrderResponse
     func fetchActiveDiscountCodes() async throws -> [String: PriceRuleResponse]
 }

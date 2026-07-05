@@ -9,6 +9,7 @@ import Foundation
 
 struct CheckoutUseCases {
     let createDraftOrder: CreateDraftOrderUseCase
+    let getDraftOrder: GetDraftOrderUseCase
     let updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCase
     let applyDiscount: ApplyDiscountUseCase
     let completeDraftOrder: CompleteDraftOrderUseCase

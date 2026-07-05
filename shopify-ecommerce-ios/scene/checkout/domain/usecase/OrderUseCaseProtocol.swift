@@ -11,6 +11,10 @@ protocol CreateDraftOrderUseCase {
     func execute(lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
 }
 
+protocol GetDraftOrderUseCase {
+    func execute(draftOrderId: Int) async throws -> DraftOrderResponse
+}
+
 protocol UpdateDraftOrderLineItemsUseCase {
     func execute(draftOrderId: Int, lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
 }

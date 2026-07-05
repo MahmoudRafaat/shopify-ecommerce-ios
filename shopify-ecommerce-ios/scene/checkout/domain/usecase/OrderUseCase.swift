@@ -16,6 +16,14 @@ struct CreateDraftOrderUseCaseImpl: CreateDraftOrderUseCase {
     }
 }
 
+struct GetDraftOrderUseCaseImpl: GetDraftOrderUseCase {
+    let repository: CheckoutRepository
+    
+    func execute(draftOrderId: Int) async throws -> DraftOrderResponse {
+        return try await repository.getDraftOrder(draftOrderId: draftOrderId)
+    }
+}
+
 
 
 struct UpdateDraftOrderLineItemsUseCaseImpl: UpdateDraftOrderLineItemsUseCase {

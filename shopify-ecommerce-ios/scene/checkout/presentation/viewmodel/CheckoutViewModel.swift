@@ -40,6 +40,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     
     init(useCases: CheckoutUseCases = CheckoutUseCases(
         createDraftOrder: CreateDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        getDraftOrder: GetDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
         updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCaseImpl(repository: CheckoutRepositoryImpl()),
         applyDiscount: ApplyDiscountUseCaseImpl(repository: CheckoutRepositoryImpl()),
         completeDraftOrder: CompleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
@@ -55,19 +56,33 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     // MARK: - Intentions
     
     @MainActor
-    func createInitialDraftOrder(lineItems: [DraftLineItemRequest]) async {
+    func loadOrCreateCart(lineItems: [DraftLineItemRequest]) async {
         self.cartLineItems = lineItems
         self.isLoading = true
         self.errorMessage = nil
         
         do {
             async let fetchCouponsTask = useCases.fetchActiveDiscountCodes.execute()
-            async let draftOrderTask = useCases.createDraftOrder.execute(lineItems: lineItems)
             
-            let (coupons, draftOrderResponse) = try await (fetchCouponsTask, draftOrderTask)
-            
+            let coupons = try await fetchCouponsTask
             self.activeCoupons = coupons
+            
+            if let savedCartId = CartSessionManager.shared.getCartId() {
+                do {
+                    let draftOrderResponse = try await useCases.getDraftOrder.execute(draftOrderId: savedCartId)
+                    updateUI(with: draftOrderResponse)
+                    self.isLoading = false
+                    return
+                } catch {
+                    CartSessionManager.shared.clearCartId()
+                }
+            }
+            
+            // Create a new draft order
+            let draftOrderResponse = try await useCases.createDraftOrder.execute(lineItems: lineItems)
+            CartSessionManager.shared.saveCartId(draftOrderResponse.id)
             updateUI(with: draftOrderResponse)
+            
         } catch {
             self.errorMessage = error.localizedDescription
         }
@@ -96,11 +111,11 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         self.isLoading = false
     }
     
-
+    
     @MainActor
     func applyDiscount() async {
-        guard let orderId = draftOrderId, 
-              let code = selectedCouponCode,
+        guard let orderId = draftOrderId,
+                let code = selectedCouponCode,
               let rule = selectedCoupon else { return }
         
         self.isLoading = true
@@ -168,6 +183,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
             if remainingItems.isEmpty {
                 // Last item removed — delete the entire draft order
                 try await useCases.deleteDraftOrder.execute(draftOrderId: orderId)
+                CartSessionManager.shared.clearCartId()
                 cartLineItems = []
                 draftOrderId = nil
                 orderTotal = "0.00"
@@ -202,6 +218,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         do {
             let response = try await useCases.completeDraftOrder.execute(draftOrderId: orderId)
             
+            CartSessionManager.shared.clearCartId()
             updateUI(with: response)
             print("Successfully completed draft order into an actual order!")
         } catch {
@@ -225,6 +242,11 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
             self.discountAmount = discount.amount
         } else {
             self.discountAmount = "0.00"
+        }
+        
+        self.cartLineItems = response.lineItems.compactMap { item in
+            guard let variantId = item.variantId else { return nil }
+            return DraftLineItemRequest(variantId: variantId, quantity: item.quantity)
         }
     }
 }
