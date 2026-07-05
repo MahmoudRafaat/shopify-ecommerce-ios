@@ -9,4 +9,5 @@ import Foundation
 
 protocol PaymentRepo {
     func getTotalPrice() async throws -> PaymentOrder
+    func getPaymentCard() async throws -> [PaymentCardNumber]
 }

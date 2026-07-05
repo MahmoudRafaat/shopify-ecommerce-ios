@@ -23,16 +23,17 @@ struct PaymentScreenView: View {
                 Divider()
                 Text("Payment Method")
                     .font(Font.system(size: 18, weight: .bold))
-                ForEach(0..<3, id: \.self) { paymentIndex in
-                    paymentButton(title: viewModel.paymentMethods[paymentIndex].numbers,
-                                  icon: viewModel.paymentMethods[paymentIndex].icon,
-                                  index: paymentIndex)
+                ForEach(viewModel.paymentMethods.indices, id: \.self) { index in
+                    paymentButton(title: viewModel.paymentMethods[index].numbers,
+                                  icon: viewModel.paymentMethods[index].icon,
+                                  index: index)
                 }
             }
             .padding(24)
         }
         .task {
             await viewModel.getTotalPrice()
+            await viewModel.getPaymentCards()
         }
         Spacer()
         CustomButton(text: "Checkout") {
@@ -84,6 +85,7 @@ struct PaymentScreenView: View {
     let service : PaymentService = PaymentService()
     let repository : PaymentRepo = PaymentRepoImpl(service: service)
     let useCase : GetTotalPriceUseCase = GetTotalPriceUseCaseImp(repository: repository)
-    let viewModel : PaymentViewModel = PaymentViewModel(getTotalPriceUseCase: useCase)
+    let paymentUseCase : GetPaymentCardUseCase = GetPaymentCardUseCaseImp(repository: repository)
+    let viewModel : PaymentViewModel = PaymentViewModel(getTotalPriceUseCase: useCase, getPaymentCardUseCase: paymentUseCase)
     PaymentScreenView(viewModel: viewModel)
 }

@@ -10,11 +10,15 @@ import Alamofire
 
 enum PaymentEndPoint: ApiEndpoint {
     case draftOrder(id: Int)
+    case paymentCard(id: Int)
 
     var path: String {
         switch self {
         case .draftOrder(let id):
-            return "/draft_orders/\(id).json"
+            return "draft_orders/\(id).json"
+            
+        case .paymentCard(let id):
+            return "customers/\(id)/metafields.json?namespace=custom&key=payment_details"
         }
     }
 
