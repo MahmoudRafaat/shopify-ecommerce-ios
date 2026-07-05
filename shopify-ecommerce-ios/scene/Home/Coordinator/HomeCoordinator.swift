@@ -14,6 +14,7 @@ final class HomeCoordinator {
     enum Destination: Hashable {
         case productDetail(productId: Int)
         case categoriesScreen(categoryId: Int)
+        case settings
     }
     
     var navigationPath = NavigationPath()
@@ -24,5 +25,9 @@ final class HomeCoordinator {
     
     func goToCategoriesScreen(id: Int) {
         navigationPath.append(Destination.categoriesScreen(categoryId: id))
+    }
+    func goToSettings() {
+        print("Pushing from coordinator:", ObjectIdentifier(self))
+        navigationPath.append(Destination.settings)
     }
 }

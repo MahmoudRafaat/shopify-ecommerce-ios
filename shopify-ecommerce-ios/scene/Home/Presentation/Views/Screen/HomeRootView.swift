@@ -26,6 +26,9 @@ struct HomeRootView: View {
                         Text("Product Detail View for ID: \(productId)")
                     case .categoriesScreen(let categoryId):
                         Text("Categories View for ID: \(categoryId)")
+                    case .settings:
+                       SettingsView()
+                        .navigationBarBackButtonHidden(false)
                     }
                 }
         }

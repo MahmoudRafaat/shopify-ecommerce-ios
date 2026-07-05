@@ -20,7 +20,11 @@ struct HomeScreenView: View {
                 
                 HeaderView(onSearchTap: {
                     selectedTab = .search
-                })
+                    
+            },
+                onMenuTap: {
+                      coordinator.goToSettings()
+                        })
                 
                 Text("All Featured")
                     .font(.title2)
