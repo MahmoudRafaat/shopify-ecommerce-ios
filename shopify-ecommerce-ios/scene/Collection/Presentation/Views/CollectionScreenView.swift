@@ -25,10 +25,11 @@ struct CollectionScreenView: View {
         ScrollView{
             LazyVGrid(columns: columns){
                 ForEach(0..<viewModel.products.count, id: \.self) { index in
-                    ProductCardView(product: viewModel.products[index]) {
+                    ProductCardView(uiState: ProductUIState(product: viewModel.products[index]))
+                    {
                         
                     }
-                }
+                }.padding(.bottom, 16)
             }
             .padding(16)
         }
