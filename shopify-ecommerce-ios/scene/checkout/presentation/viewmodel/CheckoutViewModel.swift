@@ -46,7 +46,8 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         updateDraftOrderAddress: UpdateDraftOrderAddressUseCaseImpl(repository: CheckoutRepositoryImpl()),
         removeLineItem: RemoveLineItemUseCaseImpl(repository: CheckoutRepositoryImpl()),
         deleteDraftOrder: DeleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        fetchActiveDiscountCodes: FetchActiveDiscountCodesUseCaseImpl(repository: CheckoutRepositoryImpl())
+        fetchActiveDiscountCodes: FetchActiveDiscountCodesUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        removeDiscount: RemoveDiscountUseCaseImpl(repository: CheckoutRepositoryImpl())
     )) {
         self.useCases = useCases
     }
@@ -115,6 +116,23 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         } catch {
             self.errorMessage = error.localizedDescription
         }
+        self.isLoading = false
+    }
+    
+    @MainActor
+    func removeDiscount() async {
+        guard let orderId = draftOrderId else { return }
+        
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        do {
+            let response = try await useCases.removeDiscount.execute(draftOrderId: orderId)
+            updateUI(with: response)
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+        
         self.isLoading = false
     }
     

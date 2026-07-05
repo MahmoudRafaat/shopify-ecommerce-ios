@@ -41,7 +41,7 @@ struct shopify_ecommerce_iosApp: App {
             //                }
             //            }
             CheckoutView(lineItems: [
-                DraftLineItemRequest(variantId: 46128795517064, quantity: 1)
+                DraftLineItemRequest(variantId: 46128795517064, quantity: 1),
 //                DraftLineItemRequest(variantId: 8955349303432, quantity: 2)
             ])
         }

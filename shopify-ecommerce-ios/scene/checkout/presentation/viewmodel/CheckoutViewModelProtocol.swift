@@ -30,6 +30,7 @@ protocol CheckoutViewModelProtocol {
     func createInitialDraftOrder(lineItems: [DraftLineItemRequest]) async
     func updateQuantity(for variantId: Int, to newQuantity: Int) async
     func applyDiscount() async
+    func removeDiscount() async
     func proceedToPayment() async
     func updateAddress(address: DraftAddressRequest) async
     func removeLineItem(variantId: Int) async

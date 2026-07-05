@@ -7,38 +7,6 @@
 
 import Foundation
 
-protocol CreateDraftOrderUseCase {
-    func execute(lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
-}
-
-protocol UpdateDraftOrderLineItemsUseCase {
-    func execute(draftOrderId: Int, lineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
-}
-
-protocol ApplyDiscountUseCase {
-    func execute(draftOrderId: Int, discountCode: String, priceRule: PriceRuleResponse) async throws -> DraftOrderResponse
-}
-
-protocol CompleteDraftOrderUseCase {
-    func execute(draftOrderId: Int) async throws -> DraftOrderResponse
-}
-
-protocol UpdateDraftOrderAddressUseCase {
-    func execute(draftOrderId: Int, address: DraftAddressRequest) async throws -> DraftOrderResponse
-}
-
-protocol RemoveLineItemUseCase {
-    func execute(draftOrderId: Int, variantId: Int, currentLineItems: [DraftLineItemRequest]) async throws -> DraftOrderResponse
-}
-
-protocol DeleteDraftOrderUseCase {
-    func execute(draftOrderId: Int) async throws
-}
-
-protocol FetchActiveDiscountCodesUseCase {
-    func execute() async throws -> [String: PriceRuleResponse]
-}
-
 
 struct CreateDraftOrderUseCaseImpl: CreateDraftOrderUseCase {
     let repository: CheckoutRepository
@@ -74,6 +42,14 @@ struct ApplyDiscountUseCaseImpl: ApplyDiscountUseCase {
             valueType: priceRule.valueType
         )
         return try await repository.applyDiscount(draftOrderId: draftOrderId, discount: discount)
+    }
+}
+
+struct RemoveDiscountUseCaseImpl: RemoveDiscountUseCase {
+    let repository: CheckoutRepository
+    
+    func execute(draftOrderId: Int) async throws -> DraftOrderResponse {
+        return try await repository.removeDiscount(draftOrderId: draftOrderId)
     }
 }
 

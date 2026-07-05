@@ -19,6 +19,9 @@ struct CheckoutCouponView: View {
                 Spacer()
                 
                 Button(action: {
+                    Task {
+                        await viewModel.removeDiscount()
+                    }
                     viewModel.selectedCouponCode = nil
                     viewModel.selectedCoupon = nil
                 }) {

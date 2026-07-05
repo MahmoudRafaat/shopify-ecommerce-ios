@@ -16,5 +16,6 @@ struct CheckoutUseCases {
     let removeLineItem: RemoveLineItemUseCase
     let deleteDraftOrder: DeleteDraftOrderUseCase
     let fetchActiveDiscountCodes: FetchActiveDiscountCodesUseCase
+    let removeDiscount: RemoveDiscountUseCase
 }
 

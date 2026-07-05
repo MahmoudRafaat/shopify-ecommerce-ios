@@ -7,6 +7,7 @@ enum CheckoutEndpoint: ApiEndpoint {
     case updateDraftOrder(id: Int, request: DraftOrderRequestWrapper)
     case completeDraftOrder(id: Int)
     case deleteDraftOrder(id: Int)
+    case removeDiscount(id: Int)
     case getPriceRules
     case getDiscountCodes(priceRuleId: Int)
     
@@ -20,6 +21,8 @@ enum CheckoutEndpoint: ApiEndpoint {
             return "draft_orders/\(id)/complete.json"
         case .deleteDraftOrder(let id):
             return "draft_orders/\(id).json"
+        case .removeDiscount(let id):
+            return "draft_orders/\(id).json"
         case .getPriceRules:
             return "price_rules.json"
         case .getDiscountCodes(let priceRuleId):
@@ -31,7 +34,7 @@ enum CheckoutEndpoint: ApiEndpoint {
         switch self {
         case .createDraftOrder:
             return .post
-        case .updateDraftOrder, .completeDraftOrder:
+        case .updateDraftOrder, .completeDraftOrder, .removeDiscount:
             return .put
         case .deleteDraftOrder:
             return .delete
@@ -47,6 +50,13 @@ enum CheckoutEndpoint: ApiEndpoint {
             return try? encoder.encode(request)
         case .updateDraftOrder(_, let request):
             return try? encoder.encode(request)
+        case .removeDiscount:
+            let parameters: [String: Any] = [
+                "draft_order": [
+                    "applied_discount": NSNull()
+                ]
+            ]
+            return try? JSONSerialization.data(withJSONObject: parameters)
         case .completeDraftOrder, .deleteDraftOrder, .getPriceRules, .getDiscountCodes:
             return nil
         }
