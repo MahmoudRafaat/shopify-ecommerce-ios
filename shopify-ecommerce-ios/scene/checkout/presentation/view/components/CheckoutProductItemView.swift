@@ -1,0 +1,52 @@
+import SwiftUI
+
+struct CheckoutProductItemView: View {
+    var body: some View {
+        HStack(alignment: .top, spacing: 16) {
+            // Product Image
+            Image(.checkout) // Assuming there's a placeholder in assets
+                .resizable()
+                .scaledToFill()
+                .frame(width: 125, height: 155)
+                .cornerRadius(8)
+                .clipped()
+            
+            // Product Details
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Women's Casual Wear")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                
+                Text("Checked Single-Breasted Blazer")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .fixedSize(horizontal: false, vertical: true)
+                
+                HStack(spacing: 12) {
+                    CheckoutDropdownView(title: "Size", value: "42") {}
+                    CheckoutDropdownView(title: "Qty", value: "1") {}
+                }
+                .font(.footnote)
+                
+                HStack(spacing: 4) {
+                    Text("Delivery by")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+                    Text("10 May 2XXX")
+                        .font(.footnote)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                }
+                .padding(.top, 4)
+            }
+            
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+    }
+}
+
+#Preview {
+    CheckoutProductItemView()
+}
