@@ -109,6 +109,7 @@ class LoginViewModel: LoginViewModelProtocol {
         }
         
         UserDefaults.standard.set(email, forKey: "user_email")
+        UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)
     }
 }
 

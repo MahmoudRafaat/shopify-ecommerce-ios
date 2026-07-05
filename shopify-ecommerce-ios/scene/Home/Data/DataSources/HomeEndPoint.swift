@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-enum HomeEndpoint: Endpoint {
+enum HomeEndpoint: ApiEndpoint {
     case products
     case categories
     
@@ -16,11 +16,14 @@ enum HomeEndpoint: Endpoint {
         switch self {
         case .products:
             return "products.json"
-        case .categories
+        case .categories:
             return "custom_collections.json"
         }
     }
     var method: Alamofire.HTTPMethod {
         return .get
+    }
+    var body: Data? {
+        nil
     }
 }

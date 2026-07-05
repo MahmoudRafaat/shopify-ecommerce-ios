@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct CheckoutBottomBar: View {
-    var onProceedToPayment: (() -> Void)? = nil
+    @Environment(CheckoutViewModel.self) var viewModel
     
     var body: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("₹ 7,000.00")
+                Text("\(viewModel.orderTotal)")
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
@@ -22,7 +22,11 @@ struct CheckoutBottomBar: View {
             Spacer()
             
             CustomButton(text: "Proceed to Payment"){
-                // handle payment action
+                guard let orderID = viewModel.draftOrderId else {
+                    print("Draft order ID is nil")
+                    return
+                }
+                // Navigate to the payment view with the draft order ID
             }
             .padding(.trailing, 16)
         }

@@ -43,6 +43,10 @@ class LoginUseCase {
             throw LoginError.shopifyCustomerNotFound
         }
         
+        if let customerId = customer.id {
+            UserDefaults.standard.set(customerId, forKey: AppConstants.customerId)
+        }
+        
         return LoginResult(
             firebaseUser: user,
             shopifyCustomer: customer

@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct CheckoutOrderTotalView: View {
+    @Environment(CheckoutViewModel.self) var viewModel
+    
     var body: some View {
         VStack(spacing: 8) {
-            CheckoutTextRowView(title: "Order Total", value: "₹ 7,000.00", font: .headline)
+            CheckoutTextRowView(title: "Order Total", value: "\(viewModel.orderTotal)", font: .headline)
             
             HStack(spacing: 8) {
                 Text("EMI Available")
