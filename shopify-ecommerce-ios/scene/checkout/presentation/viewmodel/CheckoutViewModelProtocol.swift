@@ -13,6 +13,7 @@ protocol CheckoutViewModelProtocol {
     var draftOrderId: Int? { get }
     var orderTotal: String { get }
     var subtotal: String { get }
+    var originalSubtotal: String { get }
     var tax: String { get }
     var discountAmount: String { get }
     var cartLineItems: [DraftLineItemRequest] { get }
@@ -21,9 +22,14 @@ protocol CheckoutViewModelProtocol {
     var isAddressSheetPresented: Bool { get set }
     var isOrderDeleted: Bool { get }
     
+    var activeCoupons: [String: PriceRuleResponse] { get }
+    var isCouponSheetPresented: Bool { get set }
+    var selectedCoupon: PriceRuleResponse? { get set }
+    var selectedCouponCode: String? { get set }
+    
     func createInitialDraftOrder(lineItems: [DraftLineItemRequest]) async
     func updateQuantity(for variantId: Int, to newQuantity: Int) async
-    func applyDiscount(code: String) async
+    func applyDiscount() async
     func proceedToPayment() async
     func updateAddress(address: DraftAddressRequest) async
     func removeLineItem(variantId: Int) async

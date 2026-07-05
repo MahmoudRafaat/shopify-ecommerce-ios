@@ -48,6 +48,10 @@ struct CheckoutView: View {
             AddAddressSheet()
                 .environment(viewModel)
         }
+        .sheet(isPresented: Bindable(viewModel).isCouponSheetPresented) {
+            SelectCouponSheet()
+                .environment(viewModel)
+        }
         .task {
             await viewModel.createInitialDraftOrder(lineItems: lineItems)
         }

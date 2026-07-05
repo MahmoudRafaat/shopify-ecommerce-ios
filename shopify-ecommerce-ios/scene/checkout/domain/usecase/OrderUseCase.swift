@@ -16,7 +16,7 @@ protocol UpdateDraftOrderLineItemsUseCase {
 }
 
 protocol ApplyDiscountUseCase {
-    func execute(draftOrderId: Int, discountCode: String) async throws -> DraftOrderResponse
+    func execute(draftOrderId: Int, discountCode: String, priceRule: PriceRuleResponse) async throws -> DraftOrderResponse
 }
 
 protocol CompleteDraftOrderUseCase {
@@ -63,13 +63,15 @@ struct UpdateDraftOrderLineItemsUseCaseImpl: UpdateDraftOrderLineItemsUseCase {
 struct ApplyDiscountUseCaseImpl: ApplyDiscountUseCase {
     let repository: CheckoutRepository
     
-    func execute(draftOrderId: Int, discountCode: String) async throws -> DraftOrderResponse {
+    func execute(draftOrderId: Int, discountCode: String, priceRule: PriceRuleResponse) async throws -> DraftOrderResponse {
+        let cleanValue = priceRule.value.replacingOccurrences(of: "-", with: "")
+        
         let discount = DraftAppliedDiscountRequest(
             description: "Discount code: \(discountCode)",
-            value: "10.0", // Dummy value
+            value: cleanValue,
             title: discountCode,
-            amount: "10.00",
-            valueType: "percentage" // Can be "fixed_amount" or "percentage"
+            amount: nil,
+            valueType: priceRule.valueType
         )
         return try await repository.applyDiscount(draftOrderId: draftOrderId, discount: discount)
     }

@@ -22,6 +22,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     var draftOrderId: Int?
     var orderTotal: String = "0.00"
     var subtotal: String = "0.00"
+    var originalSubtotal: String = "0.00"
     var tax: String = "0.00"
     var discountAmount: String = "0.00"
     
@@ -31,6 +32,12 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     var isAddressSheetPresented: Bool = false
     var isOrderDeleted: Bool = false
     
+    // Coupons state
+    var activeCoupons: [String: PriceRuleResponse] = [:]
+    var isCouponSheetPresented: Bool = false
+    var selectedCoupon: PriceRuleResponse?
+    var selectedCouponCode: String?
+    
     init(useCases: CheckoutUseCases = CheckoutUseCases(
         createDraftOrder: CreateDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
         updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCaseImpl(repository: CheckoutRepositoryImpl()),
@@ -38,7 +45,8 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         completeDraftOrder: CompleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
         updateDraftOrderAddress: UpdateDraftOrderAddressUseCaseImpl(repository: CheckoutRepositoryImpl()),
         removeLineItem: RemoveLineItemUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        deleteDraftOrder: DeleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl())
+        deleteDraftOrder: DeleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
+        fetchActiveDiscountCodes: FetchActiveDiscountCodesUseCaseImpl(repository: CheckoutRepositoryImpl())
     )) {
         self.useCases = useCases
     }
@@ -52,8 +60,13 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         self.errorMessage = nil
         
         do {
-            let response = try await useCases.createDraftOrder.execute(lineItems: lineItems)
-            updateUI(with: response)
+            async let fetchCouponsTask = useCases.fetchActiveDiscountCodes.execute()
+            async let draftOrderTask = useCases.createDraftOrder.execute(lineItems: lineItems)
+            
+            let (coupons, draftOrderResponse) = try await (fetchCouponsTask, draftOrderTask)
+            
+            self.activeCoupons = coupons
+            updateUI(with: draftOrderResponse)
         } catch {
             self.errorMessage = error.localizedDescription
         }
@@ -84,8 +97,10 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     
 
     @MainActor
-    func applyDiscount(code: String) async {
-        guard let orderId = draftOrderId, !code.isEmpty else { return }
+    func applyDiscount() async {
+        guard let orderId = draftOrderId, 
+              let code = selectedCouponCode,
+              let rule = selectedCoupon else { return }
         
         self.isLoading = true
         self.errorMessage = nil
@@ -93,13 +108,13 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         do {
             let response = try await useCases.applyDiscount.execute(
                 draftOrderId: orderId,
-                discountCode: code
+                discountCode: code,
+                priceRule: rule
             )
             updateUI(with: response)
         } catch {
             self.errorMessage = error.localizedDescription
         }
-        
         self.isLoading = false
     }
     
@@ -139,6 +154,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
                 draftOrderId = nil
                 orderTotal = "0.00"
                 subtotal = "0.00"
+                originalSubtotal = "0.00"
                 tax = "0.00"
                 discountAmount = "0.00"
                 isOrderDeleted = true
@@ -181,6 +197,11 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         self.subtotal = response.subtotalPrice
         self.tax = response.totalTax
         self.orderTotal = response.totalPrice
+        
+        let totalItemsPrice = response.lineItems.reduce(0.0) { sum, item in
+            sum + ((Double(item.price) ?? 0.0) * Double(item.quantity))
+        }
+        self.originalSubtotal = String(format: "%.2f", totalItemsPrice)
         
         if let discount = response.appliedDiscount {
             self.discountAmount = discount.amount

@@ -53,7 +53,7 @@ struct DraftAppliedDiscountRequest: Codable {
     let description: String
     let value: String
     let title: String
-    let amount: String
+    let amount: String?
     let valueType: String // "fixed_amount" or "percentage"
     
     enum CodingKeys: String, CodingKey {
