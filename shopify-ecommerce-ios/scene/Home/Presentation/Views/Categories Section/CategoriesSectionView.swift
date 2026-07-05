@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct CategoriesSectionView: View {
-    let categories: [Category]
+    @Environment(HomeCoordinator.self) private var coordinator
     
+    let categories: [Category]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 16) {
                 ForEach(categories) { category in
-                    CategoryItem(category: category)
+                    CategoryItem(category: category) {
+                        coordinator.goToCategoriesScreen(id: category.id)
+                    }
                 }
             }
             .padding( 16)
@@ -37,4 +40,5 @@ struct CategoriesSectionView: View {
                                         Category(id: 3,title: "Kids", imageName: "category-image"),
                                         Category(id: 4,title: "Mens", imageName: "category-image"),
                                         Category(id: 5,title: "Womens", imageName: "category-image")])
+    .environment(HomeCoordinator())
 }

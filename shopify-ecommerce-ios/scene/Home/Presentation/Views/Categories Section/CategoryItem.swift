@@ -10,7 +10,7 @@ import Kingfisher
 
 struct CategoryItem: View {
     let category: Category
-    
+    let action : () -> Void
     var body: some View {
         VStack(spacing: 8) {
             
@@ -26,11 +26,17 @@ struct CategoryItem: View {
                 .foregroundStyle(.black)
         }
         .frame(width: 80)
+        .onTapGesture {
+            action()
+        }
     }
 }
 
 #Preview {
     CategoryItem(category: Category(
         id: 1,
-        title: "Beauty", imageName: "category-image"))
+        title: "Beauty", imageName: "category-image")
+    ) {
+        
+    }
 }
