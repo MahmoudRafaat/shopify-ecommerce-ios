@@ -33,4 +33,14 @@ struct ProductUIState : Identifiable {
         self.isAvailabe = product.isAvailabe
         self.productType = product.productType
     }
+    
+    init(product: ProductCollection) {
+        self.id = product.id
+        self.image = product.image
+        self.name = product.name
+        self.description = product.description
+        self.price = product.price
+        self.isAvailabe = product.isAvailabe
+        self.productType = product.productType
+    }
 }

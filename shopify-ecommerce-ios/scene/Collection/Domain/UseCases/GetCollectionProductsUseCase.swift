@@ -8,7 +8,7 @@
 import Foundation
 
 protocol GetCollectionProductsUseCase {
-    func execute(collectionId: Int) async throws -> [Product]
+    func execute(collectionId: Int) async throws -> [ProductCollection]
 }
 
 class GetCollectionProductsUseCaseImp: GetCollectionProductsUseCase {
@@ -18,7 +18,7 @@ class GetCollectionProductsUseCaseImp: GetCollectionProductsUseCase {
         self.repository = repository
     }
     
-    func execute(collectionId: Int) async throws -> [Product] {
+    func execute(collectionId: Int) async throws -> [ProductCollection] {
         try await repository.getCollectionProducts(collectionId: collectionId)
     }
 }

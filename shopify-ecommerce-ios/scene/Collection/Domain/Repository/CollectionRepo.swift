@@ -8,5 +8,5 @@
 import Foundation
 
 protocol CollectionRepo {
-    func getCollectionProducts(collectionId: Int) async throws -> [Product]
+    func getCollectionProducts(collectionId: Int) async throws -> [ProductCollection]
 }

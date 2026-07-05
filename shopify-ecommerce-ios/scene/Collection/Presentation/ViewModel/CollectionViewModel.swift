@@ -10,7 +10,7 @@ import Foundation
 @Observable
 class CollectionViewModel {
     let getCollectionProductsUseCase: GetCollectionProductsUseCase
-    private(set) var products : [Product] = []
+    private(set) var products : [ProductCollection] = []
     
     var collcetionId : Int?
     
