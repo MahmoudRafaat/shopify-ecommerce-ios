@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-struct AddressSection: View {
+struct AddressProfileSection: View {
     let uiState: ProfileUIState
     @Binding var isEditing: Bool
   

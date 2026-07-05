@@ -53,7 +53,7 @@ struct ProfileDetailsView: View {
                     
                     Divider().padding(.horizontal, 28)
                     
-                    AddressSection(
+                    AddressProfileSection(
                         uiState: viewModel.uiState,
                         isEditing: $isEditingAddress,
                         tempAddress1: $viewModel.tempAddress1,
