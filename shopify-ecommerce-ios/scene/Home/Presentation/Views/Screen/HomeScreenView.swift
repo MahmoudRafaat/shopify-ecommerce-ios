@@ -18,7 +18,7 @@ struct HomeScreenView: View {
         ScrollView {
             VStack(spacing: 24) {
                 
-                HeaderView(onSearchTap: {
+                HeaderView(searchText: .constant(""), onSearchTap: {
                     selectedTab = .search
                 })
                 
@@ -29,37 +29,20 @@ struct HomeScreenView: View {
                     .padding(.horizontal, 16)
                 
                 if let error = viewModel.errorMessage {
-                    VStack(spacing: 12) {
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .font(.system(size: 40))
-                            .foregroundColor(.red)
-                        
-                        Text("Oops! Something went wrong.")
-                            .font(.headline)
-                        
-                        Text(error)
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                        
-                        Button(action: {
+                    ContentUnavailableView {
+                        Label("Oops.. Something went wrong.", systemImage: "exclamationmark.triangle.fill")
+                    } description: {
+                        Text("Check your internet connection and try again.")
+                    } actions: {
+                        Button("Try Again") {
                             Task {
                                 await viewModel.fetchData()
                             }
-                        }) {
-                            Text("Try Again")
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 12)
-                                .background(Color.blue)
-                                .cornerRadius(8)
                         }
-                        .padding(.top, 8)
+                        .buttonStyle(.borderedProminent)
+                        .tint(.appBlue)
+                        .controlSize(.regular)
                     }
-                    .padding(.top, 32)
-                    
                 } else {
                     if viewModel.isCategoriesLoading {
                         ProgressView()

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HeaderView: View {
-    @State var searchText = ""
+    @Binding var searchText: String
 
     var autoFocus: Bool = false
     var onSearchTap: (() -> Void)? = nil
@@ -69,5 +69,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView(searchText: "", autoFocus: false)
+    HeaderView(searchText: .constant(""), autoFocus: false)
 }
