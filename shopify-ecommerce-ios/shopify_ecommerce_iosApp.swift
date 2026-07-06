@@ -34,13 +34,15 @@ struct shopify_ecommerce_iosApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if !hasSeenOnboarding {
-                OnboardingScreen()
-            } else if isLoggedIn {
-                TabBarView()
-            } else {
-                NavigationStack {
-                    SignupView(viewmodel: SignupViewModel())
+            AnimatedSplashScreen {
+                if !hasSeenOnboarding {
+                    OnboardingScreen()
+                } else if isLoggedIn {
+                    TabBarView()
+                } else {
+                    NavigationStack {
+                        SignupView(viewmodel: SignupViewModel())
+                    }
                 }
             }
         }
