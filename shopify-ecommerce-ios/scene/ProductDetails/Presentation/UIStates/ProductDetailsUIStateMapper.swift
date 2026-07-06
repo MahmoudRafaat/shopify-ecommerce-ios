@@ -52,7 +52,7 @@ extension ProductDetails {
             actionsSection: ProductActionsState(
                 cartTitle: "Add to Cart",
                 buyTitle: "Buy Now"
-            ),
+            )
 
 //            similarProducts: []
         )

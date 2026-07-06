@@ -25,5 +25,11 @@ struct MetafieldDTO: Codable {
     let type: String
     let createdAt: String?
     let updatedAt: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, namespace, key, value, type
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
 }
 
