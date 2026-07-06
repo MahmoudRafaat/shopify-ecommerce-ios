@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct CheckoutViewBody: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+struct CartViewBody: View {
+    @Environment(CartViewModel.self) var viewModel
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -43,5 +43,5 @@ struct CheckoutViewBody: View {
 }
 
 #Preview {
-    CheckoutViewBody()
+    CartViewBody()
 }

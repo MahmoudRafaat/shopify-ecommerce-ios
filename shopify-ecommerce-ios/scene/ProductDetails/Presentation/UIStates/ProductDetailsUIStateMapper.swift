@@ -11,7 +11,11 @@ extension ProductDetails {
 
     func toUIState() -> ProductDetailsUIState {
 
-        ProductDetailsUIState(
+        let variantMap = Dictionary(
+            uniqueKeysWithValues: variants.map { ($0.title, $0.id) }
+        )
+
+        return ProductDetailsUIState(
 
             imageSection: ProductImageSectionState(
                 images: images.map(\.src),
@@ -20,7 +24,8 @@ extension ProductDetails {
 
             sizeSection: ProductSizeSectionState(
                 selectedSize: variants.first?.title ?? "",
-                availableSizes: variants.map(\.title)
+                availableSizes: variants.map(\.title),
+                variantMap: variantMap
             ),
 
             infoSection: ProductInfoSectionState(
@@ -53,6 +58,9 @@ extension ProductDetails {
                 cartTitle: "Add to Cart",
                 buyTitle: "Buy Now"
             )
+
+            selectedVariantId: variants.first?.id,
+            firstImageUrl: images.first?.src
 
 //            similarProducts: []
         )

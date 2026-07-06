@@ -1,16 +1,10 @@
 import SwiftUI
 
 struct CheckoutNavigationBar: View {
-    var title: String = "Shopping Bag"
-    var onBack: (() -> Void)? = nil
-    var onWishlist: (() -> Void)? = nil
+    var title: String = "Shopping Cart"
     
     var body: some View {
         HStack {
-            CheckoutIconButton(iconName: "chevron.left") {
-                onBack?()
-            }
-            
             Spacer()
             
             Text(title)
@@ -18,10 +12,6 @@ struct CheckoutNavigationBar: View {
                 .fontWeight(.bold)
             
             Spacer()
-            
-            CheckoutIconButton(iconName: "heart") {
-                onWishlist?()
-            }
         }
         .padding(.horizontal)
         .padding(.top, 12)

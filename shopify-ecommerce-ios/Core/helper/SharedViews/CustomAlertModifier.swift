@@ -9,20 +9,20 @@ import SwiftUI
 
 struct CustomAlertModifier: ViewModifier {
     let title: String
-    @Binding var errorMessage: String?
+    @Binding var message: String?
     
     func body(content: Content) -> some View {
         content
             .alert(
                 title,
                 isPresented: Binding(
-                    get: { errorMessage != nil },
-                    set: { newValue in if !newValue { errorMessage = nil } }
+                    get: { message != nil },
+                    set: { newValue in if !newValue { message = nil } }
                 )
             ) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text(errorMessage ?? "Unknown Error occurred.")
+                Text(message ?? "Unknown Error occurred.")
             }
     }
 }
@@ -30,6 +30,6 @@ struct CustomAlertModifier: ViewModifier {
 
 extension View {
     func showCustomAlert(title: String, errorMessage: Binding<String?>) -> some View {
-        self.modifier(CustomAlertModifier(title: title, errorMessage: errorMessage))
+        self.modifier(CustomAlertModifier(title: title, message: errorMessage))
     }
 }

@@ -11,7 +11,7 @@ import SwiftUI
 
 
 @Observable
-final class CheckoutViewModel: CheckoutViewModelProtocol {
+final class CartViewModel: CartViewModelProtocol {
     
     private let useCases: CheckoutUseCases
     
@@ -75,7 +75,30 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
                     if draftOrderResponse.status == "completed" {
                         throw NSError(domain: "CartCompleted", code: 400, userInfo: nil)
                     }
-                    updateUI(with: draftOrderResponse)
+                    
+                    let existingVariantIds = Set(draftOrderResponse.lineItems.map { $0.id })
+                    let newProducts = products.filter { !existingVariantIds.contains($0.variantId) }
+                    
+                    if !newProducts.isEmpty {
+                        var combinedUIItems = draftOrderResponse.lineItems
+                        for product in newProducts {
+                            let dummyUIItem = OrderItemUIModel(
+                                id: product.variantId,
+                                title: "",
+                                variantTitle: "",
+                                price: "0",
+                                quantity: product.quantity,
+                                imageUrl: product.imageUrl
+                            )
+                            combinedUIItems.append(dummyUIItem)
+                        }
+                        
+                        let updatedResponse = try await useCases.updateDraftOrderLineItems.execute(draftOrderId: draftOrderResponse.id, lineItems: combinedUIItems)
+                        updateUI(with: updatedResponse)
+                    } else {
+                        updateUI(with: draftOrderResponse)
+                    }
+                    
                     self.isLoading = false
                     return
                 } catch {
@@ -252,5 +275,10 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
         self.originalSubtotal = response.originalSubtotal
         self.discountAmount = response.discountAmount
         self.cartLineItems = response.lineItems
+        
+        let syncedProducts = response.lineItems.map { uiItem in
+            ProductDataModel(variantId: uiItem.id, quantity: uiItem.quantity, imageUrl: uiItem.imageUrl)
+        }
+        CartService.shared.sync(products: syncedProducts)
     }
 }

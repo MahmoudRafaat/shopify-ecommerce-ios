@@ -1,7 +1,7 @@
 import SwiftUI
 import Kingfisher
 struct CheckoutProductItemView: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+    @Environment(CartViewModel.self) var viewModel
     let item: OrderItemUIModel
     
     var body: some View {
@@ -41,6 +41,11 @@ struct CheckoutProductItemView: View {
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .fixedSize(horizontal: false, vertical: true)
+                
+                Text("$\(item.price)")
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
                 
                 HStack(spacing: 12) {
                     Menu {

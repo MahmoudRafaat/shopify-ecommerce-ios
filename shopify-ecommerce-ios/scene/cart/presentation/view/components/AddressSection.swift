@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddressSection: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+    @Environment(CartViewModel.self) var viewModel
     var body: some View {
         HStack(spacing: 12) {
             if let address = viewModel.currentAddress,

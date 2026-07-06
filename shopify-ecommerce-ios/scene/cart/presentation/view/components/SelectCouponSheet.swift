@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SelectCouponSheet: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+    @Environment(CartViewModel.self) var viewModel
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {

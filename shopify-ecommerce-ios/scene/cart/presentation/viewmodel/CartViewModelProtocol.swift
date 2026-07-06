@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol CheckoutViewModelProtocol {
+protocol CartViewModelProtocol {
     var isLoading: Bool { get }
     var errorMessage: String? { get }
     var draftOrderId: Int? { get }

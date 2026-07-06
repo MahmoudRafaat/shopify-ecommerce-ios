@@ -24,7 +24,7 @@ struct TabBarView: View {
                 .tag(Tab.wishlist)
                 
                 NavigationStack {
-                    Text("Cart Screen")
+                    CartView()
                 }
                 .tag(Tab.cart)
                 

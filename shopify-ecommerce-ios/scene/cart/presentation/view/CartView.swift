@@ -7,24 +7,17 @@
 
 import SwiftUI
 
-struct CheckoutView: View {
-    @State private var viewModel = CheckoutViewModel()
+struct CartView: View {
+    @State private var viewModel = CartViewModel()
     @Environment(\.presentationMode) var presentationMode
     
-    // Product info passed from previous screen
-    var products: [ProductDataModel] 
+
+    var products: [ProductDataModel] = CartService.shared.products
     
     var body: some View {
         VStack(spacing: 0) {
             // Navigation Bar
-            CheckoutNavigationBar(
-                onBack: {
-                    presentationMode.wrappedValue.dismiss()
-                },
-                onWishlist: {
-                    // Handle wishlist action
-                }
-            )
+            CheckoutNavigationBar()
             
             if viewModel.isOrderDeleted || viewModel.cartLineItems.isEmpty && viewModel.draftOrderId == nil && !viewModel.isLoading {
                 // Empty State
@@ -33,7 +26,7 @@ struct CheckoutView: View {
                 })
             } else {
                 // Checkout Content Body
-                CheckoutViewBody()
+                CartViewBody()
                 
                 // Bottom Sticky Bar
                 CheckoutBottomBar()
@@ -53,13 +46,13 @@ struct CheckoutView: View {
                 .environment(viewModel)
         }
         .task {
-            await viewModel.loadOrCreateCart(products: products)
+            await viewModel.loadOrCreateCart(products: CartService.shared.products)
         }
     }
 }
 
 #Preview {
-    CheckoutView(products: [
+    CartView(products: [
         ProductDataModel(variantId: 46128795517064, quantity: 1, imageUrl: nil),
         ProductDataModel(variantId: 8955349303432, quantity: 2, imageUrl: nil)
     ])

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CheckoutCouponView: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+    @Environment(CartViewModel.self) var viewModel
     var onSelect: (() -> Void)? = nil
     
     var body: some View {

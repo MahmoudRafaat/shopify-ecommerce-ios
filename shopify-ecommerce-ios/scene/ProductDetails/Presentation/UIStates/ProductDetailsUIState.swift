@@ -14,6 +14,11 @@ struct ProductDetailsUIState: Equatable {
     let deliverySection: DeliveryBannerState
     let actionsSection: ProductActionsState
 
+    /// The variant ID that corresponds to the currently selected size.
+    let selectedVariantId: Int?
+    /// First product image URL, used when building `ProductDataModel`.
+    let firstImageUrl: String?
+
 //    let similarProducts: [Product]
 }
 
@@ -27,11 +32,14 @@ extension ProductDetailsUIState {
             imageSection: imageSection,
             sizeSection: ProductSizeSectionState(
                 selectedSize: size,
-                availableSizes: sizeSection.availableSizes
+                availableSizes: sizeSection.availableSizes,
+                variantMap: sizeSection.variantMap
             ),
             infoSection: infoSection,
             deliverySection: deliverySection,
-            actionsSection: actionsSection
+            actionsSection: actionsSection,
+            selectedVariantId: sizeSection.variantMap[size],
+            firstImageUrl: firstImageUrl
 //            similarProducts: [Product]
         )
     }
@@ -45,6 +53,8 @@ struct ProductImageSectionState: Equatable {
 struct ProductSizeSectionState: Equatable {
     let selectedSize: String
     let availableSizes: [String]
+    /// Maps size title → Shopify variant ID.
+    let variantMap: [String: Int]
 }
 
 struct ProductInfoSectionState: Equatable {
