@@ -19,13 +19,11 @@ struct HeaderView: View {
     var body: some View {
         VStack(spacing: 16) {
             HStack {
-          Button {
-              showSettings = true
-          } label: {
-              Image(systemName: "gearshape")
-                 .font(.title3)
-                 .foregroundStyle(.black)
-          }
+                NavigationLink(destination: SettingsView()) {
+                    Image(systemName: "gearshape")
+                        .font(.title3)
+                        .foregroundStyle(.black)
+                }
                                                
                 Spacer()
                 
@@ -68,8 +66,6 @@ struct HeaderView: View {
                     isTextFieldFocused = true
                 }
             }
-        } .sheet(isPresented: $showSettings) {
-            SettingsView()
         }
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @State private var viewModel = SettingsViewModel()
     @State private var showLoginScreen = false
-
+    @Environment(\.dismiss) private var dismiss
     let brandRed = Color(red: 0.95, green: 0.25, blue: 0.40)
 
     var body: some View {
@@ -26,6 +26,22 @@ struct SettingsView: View {
             .background(Color(white: 0.98).ignoresSafeArea())
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 16, weight: .medium))
+                            Text("Home")
+                                .font(.system(size: 16, weight: .medium))
+                        }
+                        .foregroundStyle(.appPrimary)
+                    }
+                }
+            }
             .showLoading(if: viewModel.uiState.isLoading)
             .showCustomAlert(title: "Error", errorMessage: $viewModel.uiState.errorMessage)
             .alert("Logout", isPresented: $viewModel.uiState.showLogoutConfirmation) {
@@ -41,6 +57,9 @@ struct SettingsView: View {
             .onAppear {
                 viewModel.loadUserData()
             }
+            .navigationDestination(isPresented: $viewModel.navigateToOrders) {
+                OrdersListView()
+            }
         }
         .fullScreenCover(isPresented: $showLoginScreen) {
             LoginView(viewmodel: LoginViewModel())
@@ -51,7 +70,6 @@ struct SettingsView: View {
             }
         }
     }
-
 
     @ViewBuilder
     private var guestBanner: some View {
@@ -78,7 +96,6 @@ struct SettingsView: View {
         .buttonStyle(PlainButtonStyle())
         .disabled(viewModel.uiState.isGuestMode)
     }
-
 
     private var settingsSections: some View {
         VStack(spacing: 16) {
@@ -181,7 +198,6 @@ struct SettingsView: View {
             }
         }
     }
-
 
     @ViewBuilder
     private var logoutAlertButtons: some View {
