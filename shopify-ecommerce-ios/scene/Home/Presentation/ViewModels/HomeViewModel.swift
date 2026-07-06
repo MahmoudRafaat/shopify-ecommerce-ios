@@ -13,23 +13,28 @@ class HomeViewModel {
     
     private let getProductsUseCase: GetProductsUseCaseProtocol
     private let getCategoriesUseCase: GetCategoriesUseCaseProtocol
+    private let getBrandsUseCase: GetBrandsUseCaseProtocol
     
     private var hasFetchedData: Bool = false
     
     private(set) var categories: [Category] = []
+    private(set) var brands: [Category] = []
     private(set) var categorySections: [(title: String, products: [Product])] = []
     
     var isCategoriesLoading: Bool = true
+    var isBrandsLoading: Bool = true
     var isProductsLoading: Bool = true
     
     var errorMessage: String? = nil
     
     init(
         getProductsUseCase: GetProductsUseCaseProtocol,
-        getCategoriesUseCase: GetCategoriesUseCaseProtocol
+        getCategoriesUseCase: GetCategoriesUseCaseProtocol,
+        getBrandsUseCase: GetBrandsUseCaseProtocol
     ) {
         self.getProductsUseCase = getProductsUseCase
         self.getCategoriesUseCase = getCategoriesUseCase
+        self.getBrandsUseCase = getBrandsUseCase
     }
     
     func fetchData() async {
@@ -39,9 +44,10 @@ class HomeViewModel {
         errorMessage = nil
         
         async let categoriesTask: () = fetchCategories()
+        async let brandsTask: () = fetchBrands()
         async let productsTask: () = fetchProducts()
         
-        _ = await (categoriesTask, productsTask)
+        _ = await (categoriesTask, brandsTask, productsTask)
     }
     
     private func fetchCategories() async {
@@ -54,6 +60,18 @@ class HomeViewModel {
             self.hasFetchedData = false
         }
         isCategoriesLoading = false
+    }
+    
+    private func fetchBrands() async {
+        isBrandsLoading = true
+        do {
+            self.brands = try await getBrandsUseCase.execute()
+        } catch {
+            print("Error fetching brands: \(error)")
+            self.errorMessage = error.localizedDescription
+            self.hasFetchedData = false
+        }
+        isBrandsLoading = false
     }
     
     private func fetchProducts() async {

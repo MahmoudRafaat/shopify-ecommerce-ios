@@ -10,4 +10,5 @@ import Foundation
 protocol HomeRepo {
     func getProducts() async throws -> [Product]
     func getCategories() async throws -> [Category]
+    func getBrands() async throws -> [Category]
 }
