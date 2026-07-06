@@ -31,7 +31,7 @@ extension ProductDetailsUIState {
             ),
             infoSection: infoSection,
             deliverySection: deliverySection,
-            actionsSection: actionsSection,
+            actionsSection: actionsSection
 //            similarProducts: [Product]
         )
     }
