@@ -42,6 +42,11 @@ struct CheckoutProductItemView: View {
                     .foregroundColor(.gray)
                     .fixedSize(horizontal: false, vertical: true)
                 
+                Text("$\(item.price)")
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                
                 HStack(spacing: 12) {
                     Menu {
                         ForEach(1...10, id: \.self) { qty in
