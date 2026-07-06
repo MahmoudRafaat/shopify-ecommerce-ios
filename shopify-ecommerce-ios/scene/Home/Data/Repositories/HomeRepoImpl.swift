@@ -18,16 +18,17 @@ class HomeRepoImpl: HomeRepo {
         let dtos = try await service.loadProducts()
 
         return dtos.map { dto in
-            let totalQuantity = dto.variants.reduce(0) { $0 + $1.inventoryQuantity }
+            let variants = dto.variants ?? []
+            let totalQuantity = variants.reduce(0) { $0 + ($1.inventoryQuantity ?? 0) }
             return Product(
-                id: dto.id,
+                id: dto.id ?? 0,
                 image: dto.image?.src ?? "placeholder_image",
-                name: dto.title,
-                description: dto.bodyHtml ?? "No description available.",
-                vendor: dto.vendor,
-                price: Float(dto.variants.first?.price ?? "0.0") ?? 0.0,
+                name: dto.title ?? "Product name",
+                description: dto.bodyHtml ?? "Product description",
+                vendor: dto.vendor ?? "Product vendor",
+                price: Float(variants.first?.price ?? "0.0") ?? 0.0,
                 isAvailabe: totalQuantity > 0,
-                productType: dto.productType
+                productType: dto.productType ?? ""
             )
         }
     }
@@ -37,8 +38,8 @@ class HomeRepoImpl: HomeRepo {
         
         return data.map{ data in
             Category(
-                id: data.id,
-                title: data.title,
+                id: data.id ?? 0,
+                title: data.title ?? "Category",
                 imageName: data.image?.src ?? "placeholder_image")
         }
     }

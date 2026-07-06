@@ -14,6 +14,6 @@ protocol CollectionServiceProtocol {
 class CollectionService: CollectionServiceProtocol {
     func loadProducts(collectionId: Int) async throws -> [ProductDTO] {
         let response : ProductsResponse = try await NetworkService.request(endpoint: CollectionEndPoints.collectionProducts(collectionId: collectionId))
-        return response.products
+        return response.products ?? []
     }
 }

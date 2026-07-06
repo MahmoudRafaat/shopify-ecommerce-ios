@@ -11,7 +11,7 @@ struct ProductDetailsView: View {
 
     let state: ProductDetailsUIState
     let onSizeSelected: (String) -> Void
-    @Environment(HomeCoordinator.self) var coordinator
+    @Environment(HomeCoordinator.self) var coordinator: HomeCoordinator?
 
     var body: some View {
 

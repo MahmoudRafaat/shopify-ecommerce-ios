@@ -28,15 +28,12 @@ struct TabBarView: View {
                 }
                 .tag(Tab.cart)
                 
-                NavigationStack {
-                    SearchView()
-                }
+                SearchRootView()
                 .tag(Tab.search)
                 
                 NavigationStack {
-            ProfileDetailsView(viewModel: ProfileViewModel())
-            }
-            
+                    ProfileDetailsView(viewModel: ProfileViewModel())
+                }
                 .tag(Tab.profile)
             }
             .toolbar(.hidden, for: .tabBar)

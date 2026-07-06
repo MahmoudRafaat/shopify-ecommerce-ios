@@ -19,20 +19,20 @@ class SearchRemoteDataSource: SearchDataSourceProtocol {
         let response: ProductsResponse = try await NetworkService.request(
             endpoint: SearchEndpoint.search(query: query)
         )
-        return response.products
+        return response.products ?? []
     }
     
     func loadSmartCollections() async throws -> [CategoryDTO] {
         let response: SmartCollectionResponse = try await NetworkService.request(
             endpoint: SearchEndpoint.smartCollections
         )
-        return response.smartCollections
+        return response.smartCollections ?? []
     }
     
     func loadCustomCollections() async throws -> [CategoryDTO] {
         let response: CategoryResponse = try await NetworkService.request(
             endpoint: SearchEndpoint.customCollections
         )
-        return response.customCollections
+        return response.customCollections ?? []
     }
 }

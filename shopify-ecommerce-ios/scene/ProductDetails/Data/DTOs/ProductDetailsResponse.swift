@@ -9,5 +9,5 @@
 import Foundation
 
 struct ProductDetailsResponse: Codable {
-    let product: ProductDTO
+    let product: ProductDTO?
 }

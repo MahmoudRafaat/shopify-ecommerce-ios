@@ -65,7 +65,9 @@ struct ProductCardView: View {
                 
                 starsView(productStars: uiState.stars)
             }
-            .padding(8)
+            .padding(.horizontal, 8)
+            .padding(.top, 2)
+            .padding(.bottom, 16)
             
         }
         .frame(maxWidth: .infinity)
