@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 struct FavoritesUseCases {
     let getFavorites: GetFavoritesUseCase
     let addFavorite: AddFavoriteUseCase
@@ -14,24 +15,29 @@ struct FavoritesUseCases {
     let checkFavorite: CheckFavoriteUseCase
 }
 
+@MainActor
 protocol GetFavoritesUseCase {
     func execute() throws -> [FavoriteProduct]
 }
 
+@MainActor
 protocol AddFavoriteUseCase {
     func execute(product: FavoriteProduct) throws
 }
 
+@MainActor
 protocol RemoveFavoriteUseCase {
     func execute(id: Int) throws
 }
 
+@MainActor
 protocol CheckFavoriteUseCase {
     func execute(id: Int) throws -> Bool
 }
 
 // MARK: - Implementations
 
+@MainActor
 final class GetFavoritesUseCaseImpl: GetFavoritesUseCase {
     private let repository: FavoritesRepository
     
@@ -44,6 +50,7 @@ final class GetFavoritesUseCaseImpl: GetFavoritesUseCase {
     }
 }
 
+@MainActor
 final class AddFavoriteUseCaseImpl: AddFavoriteUseCase {
     private let repository: FavoritesRepository
     
@@ -56,6 +63,7 @@ final class AddFavoriteUseCaseImpl: AddFavoriteUseCase {
     }
 }
 
+@MainActor
 final class RemoveFavoriteUseCaseImpl: RemoveFavoriteUseCase {
     private let repository: FavoritesRepository
     
@@ -68,6 +76,7 @@ final class RemoveFavoriteUseCaseImpl: RemoveFavoriteUseCase {
     }
 }
 
+@MainActor
 final class CheckFavoriteUseCaseImpl: CheckFavoriteUseCase {
     private let repository: FavoritesRepository
     

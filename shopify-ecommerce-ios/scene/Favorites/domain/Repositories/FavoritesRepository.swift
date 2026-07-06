@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 protocol FavoritesRepository {
     func getFavorites() throws -> [FavoriteProduct]
     func addFavorite(_ product: FavoriteProduct) throws
