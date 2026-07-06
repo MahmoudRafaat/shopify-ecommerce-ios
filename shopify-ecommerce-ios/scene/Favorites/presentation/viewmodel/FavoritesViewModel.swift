@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 @Observable
 final class FavoritesViewModel {
     private let useCases: FavoritesUseCases
@@ -17,13 +18,18 @@ final class FavoritesViewModel {
     var isLoading: Bool = false
     var errorMessage: String? = nil
     
-    init(useCases: FavoritesUseCases = FavoritesUseCases(
-        getFavorites: GetFavoritesUseCaseImpl(repository: FavoritesRepositoryImpl()),
-        addFavorite: AddFavoriteUseCaseImpl(repository: FavoritesRepositoryImpl()),
-        removeFavorite: RemoveFavoriteUseCaseImpl(repository: FavoritesRepositoryImpl()),
-        checkFavorite: CheckFavoriteUseCaseImpl(repository: FavoritesRepositoryImpl())
-    )) {
-        self.useCases = useCases
+    init(useCases: FavoritesUseCases? = nil) {
+        if let useCases {
+            self.useCases = useCases
+        } else {
+            let repository = FavoritesRepositoryImpl()
+            self.useCases = FavoritesUseCases(
+                getFavorites: GetFavoritesUseCaseImpl(repository: repository),
+                addFavorite: AddFavoriteUseCaseImpl(repository: repository),
+                removeFavorite: RemoveFavoriteUseCaseImpl(repository: repository),
+                checkFavorite: CheckFavoriteUseCaseImpl(repository: repository)
+            )
+        }
     }
     
     func fetchFavorites() {

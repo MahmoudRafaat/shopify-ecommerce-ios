@@ -7,11 +7,12 @@
 
 import Foundation
 
+@MainActor
 final class FavoritesRepositoryImpl: FavoritesRepository {
     private let localService: FavoritesLocalService
     
-    init(localService: FavoritesLocalService = FavoritesLocalService()) {
-        self.localService = localService
+    init(localService: FavoritesLocalService? = nil) {
+        self.localService = localService ?? FavoritesLocalService()
     }
     
     func getFavorites() throws -> [FavoriteProduct] {
