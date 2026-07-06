@@ -31,4 +31,6 @@ struct TrailingIconOutlinedButton: View {
 
 #Preview {
     TrailingIconOutlinedButton(title: "Shop now", action: {})
+        .padding()
+        .background(Color.red)
 }
