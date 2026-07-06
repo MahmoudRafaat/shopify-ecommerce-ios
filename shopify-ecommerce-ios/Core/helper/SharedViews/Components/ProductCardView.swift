@@ -47,7 +47,7 @@ struct ProductCardView: View {
                 }) {
                     Image(systemName: isFavorite ? "heart.fill" : "heart")
                         .font(.system(size: 16))
-                        .foregroundColor(isFavorite ? .red : .gray)
+                        .foregroundColor(isFavorite ? .appPrimary : .gray)
                         .padding(8)
                         .background(Circle().fill(Color.white.opacity(0.8)))
                 }
