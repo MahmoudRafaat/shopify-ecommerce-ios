@@ -8,7 +8,7 @@
 import Foundation
 
 protocol GetTotalPriceUseCase {
-    func execute() async throws -> String
+    func execute() async throws -> PaymentOrder
 }
 
 class GetTotalPriceUseCaseImp: GetTotalPriceUseCase {
@@ -18,7 +18,7 @@ class GetTotalPriceUseCaseImp: GetTotalPriceUseCase {
         self.repository = repository
     }
     
-    func execute() async throws -> String {
-        return try await repository.getTotalPrice().total
+    func execute() async throws -> PaymentOrder {
+        return try await repository.getTotalPrice()
     }
 }

@@ -9,4 +9,5 @@ import Foundation
 
 protocol PaymentRepo {
     func getTotalPrice() async throws -> PaymentOrder
+    func completeOrder(id: Int, paymentPending: Bool) async throws
 }
