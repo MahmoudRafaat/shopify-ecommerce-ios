@@ -12,21 +12,10 @@ final class NetworkService {
     
     private static var decoder: JSONDecoder {
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
     }
-
-    private static var shopifyEncoder: JSONParameterEncoder {
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        return JSONParameterEncoder(encoder: encoder)
-    }
     
-    
-    static func request<T: Decodable, Body: Encodable>(
-        endpoint: ApiEndpoint,
-        body: Body? = nil as Empty?
-    ) async throws -> T {
+    static func request<T: Decodable>(endpoint: ApiEndpoint) async throws -> T {
         
         let urlString = Constants.baseURL + endpoint.path
         
@@ -40,14 +29,21 @@ final class NetworkService {
             urlRequest = try URLEncoding.default.encode(urlRequest, with: queryParameters)
         }
         
-        if let body = body {
-            urlRequest = try shopifyEncoder.encode(body, into: urlRequest)
+        if let body = endpoint.body {
+            urlRequest.httpBody = body
         }
         
         let response = await AF.request(urlRequest)
             .validate()
             .serializingDecodable(T.self, decoder: decoder)
             .response
+        
+        if let data = response.data {
+            let method = endpoint.method.rawValue
+            let status = response.response?.statusCode ?? 0
+            print("[Network Log] \(method) \(urlString) [Status: \(status)]")
+            print("Response JSON:\n\(JsonHelper.prettyJSON(data))\n-----------------------------")
+        }
         
         switch response.result {
         case .success(let data):
@@ -59,11 +55,10 @@ final class NetworkService {
                 case 400: throw NetworkError.badRequest
                 case 401: throw NetworkError.unauthorized
                 case 404: throw NetworkError.notFound
-
+                    
                 case 422:
                     if let data = response.data {
-                        print("Shopify 422 – Raw JSON:\n\(JsonHelper.prettyJSON(data))")
-
+                        
                         if let shopifyError = try? JSONDecoder().decode(
                             ShopifyErrorResponse.self, from: data
                         ) {
@@ -71,7 +66,7 @@ final class NetworkService {
                         }
                     }
                     throw NetworkError.shopifyError("Shopify rejected the data provided (422).")
-
+                    
                 case 500...599: throw NetworkError.serverError
                 default: throw NetworkError.unacceptableStatusCode(statusCode)
                 }

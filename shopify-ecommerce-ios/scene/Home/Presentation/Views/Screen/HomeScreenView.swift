@@ -17,10 +17,15 @@ struct HomeScreenView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                
-                HeaderView(onSearchTap: {
-                    selectedTab = .search
-                })
+                HeaderView(
+                    searchText: .constant(""), 
+                    onSearchTap: {
+                        selectedTab = .search
+                    },
+                    onMenuTap: {
+                        coordinator.goToSettings()
+                    }
+                )
                 
                 Text("All Featured")
                     .font(.title2)
@@ -28,38 +33,21 @@ struct HomeScreenView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 16)
                 
-                if let error = viewModel.errorMessage {
-                    VStack(spacing: 12) {
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .font(.system(size: 40))
-                            .foregroundColor(.red)
-                        
-                        Text("Oops! Something went wrong.")
-                            .font(.headline)
-                        
-                        Text(error)
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                        
-                        Button(action: {
+                if viewModel.errorMessage != nil {
+                    ContentUnavailableView {
+                        Label("Oops.. Something went wrong.", systemImage: "exclamationmark.triangle.fill")
+                    } description: {
+                        Text("Check your internet connection and try again.")
+                    } actions: {
+                        Button("Try Again") {
                             Task {
                                 await viewModel.fetchData()
                             }
-                        }) {
-                            Text("Try Again")
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 12)
-                                .background(Color.blue)
-                                .cornerRadius(8)
                         }
-                        .padding(.top, 8)
+                        .buttonStyle(.borderedProminent)
+                        .tint(.appBlue)
+                        .controlSize(.regular)
                     }
-                    .padding(.top, 32)
-                    
                 } else {
                     if viewModel.isCategoriesLoading {
                         ProgressView()
@@ -89,7 +77,10 @@ struct HomeScreenView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading, 16)
                                     
-                                    ProductsScrollView(products: section.products)
+                                    ProductsScrollView(products: section.products,onProductTap: { productID in
+                                        coordinator.goToProductDetail(id: productID)
+                                        
+                                    })
                                 }
                             } else {
                                 EmptyView()
@@ -114,6 +105,9 @@ struct HomeScreenView: View {
 }
 
 #Preview {
-    HomeRootView(selectedTab: .constant(.home))
+    HomeRootView(
+        selectedTab: .constant(.home),
+        viewModel: HomeFactory.makeHomeViewModel()
+    )
 }
 

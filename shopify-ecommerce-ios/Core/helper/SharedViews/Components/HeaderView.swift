@@ -8,21 +8,25 @@
 import SwiftUI
 
 struct HeaderView: View {
-    @State var searchText = ""
-
+    @Binding var searchText: String
+    @State private var showSettings = false
     var autoFocus: Bool = false
     var onSearchTap: (() -> Void)? = nil
+    var onMenuTap: (() -> Void)? = nil
     
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
         VStack(spacing: 16) {
             HStack {
-                Button {
-                } label: {
-                    Image("lines-icon").foregroundStyle(.black)
-                }
-                
+          Button {
+              showSettings = true
+          } label: {
+              Image(systemName: "gearshape")
+                 .font(.title3)
+                 .foregroundStyle(.black)
+          }
+                                               
                 Spacer()
                 
                 HStack(spacing: 8) {
@@ -64,10 +68,8 @@ struct HeaderView: View {
                     isTextFieldFocused = true
                 }
             }
+        } .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
     }
-}
-
-#Preview {
-    HeaderView(searchText: "", autoFocus: false)
 }

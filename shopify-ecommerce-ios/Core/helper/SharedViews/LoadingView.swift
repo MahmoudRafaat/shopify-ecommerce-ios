@@ -16,7 +16,9 @@ struct LoadingView: View {
             
             VStack(spacing: 16) {
                 ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                    .progressViewStyle(
+                        CircularProgressViewStyle(tint: .appPrimary)
+                    )
                     .scaleEffect(1.3)
                 
             }

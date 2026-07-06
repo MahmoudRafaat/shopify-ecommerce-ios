@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct TabBarView: View {
+    @Environment(NetworkMonitor.self) private var networkMonitor: NetworkMonitor
     @State private var selectedTab: Tab = .home
     
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 
-                HomeRootView(selectedTab: $selectedTab)
+                HomeRootView(selectedTab: $selectedTab, viewModel: HomeFactory.makeHomeViewModel())
                     .tag(Tab.home)
                 
                 NavigationStack {
@@ -27,15 +28,13 @@ struct TabBarView: View {
                 }
                 .tag(Tab.cart)
                 
-                NavigationStack {
-                    SearchView()
-                }
+                SearchRootView()
                 .tag(Tab.search)
                 
                 NavigationStack {
-                    Text("Settings")
+                    ProfileDetailsView(viewModel: ProfileViewModel())
                 }
-                .tag(Tab.setting)
+                .tag(Tab.profile)
             }
             .toolbar(.hidden, for: .tabBar)
             
@@ -46,5 +45,7 @@ struct TabBarView: View {
 }
 
 #Preview {
+    @Previewable @State var networkMonitor = NetworkMonitor()
     TabBarView()
+        .environment(networkMonitor)
 }

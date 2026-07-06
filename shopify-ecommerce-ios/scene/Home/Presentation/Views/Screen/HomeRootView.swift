@@ -9,25 +9,10 @@ import SwiftUI
 import Observation
 
 struct HomeRootView: View {
-    
     @Binding var selectedTab: Tab
-    
     @State private var coordinator = HomeCoordinator()
-    @State private var viewModel: HomeViewModel
     
-    init(selectedTab: Binding<Tab>) {
-        self._selectedTab = selectedTab
-        
-        let remoteService = HomeRemoteDataSource()
-        let repository = HomeRepoImpl(service: remoteService)
-        let getProductsUseCase = GetProductsUseCase(repository: repository)
-        let getCategoriesUseCase = GetCategoriesUseCase(repository: repository)
-        
-        _viewModel = State(initialValue: HomeViewModel(
-            getProductsUseCase: getProductsUseCase,
-            getCategoriesUseCase: getCategoriesUseCase
-        ))
-    }
+    @State var viewModel: HomeViewModel
     
     var body: some View {
         @Bindable var bindableCoordinator = coordinator
@@ -38,11 +23,52 @@ struct HomeRootView: View {
                 .navigationDestination(for: HomeCoordinator.Destination.self) { destination in
                     switch destination {
                     case .productDetail(let productId):
-                        Text("Product Detail View for ID: \(productId)")
+                        let remoteDataSource = ProductDetailsRemoteDataSourceImpl()
+
+                             let repository = ProductDetailsRepositoryImpl(
+                                 remoteDataSource: remoteDataSource
+                             )
+
+                             let useCase = GetProductDetailsUseCaseImpl(
+                                 repository: repository
+                             )
+
+                             let viewModel = ProductDetailsViewModel(
+                                 productId: productId,
+                                 getProductDetailsUseCase: useCase
+                             )
+
+                             ProductDetailsScreen(
+                                 viewModel: viewModel
+                             ).environment(coordinator).toolbar {
+                                 ToolbarItem(placement: .topBarTrailing) {
+                                     Button {
+                                         // Go to cart
+                                     } label: {
+                                         Image(systemName: "cart")
+                                             .font(.system(size: 18, weight: .medium))
+                                             .foregroundStyle(.black)
+                                             .frame(width: 40, height: 40)
+                                             .background(Color(.systemGray6))
+                                             .clipShape(Circle())
+                                     }
+                                 }
+                             }
                     case .categoriesScreen(let categoryId):
-                        Text("Categories View for ID: \(categoryId)")
+                        CollectionScreenView(id: categoryId)
+                    case .settings:
+                       SettingsView()
+                        .navigationBarBackButtonHidden(false)
                     }
                 }
         }
+        .environment(coordinator)
     }
+}
+
+#Preview {
+    HomeRootView(
+        selectedTab: .constant(.home),
+        viewModel: HomeFactory.makeHomeViewModel()
+    )
 }

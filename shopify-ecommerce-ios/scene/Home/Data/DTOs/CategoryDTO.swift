@@ -7,11 +7,19 @@
 
 
 struct CategoryDTO: Codable {
-    let id: Int
-    let title: String
+    let id: Int?
+    let title: String?
     let image: CategoryImageDTO?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, title, image
+    }
 }
 
 struct CategoryImageDTO: Codable {
-    let src: String
+    let src: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case src
+    }
 }
