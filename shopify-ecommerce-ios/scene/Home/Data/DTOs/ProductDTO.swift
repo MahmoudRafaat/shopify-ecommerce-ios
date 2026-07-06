@@ -9,17 +9,17 @@ import Foundation
 import Alamofire
 
 struct ProductDTO: Codable {
-    let id: Int
-    let title: String
+    let id: Int?
+    let title: String?
     let bodyHtml: String?
-    let vendor: String
-    let productType: String
-    let tags: String
-    let status: String
+    let vendor: String?
+    let productType: String?
+    let tags: String?
+    let status: String?
     
-    let variants: [VariantDTO]
+    let variants: [VariantDTO]?
     let options: [ProductOptionDTO]?
-    let images: [ImageDTO]
+    let images: [ImageDTO]?
     let image: ImageDTO?
     
     enum CodingKeys: String, CodingKey {
@@ -30,9 +30,9 @@ struct ProductDTO: Codable {
 }
 
 struct ProductOptionDTO: Codable {
-    let id: Int
-    let name: String
-    let values: [String]
+    let id: Int?
+    let name: String?
+    let values: [String]?
     
     enum CodingKeys: String, CodingKey {
         case id, name, values
@@ -40,10 +40,10 @@ struct ProductOptionDTO: Codable {
 }
 
 struct VariantDTO: Codable {
-    let id: Int
-    let price: String
-    let title: String
-    let inventoryQuantity: Int
+    let id: Int?
+    let price: String?
+    let title: String?
+    let inventoryQuantity: Int?
     
     enum CodingKeys: String, CodingKey {
         case id, price, title
@@ -52,8 +52,8 @@ struct VariantDTO: Codable {
 }
 
 struct ImageDTO: Codable {
-    let id: Int
-    let src: String
+    let id: Int?
+    let src: String?
     
     enum CodingKeys: String, CodingKey {
     case id, src

@@ -17,6 +17,9 @@ final class ProductDetailsRemoteDataSourceImpl: ProductDetailsRemoteDataSource {
     func getProduct(by id: Int) async throws -> ProductDTO {
         let response : ProductDetailsResponse = try await NetworkService.request(endpoint: ProductDetailsEndpoint.getProduct(id: id))
         print (response)
-        return response.product
+        guard let product = response.product else {
+            throw NSError(domain: "ProductDetailsRemoteDataSource", code: 404, userInfo: [NSLocalizedDescriptionKey: "Product not found"])
+        }
+        return product
     }
 }

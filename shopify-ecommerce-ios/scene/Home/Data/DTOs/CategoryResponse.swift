@@ -7,7 +7,7 @@
 
 
 struct CategoryResponse: Codable {
-    let customCollections: [CategoryDTO]
+    let customCollections: [CategoryDTO]?
     
     enum CodingKeys: String, CodingKey {
         case customCollections = "custom_collections"

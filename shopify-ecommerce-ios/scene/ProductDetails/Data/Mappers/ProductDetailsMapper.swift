@@ -12,22 +12,22 @@ extension ProductDTO {
     func toDomain() -> ProductDetails {
 
         ProductDetails(
-            id: id,
-            title: title,
+            id: id ?? 0,
+            title: title ?? "",
             description: bodyHtml ?? "",
-            vendor: vendor,
-            productType: productType,
-            tags: tags
+            vendor: vendor ?? "",
+            productType: productType ?? "",
+            tags: (tags ?? "")
                 .split(separator: ",")
                 .map {
                     $0.trimmingCharacters(in: .whitespaces)
                 },
 
-            images: images.map {
+            images: (images ?? []).map {
                 $0.toDomain()
             },
 
-            variants: variants.map {
+            variants: (variants ?? []).map {
                 $0.toDomain()
             }
         )
@@ -39,9 +39,9 @@ extension VariantDTO {
     func toDomain() -> ProductDetailsVariant {
 
         ProductDetailsVariant(
-            id: id,
-            title: title,
-            price: price
+            id: id ?? 0,
+            title: title ?? "",
+            price: price ?? "0.0"
         )
     }
 }
@@ -50,8 +50,8 @@ extension ImageDTO {
     func toDomain() -> ProductDetailsImage {
 
         ProductDetailsImage(
-            id: id,
-            src: src
+            id: id ?? 0,
+            src: src ?? ""
         )
     }
 }

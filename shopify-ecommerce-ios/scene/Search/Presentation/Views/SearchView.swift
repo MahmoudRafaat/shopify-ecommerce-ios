@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct SearchView: View {
-    @Bindable var viewModel: SearchViewModel
+    @State private var viewModel: SearchViewModel = SearchFactory.makeSearchViewModel()
     
     @State private var showFilterSheet = false
-
-    init() {
-        viewModel = SearchFactory.makeSearchViewModel()
-    }
     
     var body: some View {
         VStack(spacing: 0) {
-            HeaderView(searchText: "", autoFocus: true)
+            HeaderView(searchText: $viewModel.searchText, autoFocus: true)
                 .background(Color(.systemBackground))
             chipBar
             contentView
@@ -42,6 +38,7 @@ struct SearchView: View {
                 onDismiss: { showFilterSheet = false }
             )
         }
+        Spacer()
     }
     
     private var chipBar: some View {

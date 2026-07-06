@@ -8,5 +8,9 @@
 import Foundation
 
 struct SmartCollectionResponse: Codable {
-    let smartCollections: [CategoryDTO]
+    let smartCollections: [CategoryDTO]?
+    
+    enum CodingKeys: String, CodingKey {
+        case smartCollections = "smart_collections"
+    }
 }

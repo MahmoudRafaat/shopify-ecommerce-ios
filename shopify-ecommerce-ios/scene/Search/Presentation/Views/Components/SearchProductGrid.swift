@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SearchProductGrid: View {
+    @Environment(SearchCoordinator.self) private var coordinator
+    
     let products: [SearchProduct]
     
     private let columns = [
@@ -21,7 +23,9 @@ struct SearchProductGrid: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(Array(products.enumerated()), id: \.element.id) { index, product in
-                    ProductCardView(uiState: ProductUIState(searchProduct: product), onTap: {})
+                    ProductCardView(uiState: ProductUIState(searchProduct: product), onTap: {
+                        coordinator.goToProductDetail(id: product.id)
+                    })
                         .opacity(isAnimating ? 1 : 0)
                         .scaleEffect(isAnimating ? 1 : 0.8)
                         .animation(

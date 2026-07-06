@@ -11,6 +11,7 @@ struct ProductsScrollView: View {
     let products: [Product]
     @State private var isAnimating = false
     let onProductTap: (Int) -> Void
+    @Environment(HomeCoordinator.self) var coordinator
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -18,7 +19,7 @@ struct ProductsScrollView: View {
                 ForEach(Array(products.enumerated()), id: \.element.id) { index, product in
                     if product.isAvailabe == true {
                         ProductCardView(uiState: ProductUIState(product: product), onTap: {
-                            
+                            coordinator.goToProductDetail(id: product.id)
                         })
                             .opacity(isAnimating ? 1 : 0)
                             .scaleEffect(isAnimating ? 1 : 0.8)
@@ -77,4 +78,5 @@ struct ProductsScrollView: View {
             productType: "T-shirt"
         )
     ], onProductTap: {productID in print("Product id")})
+    .environment(HomeCoordinator())
 }

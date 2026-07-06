@@ -17,14 +17,15 @@ struct HomeScreenView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                
-                HeaderView(searchText: "", onSearchTap: {
-                    selectedTab = .search
-                    
-            },
-                onMenuTap: {
-                      coordinator.goToSettings()
-                        })
+                HeaderView(
+                    searchText: .constant(""), 
+                    onSearchTap: {
+                        selectedTab = .search
+                    },
+                    onMenuTap: {
+                        coordinator.goToSettings()
+                    }
+                )
                 
                 Text("All Featured")
                     .font(.title2)
@@ -32,7 +33,7 @@ struct HomeScreenView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 16)
                 
-                if let error = viewModel.errorMessage {
+                if viewModel.errorMessage != nil {
                     ContentUnavailableView {
                         Label("Oops.. Something went wrong.", systemImage: "exclamationmark.triangle.fill")
                     } description: {
