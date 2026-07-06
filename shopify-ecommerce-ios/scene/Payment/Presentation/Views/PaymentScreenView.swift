@@ -36,7 +36,9 @@ struct PaymentScreenView: View {
         }
         Spacer()
         CustomButton(text: "Checkout") {
-            
+            Task {
+                await viewModel.completeOrder(selectedIndex: selectedIndex)
+            }
         }
         .padding(24)
     }
@@ -83,7 +85,8 @@ struct PaymentScreenView: View {
 #Preview {
     let service : PaymentService = PaymentService()
     let repository : PaymentRepo = PaymentRepoImpl(service: service)
-    let useCase : GetTotalPriceUseCase = GetTotalPriceUseCaseImp(repository: repository)
-    let viewModel : PaymentViewModel = PaymentViewModel(getTotalPriceUseCase: useCase)
+    let getPriceUseCase : GetTotalPriceUseCase = GetTotalPriceUseCaseImp(repository: repository)
+    let completeOrderUseCase : CompleteOrderUseCase = CompleteOrderUseCaseImp(repository: repository)
+    let viewModel : PaymentViewModel = PaymentViewModel(getTotalPriceUseCase: getPriceUseCase, completeOrderUseCase: completeOrderUseCase)
     PaymentScreenView(viewModel: viewModel)
 }

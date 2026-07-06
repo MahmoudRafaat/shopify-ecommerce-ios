@@ -23,4 +23,8 @@ class PaymentRepoImpl: PaymentRepo {
             shipping: "00.00"
         )
     }
+    
+    func completeOrder(id: Int, paymentPending: Bool) async throws {
+        try await service.completeOrder(id: id, paymentPending: paymentPending)
+    }
 }

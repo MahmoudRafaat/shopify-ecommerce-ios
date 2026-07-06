@@ -10,15 +10,23 @@ import Alamofire
 
 enum PaymentEndPoint: ApiEndpoint {
     case draftOrder(id: Int)
+    case completeOrder(id: Int, paymentPending: Bool)
 
     var path: String {
         switch self {
         case .draftOrder(let id):
             return "/draft_orders/\(id).json"
+        case .completeOrder(let id, let paymentPending):
+            return "/draft_orders/\(id)/complete.json?payment_pending=\(paymentPending)"
         }
     }
 
     var method: HTTPMethod {
-        .get
+        switch self {
+        case .draftOrder:
+            return .get
+        case .completeOrder:
+            return .put
+        }
     }
 }
