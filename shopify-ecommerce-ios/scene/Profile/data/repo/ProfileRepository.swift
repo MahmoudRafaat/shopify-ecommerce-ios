@@ -96,7 +96,7 @@ class ProfileRepository: ProfileRepositoryProtocol {
                 metafieldId: existingId,
                 value: value
             )
-            _ = try await networkService.request(endpoint: endpoint) as MetafieldResponse
+            _ = try await networkService.request(endpoint: endpoint) as PaymentMetafieldResponse
         } else {
             let endpoint = ProfileEndpoint.createMetafield(
                 customerId: customerId,
@@ -105,7 +105,7 @@ class ProfileRepository: ProfileRepositoryProtocol {
                 value: value,
                 type: type
             )
-            _ = try await networkService.request(endpoint: endpoint) as MetafieldResponse
+            _ = try await networkService.request(endpoint: endpoint) as PaymentMetafieldResponse
         }
     }
     

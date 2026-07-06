@@ -140,7 +140,7 @@ private extension ProductDetailsView {
             actionsSection: ProductActionsState(
                 cartTitle: "Add to Cart",
                 buyTitle: "Buy Now"
-            ),
+            )
 
             selectedVariantId: 1002,
             firstImageUrl: "https://picsum.photos/400/400"

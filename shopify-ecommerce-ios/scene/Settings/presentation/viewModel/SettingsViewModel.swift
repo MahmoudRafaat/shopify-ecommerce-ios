@@ -18,7 +18,8 @@ class SettingsViewModel {
     private let checkLoginUseCase: CheckLoginStatusUseCaseProtocol
     
     var uiState = SettingsUIState()
-    
+    var navigateToOrders = false
+
     init(
         getUserUseCase: GetUserProfileUseCaseProtocol = SettingsUseCase(),
         logoutUseCase: LogoutUseCaseProtocol = SettingsUseCase(),
@@ -81,8 +82,11 @@ class SettingsViewModel {
 
     
     func navigateToMyOrders() {
-        // Navigate to Orders screen
-    }
+        if uiState.isLoggedIn {
+                   navigateToOrders = true
+               } else {
+                   uiState.errorMessage = "Please sign in to view your orders"
+               }    }
     
  
 }
