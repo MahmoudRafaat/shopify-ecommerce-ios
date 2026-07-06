@@ -57,7 +57,7 @@ extension ProductDetails {
             actionsSection: ProductActionsState(
                 cartTitle: "Add to Cart",
                 buyTitle: "Buy Now"
-            )
+            ),
 
             selectedVariantId: variants.first?.id,
             firstImageUrl: images.first?.src
