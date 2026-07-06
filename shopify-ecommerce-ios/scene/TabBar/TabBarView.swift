@@ -19,7 +19,7 @@ struct TabBarView: View {
                     .tag(Tab.home)
                 
                 NavigationStack {
-                    Text("Wishlist Screen")
+                    FavoriteView()
                 }
                 .tag(Tab.wishlist)
                 
