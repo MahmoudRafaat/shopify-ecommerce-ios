@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OrderDTO : Decodable {
-    let id: Int
-    let totalPrice : String
+struct PaymentOrderDTO : Decodable {
+    let id: Int?
+    let totalPrice : String?
 }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct OrderResponse : Decodable {
-    let draftOrder: OrderDTO
+struct PaymentOrderResponse : Decodable {
+    let draftOrder: PaymentOrderDTO?
 }

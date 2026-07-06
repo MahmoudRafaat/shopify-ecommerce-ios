@@ -15,11 +15,13 @@ class PaymentRepoImpl: PaymentRepo {
     }
 
     func getTotalPrice() async throws -> PaymentOrder {
-        let order = try await service.loadDraft()
+        guard let order = try await service.loadDraft() else {
+            throw NetworkError.unknown(0)
+        }
 
         return PaymentOrder(
-            id: order.id,
-            total: order.totalPrice,
+            id: order.id ?? 0,
+            total: order.totalPrice ?? "0.0",
             shipping: "00.00"
         )
     }

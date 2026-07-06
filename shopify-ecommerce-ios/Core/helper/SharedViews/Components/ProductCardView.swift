@@ -64,8 +64,8 @@ struct ProductCardView: View {
                 }
                 
                 HStack{
-                    StarsView(rating: product.stars, starsSize: 10)
-                    Text("(\(product.reviewers))")
+                    StarsView(rating: uiState.stars, starsSize: 10)
+                    Text("(\(uiState.reviewers))")
                         .font(.system(size: 10, weight: .light))
                         .foregroundColor(.gray)
                         .padding(.leading, 2)

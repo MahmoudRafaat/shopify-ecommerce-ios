@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 enum PaymentEndPoint: ApiEndpoint {
+    
     case draftOrder(id: Int)
     case completeOrder(id: Int, paymentPending: Bool)
 
@@ -16,8 +17,17 @@ enum PaymentEndPoint: ApiEndpoint {
         switch self {
         case .draftOrder(let id):
             return "/draft_orders/\(id).json"
-        case .completeOrder(let id, let paymentPending):
-            return "/draft_orders/\(id)/complete.json?payment_pending=\(paymentPending)"
+        case .completeOrder(let id, _):
+            return "/draft_orders/\(id)/complete.json"
+        }
+    }
+    
+    var queryParameters: Parameters? {
+        switch self {
+        case .draftOrder:
+            return nil
+        case .completeOrder(_, let paymentPending):
+            return ["payment_pending": paymentPending]
         }
     }
 
@@ -28,5 +38,9 @@ enum PaymentEndPoint: ApiEndpoint {
         case .completeOrder:
             return .put
         }
+    }
+    
+    var body: Data? {
+        nil
     }
 }
