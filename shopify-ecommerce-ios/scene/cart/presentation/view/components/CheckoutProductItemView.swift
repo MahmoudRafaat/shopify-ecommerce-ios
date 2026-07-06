@@ -1,7 +1,7 @@
 import SwiftUI
 import Kingfisher
 struct CheckoutProductItemView: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+    @Environment(CartViewModel.self) var viewModel
     let item: OrderItemUIModel
     
     var body: some View {

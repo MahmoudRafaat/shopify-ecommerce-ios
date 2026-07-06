@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CheckoutBottomBar: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+    @Environment(CartViewModel.self) var viewModel
     
     var body: some View {
         HStack(spacing: 16) {

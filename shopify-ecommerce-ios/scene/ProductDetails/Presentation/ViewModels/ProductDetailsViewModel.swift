@@ -12,9 +12,12 @@ import os
 final class ProductDetailsViewModel: ObservableObject {
 
     @Published private(set) var screenState: ProductDetailsScreenState = .loading
+    @Published var alertMessage: String? = nil
+    var alertTitle: String = ""
 
     private let productId: Int
     private let getProductDetailsUseCase: GetProductDetailsUseCase
+    private let cartService: CartService
 
     private let logger = Logger(
         subsystem: "shopify-ecommerce-ios",
@@ -23,10 +26,12 @@ final class ProductDetailsViewModel: ObservableObject {
 
     init(
         productId: Int,
-        getProductDetailsUseCase: GetProductDetailsUseCase
+        getProductDetailsUseCase: GetProductDetailsUseCase,
+        cartService: CartService = .shared
     ) {
         self.productId = productId
         self.getProductDetailsUseCase = getProductDetailsUseCase
+        self.cartService = cartService
     }
 
     func loadProduct() async {
@@ -47,5 +52,33 @@ final class ProductDetailsViewModel: ObservableObject {
         guard case .success(let currentState) = screenState else { return }
 
         screenState = .success(currentState.withSelectedSize(size))
+    }
+
+    // MARK: - Add to Cart
+
+    func addToCart() {
+        guard case .success(let state) = screenState,
+              let variantId = state.selectedVariantId else {
+            logger.warning("Cannot add to cart — no variant selected")
+            return
+        }
+
+        let product = ProductDataModel(
+            variantId: variantId,
+            quantity: 1,
+            imageUrl: state.firstImageUrl
+        )
+
+        let added = cartService.addProduct(product)
+
+        if added {
+            logger.info("Added variant \(variantId) to cart")
+            alertTitle = "Added to Cart"
+            alertMessage = "Product has been added to your cart successfully."
+        } else {
+            logger.warning("Variant \(variantId) already in cart")
+            alertTitle = "Already in Cart"
+            alertMessage = "This variant is already in your cart."
+        }
     }
 }

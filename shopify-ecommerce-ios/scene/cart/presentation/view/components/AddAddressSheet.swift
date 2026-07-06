@@ -10,7 +10,7 @@
 import SwiftUI
 
 struct AddAddressSheet: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+    @Environment(CartViewModel.self) var viewModel
     @Environment(\.presentationMode) var presentationMode
     
     @State private var firstName: String = ""
@@ -83,5 +83,5 @@ struct AddAddressSheet: View {
 
 #Preview {
     AddAddressSheet()
-        .environment(CheckoutViewModel())
+        .environment(CartViewModel())
 }

@@ -11,6 +11,7 @@ struct ProductDetailsView: View {
 
     let state: ProductDetailsUIState
     let onSizeSelected: (String) -> Void
+    let onAddToCart: () -> Void
     @Environment(HomeCoordinator.self) var coordinator: HomeCoordinator?
 
     var body: some View {
@@ -34,7 +35,7 @@ struct ProductDetailsView: View {
 
                 ProductActionButtons(
                     state: state.actionsSection,
-                    onAddToCart: {},
+                    onAddToCart: onAddToCart,
                     onBuyNow: {}
                 )
 
@@ -91,6 +92,12 @@ private extension ProductDetailsView {
                     "7 UK",
                     "8 UK",
                     "9 UK"
+                ],
+                variantMap: [
+                    "6 UK": 1001,
+                    "7 UK": 1002,
+                    "8 UK": 1003,
+                    "9 UK": 1004
                 ]
             ),
 
@@ -135,6 +142,9 @@ private extension ProductDetailsView {
                 buyTitle: "Buy Now"
             ),
 
+            selectedVariantId: 1002,
+            firstImageUrl: "https://picsum.photos/400/400"
+
 //            similarProducts: [
 //                Product(
 //                    id: 1,
@@ -157,5 +167,6 @@ private extension ProductDetailsView {
 //            ]
         )
         , onSizeSelected: {_ in}
+        , onAddToCart: {}
     )
 }

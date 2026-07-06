@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CheckoutOrderTotalView: View {
-    @Environment(CheckoutViewModel.self) var viewModel
+    @Environment(CartViewModel.self) var viewModel
     
     var body: some View {
         VStack(spacing: 8) {

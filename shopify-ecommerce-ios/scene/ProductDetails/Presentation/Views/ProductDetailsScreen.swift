@@ -29,7 +29,8 @@ struct ProductDetailsScreen: View {
             case .success(let state):
                 ProductDetailsView(
                     state: state,
-                    onSizeSelected: viewModel.selectSize(_:)
+                    onSizeSelected: viewModel.selectSize(_:),
+                    onAddToCart: viewModel.addToCart
                 )
 
             case .error(let message):
@@ -40,5 +41,9 @@ struct ProductDetailsScreen: View {
         .task {
             await viewModel.loadProduct()
         }
+        .showCustomAlert(
+            title: viewModel.alertTitle,
+            errorMessage: $viewModel.alertMessage
+        )
     }
 }
