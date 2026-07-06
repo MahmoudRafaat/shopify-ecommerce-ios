@@ -11,6 +11,7 @@ import Alamofire
 protocol HomeServiceProtocol: AnyObject {
     func loadProducts() async throws -> [ProductDTO]
     func loadCategories() async throws -> [CategoryDTO]
+    func loadBrands() async throws -> [CategoryDTO]
 }
 
 class HomeRemoteDataSource: HomeServiceProtocol {
@@ -23,5 +24,10 @@ class HomeRemoteDataSource: HomeServiceProtocol {
     func loadCategories() async throws -> [CategoryDTO] {
         let response: CategoryResponse = try await NetworkService.request(endpoint: HomeEndpoint.categories)
         return response.customCollections ?? []
+    }
+    
+    func loadBrands() async throws -> [CategoryDTO] {
+        let response: CategoryResponse = try await NetworkService.request(endpoint: HomeEndpoint.brands)
+        return response.smartCollections ?? []
     }
 }
