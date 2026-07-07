@@ -14,16 +14,17 @@ struct ProductPriceView: View {
     let oldPrice: String
     let currentPrice: String
     let discount: String
+    @Environment(CurrencyService.self) private var currencyService
 
     var body: some View {
 
         HStack(spacing: 12) {
 
-            Text(oldPrice)
+            Text(PriceFormatter.format(amountString: oldPrice, currencyService: currencyService))
                 .strikethrough()
                 .foregroundStyle(.secondary)
 
-            Text(currentPrice)
+            Text(PriceFormatter.format(amountString: currentPrice, currencyService: currencyService))
                 .font(.title2)
                 .fontWeight(.bold)
 

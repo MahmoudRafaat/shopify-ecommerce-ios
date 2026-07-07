@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 protocol ApiEndpoint {
+    var baseURL: String? { get }
     var path: String { get }
     var method: HTTPMethod { get }
     var queryParameters: Parameters? { get }
@@ -17,6 +18,10 @@ protocol ApiEndpoint {
 }
 
 extension ApiEndpoint {
+    var baseURL: String? {
+        return nil
+    }
+    
     var queryParameters: Parameters? {
         return nil
     }
