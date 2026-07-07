@@ -32,11 +32,24 @@ class SearchViewModel {
     var availableVendors: [SearchVendor] = []
     var availableCategories: [SearchCategory] = []
     
+    private var allProducts: [SearchProduct] = []
+    
+    private var nextPageURL: URL? = nil
+    
+    private var isLoadingMore = false
+    
+    private var totalProductCount: Int = 0
+    
+    var canLoadMore: Bool {
+        return nextPageURL != nil
+    }
+    
+    var currentProducts: [SearchProduct] {
+        return allProducts
+    }
+    
     var productCount: Int {
-        if case .success(let products) = viewState {
-            return products.count
-        }
-        return 0
+        return totalProductCount
     }
     
     var hasActiveFilters: Bool {
@@ -99,6 +112,10 @@ class SearchViewModel {
     }
     
     private func fetchProducts() async {
+        allProducts = []
+        nextPageURL = nil
+        isLoadingMore = false
+        
         viewState = .loading
         
         let query = ProductQuery(
@@ -109,12 +126,40 @@ class SearchViewModel {
         )
         
         do {
-            let products = try await searchProductsUseCase.execute(query: query)
-            viewState = .success(products)
+            async let productsTask = searchProductsUseCase.execute(query: query)
+            async let countTask = searchProductsUseCase.fetchProductsCount(query: query)
+            
+            let (result, count) = try await (productsTask, countTask)
+            
+            allProducts = result.products
+            nextPageURL = result.nextPageURL
+            totalProductCount = count
+            viewState = .success(allProducts)
         } catch {
             if !Task.isCancelled {
                 viewState = .error(error.localizedDescription)
             }
+        }
+    }
+    
+    func loadMoreIfNeeded() {
+        guard let url = nextPageURL, !isLoadingMore else { return }
+        
+        isLoadingMore = true
+        viewState = .loadingMore
+        
+        Task {
+            do {
+                let result = try await searchProductsUseCase.executeNextPage(url: url)
+                allProducts.append(contentsOf: result.products)
+                nextPageURL = result.nextPageURL
+                viewState = .success(allProducts)
+            } catch {
+                if !Task.isCancelled {
+                    viewState = .error(error.localizedDescription)
+                }
+            }
+            isLoadingMore = false
         }
     }
 }
