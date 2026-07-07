@@ -8,7 +8,8 @@
 import Foundation
 
 protocol GetCollectionProductsUseCase {
-    func execute(collectionId: Int) async throws -> [ProductCollection]
+    func execute(collectionId: Int, searchQuery: String?) async throws -> (products: [ProductCollection], nextPageURL: URL?)
+    func fetchNextPage(url: URL) async throws -> (products: [ProductCollection], nextPageURL: URL?)
 }
 
 class GetCollectionProductsUseCaseImp: GetCollectionProductsUseCase {
@@ -18,7 +19,11 @@ class GetCollectionProductsUseCaseImp: GetCollectionProductsUseCase {
         self.repository = repository
     }
     
-    func execute(collectionId: Int) async throws -> [ProductCollection] {
-        try await repository.getCollectionProducts(collectionId: collectionId)
+    func execute(collectionId: Int, searchQuery: String?) async throws -> (products: [ProductCollection], nextPageURL: URL?) {
+        try await repository.getCollectionProducts(collectionId: collectionId, searchQuery: searchQuery)
+    }
+    
+    func fetchNextPage(url: URL) async throws -> (products: [ProductCollection], nextPageURL: URL?) {
+        try await repository.fetchNextPage(url: url)
     }
 }
