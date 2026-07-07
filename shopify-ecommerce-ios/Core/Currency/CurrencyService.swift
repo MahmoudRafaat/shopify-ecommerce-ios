@@ -37,7 +37,6 @@ final class CurrencyService {
     func refreshRatesIfNeeded() async {
         let currentTime = Int(Date().timeIntervalSince1970)
         
-        // Check if cached rates are still valid
         if let rates = cachedRates, rates.timeNextUpdateUnix > currentTime {
             return
         }
@@ -47,7 +46,6 @@ final class CurrencyService {
             self.cachedRates = rates
         } catch {
             print("Failed to fetch exchange rates: \(error.localizedDescription)")
-            // On failure, keep using the old cache or default to no conversion
         }
     }
     
@@ -55,7 +53,6 @@ final class CurrencyService {
         let targetCurrency = to ?? selectedCurrency
         
         guard let rates = cachedRates else {
-            // Fallback: 1:1 if no rates are available
             return amount
         }
         
@@ -73,8 +70,6 @@ final class CurrencyService {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencyCode = code
-        // To use custom symbols if needed, or let system handle
-        // formatter.currencySymbol = supportedCurrencies[code]
         
         return formatter.string(from: NSNumber(value: amount)) ?? "\(code) \(String(format: "%.2f", amount))"
     }

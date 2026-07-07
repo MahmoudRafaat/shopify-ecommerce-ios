@@ -2,6 +2,10 @@
 //  CurrencyRepositoryImpl.swift
 //  shopify-ecommerce-ios
 //
+//  Created by albaraa alsayed on 22/01/1448 AH.
+//
+
+
 
 import Foundation
 
@@ -13,6 +17,7 @@ final class CurrencyRepositoryImpl: CurrencyRepository {
     }
     
     func getExchangeRates(base: String) async throws -> ExchangeRates {
-        return try await remoteDataSource.fetchLatestRates(base: base)
+        let dto = try await remoteDataSource.fetchLatestRates(base: base)
+        return dto.toDomain()
     }
 }
