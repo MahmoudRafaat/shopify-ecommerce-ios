@@ -11,4 +11,5 @@ final class AppConstants{
     static let isLoggedIn = "isLoggedIn"
     static let customerId = "customer_id"
     static let hasSeenOnboarding = "hasSeenOnboarding"
+    static let selectedCurrency = "selectedCurrency"
 }

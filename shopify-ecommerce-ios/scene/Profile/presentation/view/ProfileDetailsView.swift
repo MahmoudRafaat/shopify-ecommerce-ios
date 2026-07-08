@@ -101,7 +101,7 @@ struct ProfileDetailsView: View {
             }
         }
         .fullScreenCover(isPresented: $showLoginScreen) {
-            LoginView(viewmodel: LoginViewModel())
+            LoginView(viewmodel: AuthFactory.makeLoginViewModel())
         }
         .onChange(of: showLoginScreen) { _, newValue in
             if !newValue && viewModel.uiState.isLoggedIn {

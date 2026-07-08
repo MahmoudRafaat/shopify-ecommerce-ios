@@ -15,9 +15,17 @@ class CollectionRepoImpl: CollectionRepo {
         self.service = service
     }
     
-    func getCollectionProducts(collectionId: Int) async throws -> [ProductCollection] {
-        let dtos = try await service.loadProducts(collectionId: collectionId)
-
+    func getCollectionProducts(collectionId: Int, searchQuery: String?) async throws -> (products: [ProductCollection], nextPageURL: URL?) {
+        let result = try await service.loadProducts(collectionId: collectionId, searchQuery: searchQuery)
+        return (products: mapProducts(result.products), nextPageURL: result.nextPageURL)
+    }
+    
+    func fetchNextPage(url: URL) async throws -> (products: [ProductCollection], nextPageURL: URL?) {
+        let result = try await service.loadNextPage(url: url)
+        return (products: mapProducts(result.products), nextPageURL: result.nextPageURL)
+    }
+    
+    private func mapProducts(_ dtos: [ProductDTO]) -> [ProductCollection] {
         return dtos.map { dto in
             let variants = dto.variants ?? []
             let totalQuantity = variants.reduce(0) { $0 + ($1.inventoryQuantity ?? 0) }
@@ -33,6 +41,4 @@ class CollectionRepoImpl: CollectionRepo {
             )
         }
     }
-    
-    
 }

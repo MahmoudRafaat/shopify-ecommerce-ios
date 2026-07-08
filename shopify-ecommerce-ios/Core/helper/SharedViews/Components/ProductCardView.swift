@@ -11,20 +11,27 @@ struct ProductCardView: View {
     let uiState: ProductUIState
     var onFavoriteToggle: (() -> Void)? = nil
     var onTap: () -> Void
+
     
     @State private var favoritesViewModel = FavoritesViewModel()
     @State private var isFavorite: Bool = false
+
+    @Environment(CurrencyService.self) private var currencyService
     
     var body: some View {
         VStack(spacing: 8) {
             
-            CachedImageLoader(
-                urlString: uiState.image,
-                width: nil,
-                height: 124
-            )
-            .frame(maxWidth: .infinity)
-            .cornerRadius(10)
+            Color.clear
+                .frame(height: 124)
+                .overlay(
+                    CachedImageLoader(
+                        urlString: uiState.image,
+                        width: nil,
+                        height: nil
+                    )
+                )
+                .clipped()
+                .cornerRadius(10)
             .overlay(alignment: .topTrailing) {
                 Button(action: {
                     if isFavorite {
@@ -84,10 +91,10 @@ struct ProductCardView: View {
                     .foregroundColor(.gray)
                     .lineLimit(1)
                 Spacer()
-                Text(uiState.price, format: .currency(code: "USD"))
+                Text(PriceFormatter.format(amount: uiState.price, currencyService: currencyService))
                     .font(.system(size: 12, weight: .bold))
                 HStack(spacing: 4) {
-                    Text(uiState.oldPrice, format: .currency(code: "USD"))
+                    Text(PriceFormatter.format(amount: uiState.oldPrice, currencyService: currencyService))
                         .font(.system(size: 10, weight: .regular))
                         .strikethrough()
                         .foregroundStyle(Color.gray)

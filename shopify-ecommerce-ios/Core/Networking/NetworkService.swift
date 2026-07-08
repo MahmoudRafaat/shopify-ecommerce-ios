@@ -17,7 +17,7 @@ final class NetworkService {
     
     static func request<T: Decodable>(endpoint: ApiEndpoint) async throws -> T {
         
-        let urlString = Constants.baseURL + endpoint.path
+        let urlString = (endpoint.baseURL ?? Constants.baseURL) + endpoint.path
         
         guard let url = URL(string: urlString) else {
             throw NetworkError.invalidURl

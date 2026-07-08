@@ -10,7 +10,9 @@ import SwiftUI
 struct SettingsView: View {
     @State private var viewModel = SettingsViewModel()
     @State private var showLoginScreen = false
+    @State private var navigateToCurrencyPicker = false
     @Environment(\.dismiss) private var dismiss
+    @Environment(CurrencyService.self) private var currencyService
     let brandRed = Color(red: 0.95, green: 0.25, blue: 0.40)
 
     var body: some View {
@@ -60,9 +62,12 @@ struct SettingsView: View {
             .navigationDestination(isPresented: $viewModel.navigateToOrders) {
                 OrdersListView()
             }
+            .navigationDestination(isPresented: $navigateToCurrencyPicker) {
+                CurrencyPickerView()
+            }
         }
         .fullScreenCover(isPresented: $showLoginScreen) {
-            LoginView(viewmodel: LoginViewModel())
+            LoginView(viewmodel: AuthFactory.makeLoginViewModel())
         }
         .onChange(of: showLoginScreen) { _, newValue in
             if !newValue {
@@ -145,6 +150,15 @@ struct SettingsView: View {
 
     private var preferencesGroup: some View {
         SettingsGroup {
+            SettingsRowView(
+                icon: "dollarsign.circle.fill",
+                title: "Currency (\(currencyService.selectedCurrency))",
+                style: .navigation,
+                action: { navigateToCurrencyPicker = true }
+            )
+            
+            Divider().padding(.leading, 60)
+            
             SettingsRowView(
                 icon: "bell.fill",
                 title: "Notifications",

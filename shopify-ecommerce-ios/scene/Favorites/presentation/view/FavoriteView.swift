@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FavoriteView: View {
     @State private var viewModel = FavoritesViewModel()
+    @State private var navigateToProductDetails = false
+    @State private var selectedProductId: Int?
     
     var body: some View {
         VStack(spacing: 0) {
@@ -32,7 +34,8 @@ struct FavoriteView: View {
                         viewModel.removeFavorite(id: id)
                     },
                     onProductTap: { product in
-                        // Handle product tap (e.g., navigate to details)
+                        selectedProductId = product.id
+                        navigateToProductDetails = true
                     }
                 )
             }
@@ -40,6 +43,11 @@ struct FavoriteView: View {
         .showLoading(if: viewModel.isLoading)
         .onAppear {
             viewModel.fetchFavorites()
+        }
+        .navigationDestination(isPresented: $navigateToProductDetails) {
+            if let id = selectedProductId {
+                ProductDetailsScreen(id: id)
+            }
         }
     }
 }

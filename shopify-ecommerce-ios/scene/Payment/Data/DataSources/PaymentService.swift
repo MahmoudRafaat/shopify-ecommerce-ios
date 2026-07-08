@@ -8,13 +8,13 @@
 import Foundation
 
 protocol PaymentServiceProtocol: AnyObject {
-    func loadDraft() async throws -> PaymentOrderDTO?
+    func loadDraft(id: Int) async throws -> PaymentOrderDTO?
     func completeOrder(id: Int, paymentPending: Bool) async throws
 }
 
 class PaymentService: PaymentServiceProtocol {
-    func loadDraft() async throws -> PaymentOrderDTO? {
-        let responce : PaymentOrderResponse = try await NetworkService.request(endpoint: PaymentEndPoint.draftOrder(id: 1076599390344))
+    func loadDraft(id: Int) async throws -> PaymentOrderDTO? {
+        let responce : PaymentOrderResponse = try await NetworkService.request(endpoint: PaymentEndPoint.draftOrder(id: id))
         return responce.draftOrder
     }
     
