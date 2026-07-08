@@ -29,6 +29,7 @@ struct CartRootView: View {
                                 coordinator.goToSuccess()
                             }
                         )
+                        .navigationTitle(Text("Payment"))
 
                     case .orderSuccess:
                         OrderSuccessView()

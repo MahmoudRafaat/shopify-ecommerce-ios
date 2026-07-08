@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CartView: View {
-    @State private var viewModel = CartViewModel()
+    @State private var viewModel = CartFactory.makeCartViewModel()
     @Environment(\.presentationMode) var presentationMode
     
     var products: [ProductDataModel] = CartService.shared.products

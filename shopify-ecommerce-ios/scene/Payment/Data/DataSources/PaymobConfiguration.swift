@@ -22,23 +22,19 @@ struct PaymobConfiguration {
     /// Base URL for Paymob's Acceptance API v1.
     let baseURL: URL
 
-    /// Builds configuration by reading from the main bundle's Info.plist.
-    /// - Throws: `PaymobConfigurationError.missingKey` if a required key is absent.
+    /// Builds configuration by reading from SecretConstants.
+    /// - Throws: `PaymobConfigurationError.invalidBaseURL` if the URL is invalid.
     static func fromBundle() throws -> PaymobConfiguration {
-        let dict = Bundle.main.infoDictionary ?? [:]
-        guard let publicKey = dict["PAYMOB_PUBLIC_KEY"] as? String, !publicKey.isEmpty else {
-            throw PaymobConfigurationError.missingKey("PAYMOB_PUBLIC_KEY")
-        }
-        guard let secretKey = dict["PAYMOB_SECRET_KEY"] as? String, !secretKey.isEmpty else {
-            throw PaymobConfigurationError.missingKey("PAYMOB_SECRET_KEY")
-        }
-        let idString = dict["PAYMOB_CARD_INTEGRATION_ID"] as? String ?? ""
-        let cardIntegrationID = Int(idString) ?? 0
         guard let url = URL(string: "https://accept.paymob.com/v1") else {
             throw PaymobConfigurationError.invalidBaseURL
         }
-        print("[PaymobConfiguration] Loaded Public Key: \(publicKey), Card ID: \(cardIntegrationID)")
-        return PaymobConfiguration(publicKey: publicKey, secretKey: secretKey, cardIntegrationID: cardIntegrationID, baseURL: url)
+        print("[PaymobConfiguration] Loaded Public Key: \(SecretConstants.paymobPublicKey), Card ID: \(SecretConstants.paymobCardIntegrationID)")
+        return PaymobConfiguration(
+            publicKey: SecretConstants.paymobPublicKey,
+            secretKey: SecretConstants.paymobSecretKey,
+            cardIntegrationID: SecretConstants.paymobCardIntegrationID,
+            baseURL: url
+        )
     }
 }
 

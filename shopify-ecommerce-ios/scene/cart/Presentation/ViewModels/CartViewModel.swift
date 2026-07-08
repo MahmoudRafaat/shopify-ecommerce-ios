@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 
 @Observable
@@ -37,21 +38,19 @@ final class CartViewModel: CartViewModelProtocol {
     var selectedCoupon: PriceRuleResponse?
     var selectedCouponCode: String?
     
-    init(useCases: CheckoutUseCases = CheckoutUseCases(
-        createDraftOrder: CreateDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        getDraftOrder: GetDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        getCustomerCartMetafield: GetCustomerCartMetafieldUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        setCustomerCartMetafield: SetCustomerCartMetafieldUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        updateDraftOrderLineItems: UpdateDraftOrderLineItemsUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        applyDiscount: ApplyDiscountUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        completeDraftOrder: CompleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        updateDraftOrderAddress: UpdateDraftOrderAddressUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        removeLineItem: RemoveLineItemUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        deleteDraftOrder: DeleteDraftOrderUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        fetchActiveDiscountCodes: FetchActiveDiscountCodesUseCaseImpl(repository: CheckoutRepositoryImpl()),
-        removeDiscount: RemoveDiscountUseCaseImpl(repository: CheckoutRepositoryImpl())
-    )) {
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(useCases: CheckoutUseCases) {
         self.useCases = useCases
+        
+        CartService.shared.clearCartSubject
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                Task {
+                    await self?.clearCart()
+                }
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - Intentions
@@ -104,6 +103,11 @@ final class CartViewModel: CartViewModelProtocol {
                 } catch {
                     // Fall through to create a new cart
                 }
+            }
+            
+            if products.isEmpty {
+                self.isLoading = false
+                return
             }
             
             // Create a new draft order
@@ -250,12 +254,32 @@ final class CartViewModel: CartViewModelProtocol {
     
     // MARK: - Cart lifecycle
 
-    /// Clears all local and remote cart state after a successful order.
-    /// Called by `PaymentViewModel.checkout()` on order completion.
+    /// Clears all local and remote cart state.
+    /// Triggered globally via `CartService.shared.clearCartSubject`.
     @MainActor
     func clearCart() async {
-        // Reset the customer's cart metafield so a fresh cart is created next time.
-        try? await useCases.setCustomerCartMetafield.execute(draftOrderId: 0)
+        self.isLoading = true
+        var resetSuccess = false
+        
+        // Robust retry mechanism for Metafield reset (up to 3 retries)
+        for attempt in 1...3 {
+            do {
+                try await useCases.setCustomerCartMetafield.execute(draftOrderId: 0)
+                resetSuccess = true
+                break
+            } catch {
+                print("[CartViewModel] Failed to reset cart metafield (Attempt \(attempt)): \(error)")
+                if attempt < 3 {
+                    try? await Task.sleep(nanoseconds: 1_000_000_000) // wait 1s before retry
+                }
+            }
+        }
+        
+        if !resetSuccess {
+            self.errorMessage = "We couldn't finalize the cart reset on the server. Please try refreshing."
+        }
+        
+        // Reset local state
         cartLineItems = []
         draftOrderId  = nil
         orderTotal    = "0.00"
@@ -265,7 +289,8 @@ final class CartViewModel: CartViewModelProtocol {
         discountAmount = "0.00"
         selectedCoupon = nil
         selectedCouponCode = nil
-        CartService.shared.clear()
+        
+        self.isLoading = false
     }
     private func updateUI(with response: CheckoutOrderInfo) {
         self.draftOrderId = response.id
