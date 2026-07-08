@@ -130,6 +130,13 @@ struct HomeScreenView: View {
             .padding(.trailing, 20)
             .padding(.bottom, 25)
         }
+        .refreshable {
+            await viewModel.refreshData()
+        }
+        .tint(.appBlue)
+        .task {
+            await viewModel.fetchData()
+        }
     }
 }
 
