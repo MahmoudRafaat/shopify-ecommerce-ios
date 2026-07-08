@@ -10,6 +10,7 @@ import Alamofire
 
 enum SearchEndpoint: ApiEndpoint {
     case search(query: ProductQuery)
+    case count(query: ProductQuery)
     case smartCollections
     case customCollections
     
@@ -17,6 +18,8 @@ enum SearchEndpoint: ApiEndpoint {
         switch self {
         case .search:
             return "products.json"
+        case .count:
+            return "products/count.json"
         case .smartCollections:
             return "smart_collections.json"
         case .customCollections:
@@ -33,6 +36,8 @@ enum SearchEndpoint: ApiEndpoint {
         case .search(let query):
             var params: Parameters = [:]
             
+            params["limit"] = 20
+            
             if let title = query.title, !title.isEmpty {
                 params["title"] = title
             }
@@ -47,6 +52,23 @@ enum SearchEndpoint: ApiEndpoint {
             }
             
             return params.isEmpty ? nil : params
+            
+        case .count(let query):
+            var params: Parameters = [:]
+            
+            if let title = query.title, !title.isEmpty {
+                params["title"] = title
+            }
+            if let vendor = query.vendor, !vendor.isEmpty {
+                params["vendor"] = vendor
+            }
+            if let collectionId = query.collectionId {
+                params["collection_id"] = collectionId
+            }
+            // count does not need limit or order
+            
+            return params.isEmpty ? nil : params
+            
         case .smartCollections, .customCollections:
             return nil
         }
