@@ -19,4 +19,5 @@ shopify-ecommerce-ios/SeacretConstants.swift
 **/NetworkConstants.swift
 
 # Ignore Sensitive Keys
+**/SecretConstants.swift
 Secrets.xcconfig

@@ -26,4 +26,5 @@
 	<key>PAYMOB_CARD_INTEGRATION_ID</key>
 	<string>$(PAYMOB_CARD_INTEGRATION_ID)</string>
 </dict>
+
 </plist>

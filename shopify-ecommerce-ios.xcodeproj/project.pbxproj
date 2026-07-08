@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6D6FCC222FF2531B00A82A9C /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		6D6FCC222FF2531B00A82A9C /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC232FF2533100A82A9C /* Kingfisher */; };
 		6D6FFBF32FFDCB2900B1D298 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FFBF22FFDCB2900B1D298 /* GoogleSignIn */; };
 		6D6FFBF52FFDCB2900B1D298 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FFBF42FFDCB2900B1D298 /* GoogleSignInSwift */; };
@@ -16,6 +16,7 @@
 		9D3861692FF6B4180009D227 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9D3861682FF6B4180009D227 /* Alamofire */; };
 		B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8012FF520990008A453 /* FirebaseAnalytics */; };
 		B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8032FF520A20008A453 /* FirebaseAuth */; };
+		B38B80612FFD9D5400C2B131 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = B38B80602FFD9D5400C2B131 /* GoogleGenerativeAI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,11 +78,15 @@
 		};
 		B3AEA0552FEFCC8500BE7867 /* shopify-ecommerce-iosTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = "shopify-ecommerce-iosTests";
 			sourceTree = "<group>";
 		};
 		B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = "shopify-ecommerce-iosUITests";
 			sourceTree = "<group>";
 		};
@@ -96,7 +101,8 @@
 				6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */,
 				6D6FFBF52FFDCB2900B1D298 /* GoogleSignInSwift in Frameworks */,
 				6FC1DB9C2FFC6B370020A6F3 /* PaymobSDK.xcframework in Frameworks */,
-				6D6FCC222FF2531B00A82A9C /* (null) in Frameworks */,
+				6D6FCC222FF2531B00A82A9C /* BuildFile in Frameworks */,
+				B38B80612FFD9D5400C2B131 /* GoogleGenerativeAI in Frameworks */,
 				B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */,
 				B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */,
 				6D6FFBF32FFDCB2900B1D298 /* GoogleSignIn in Frameworks */,
@@ -182,6 +188,7 @@
 				B361E8012FF520990008A453 /* FirebaseAnalytics */,
 				B361E8032FF520A20008A453 /* FirebaseAuth */,
 				9D3861682FF6B4180009D227 /* Alamofire */,
+				B38B80602FFD9D5400C2B131 /* GoogleGenerativeAI */,
 				6D6FFBF22FFDCB2900B1D298 /* GoogleSignIn */,
 				6D6FFBF42FFDCB2900B1D298 /* GoogleSignInSwift */,
 			);
@@ -267,6 +274,7 @@
 				B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				B3C7A3FA2FEFD375004F3F62 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				B38B80492FFD9B8700C2B131 /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 				6D6FFBF12FFDCB2900B1D298 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -482,6 +490,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "shopify-ecommerce-ios/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "This app needs photo library access to upload product images to the AI assistant.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to take photos of products for the AI assistant.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs microphone access for voice input in the AI assistant.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -514,6 +525,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "shopify-ecommerce-ios/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "This app needs photo library access to upload product images to the AI assistant.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to take photos of products for the AI assistant.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs microphone access for voice input in the AI assistant.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -658,6 +672,14 @@
 				version = 11.2.0;
 			};
 		};
+		B38B80492FFD9B8700C2B131 /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
 		B3C7A3F92FEFD356004F3F62 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -706,6 +728,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B361E7FF2FF520190008A453 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		B38B80602FFD9D5400C2B131 /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B38B80492FFD9B8700C2B131 /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

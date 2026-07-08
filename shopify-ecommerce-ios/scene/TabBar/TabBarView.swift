@@ -28,7 +28,7 @@ struct TabBarView: View {
                 }
                 .tag(Tab.cart)
                 
-                SearchRootView()
+                SearchView()
                 .tag(Tab.search)
                 
                 NavigationStack {
