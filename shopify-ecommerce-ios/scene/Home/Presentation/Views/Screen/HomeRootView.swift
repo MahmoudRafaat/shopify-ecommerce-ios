@@ -11,12 +11,12 @@ import Observation
 struct HomeRootView: View {
     @Binding var selectedTab: Tab
     @State private var coordinator = HomeCoordinator()
-    
+
     @State var viewModel: HomeViewModel
-    
+
     var body: some View {
         @Bindable var bindableCoordinator = coordinator
-        
+
         NavigationStack(path: $bindableCoordinator.navigationPath) {
             HomeScreenView(viewModel: viewModel, selectedTab: $selectedTab)
                 .environment(coordinator)
@@ -25,44 +25,80 @@ struct HomeRootView: View {
                     case .productDetail(let productId):
                         let remoteDataSource = ProductDetailsRemoteDataSourceImpl()
 
-                             let repository = ProductDetailsRepositoryImpl(
-                                 remoteDataSource: remoteDataSource
-                             )
+                        let repository = ProductDetailsRepositoryImpl(
+                            remoteDataSource: remoteDataSource
+                        )
 
-                             let useCase = GetProductDetailsUseCaseImpl(
-                                 repository: repository
-                             )
+                        let useCase = GetProductDetailsUseCaseImpl(
+                            repository: repository
+                        )
 
-                             let viewModel = ProductDetailsViewModel(
-                                 productId: productId,
-                                 getProductDetailsUseCase: useCase
-                             )
+                        let viewModel = ProductDetailsViewModel(
+                            productId: productId,
+                            getProductDetailsUseCase: useCase
+                        )
 
-                             ProductDetailsScreen(
-                                 viewModel: viewModel
-                             ).environment(coordinator).toolbar {
-                                 ToolbarItem(placement: .topBarTrailing) {
-                                     Button {
-                                         // Go to cart
-                                     } label: {
-                                         Image(systemName: "cart")
-                                             .font(.system(size: 18, weight: .medium))
-                                             .foregroundStyle(.black)
-                                             .frame(width: 40, height: 40)
-                                             .background(Color(.systemGray6))
-                                             .clipShape(Circle())
-                                     }
-                                 }
-                             }
+                        ProductDetailsScreen(
+                            viewModel: viewModel
+                        ).environment(coordinator).toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button {
+                                    // Go to cart
+                                } label: {
+                                    Image(systemName: "cart")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundStyle(.black)
+                                        .frame(width: 40, height: 40)
+                                        .background(Color(.systemGray6))
+                                        .clipShape(Circle())
+                                }
+                            }
+                        }
                     case .categoriesScreen(let categoryId):
                         CollectionScreenView(id: categoryId)
                     case .settings:
-                       SettingsView()
-                        .navigationBarBackButtonHidden(false)
+                        SettingsView()
+                            .navigationBarBackButtonHidden(false)
                     }
                 }
         }
         .environment(coordinator)
+        .fullScreenCover(isPresented: $bindableCoordinator.isShowingAIAssistant) {
+            NavigationStack {
+                AIAssistantView(
+                    viewModel: AIAssistantFactory.makeAIAssistantViewModel(
+                        isGuestMode: false // Pass guest mode status from your app
+                    )
+                )
+                .environment(coordinator)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            coordinator.dismissAIAssistant()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundStyle(.black)
+                                .frame(width: 32, height: 32)
+                                .background(Color(.systemGray6))
+                                .clipShape(Circle())
+                        }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            // Cart action
+                        } label: {
+                            Image(systemName: "cart")
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundStyle(.black)
+                                .frame(width: 40, height: 40)
+                                .background(Color(.systemGray6))
+                                .clipShape(Circle())
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
