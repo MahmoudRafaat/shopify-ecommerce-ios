@@ -12,12 +12,12 @@ struct CustomerRequest: Encodable {
 }
 
 struct CustomerInput: Encodable {
-    let firstName: String? = nil
-    let lastName: String? = nil
-    let email: String
-    let phone: String
-    let verifiedEmail: Bool = true
-    let addresses: [AddressInput]? = nil
+    var firstName: String? = nil
+    var lastName: String? = nil
+    var email: String
+    var phone: String
+    var verifiedEmail: Bool = true
+    var addresses: [AddressInput]? = nil
     
     enum CodingKeys: String, CodingKey {
         case firstName = "first_name"

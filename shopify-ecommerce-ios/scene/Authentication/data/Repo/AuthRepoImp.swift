@@ -32,6 +32,10 @@ class AuthRepoImp: AuthRepoProtocol {
         return try await authService.loginUser(withEmail: email, password: password)
     }
     
+    func loginWithGoogle(credential: AuthCredential) async throws -> User? {
+        return try await authService.loginWithGoogle(credential: credential)
+    }
+    
     func searchCustomerInShopify(email: String) async throws -> CustomerOutput {
         return try await shopifyService.searchCustomer(email: email)
     }

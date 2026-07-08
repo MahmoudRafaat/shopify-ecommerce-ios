@@ -53,6 +53,55 @@ class LoginUseCase {
         )
     }
     
+    func loginWithGoogle(credential: AuthCredential, email: String, phone: String) async throws -> LoginResult {
+        var firebaseUser: User?
+        var shopifyCustomer: CustomerOutput?
+        
+        do {
+            firebaseUser = try await repository.loginWithGoogle(credential: credential)
+        } catch let error as NSError {
+            if let authError = AuthErrorCode(rawValue: error.code) {
+                throw mapFirebaseError(authError)
+            } else {
+                throw LoginError.unknown(error.localizedDescription)
+            }
+        }
+        
+        guard let user = firebaseUser else {
+            throw LoginError.firebaseUserNotFound
+        }
+        
+        do {
+            shopifyCustomer = try await repository.searchCustomerInShopify(email: email)
+        } catch LoginError.firebaseUserNotFound {
+            // Customer not found in Shopify (search returns empty array), so we create a new one!
+            let input = CustomerInput(
+                email: email,
+                phone: "+2" + phone
+            )
+            do {
+                shopifyCustomer = try await repository.createCustomerInShopify(customerInput: input)
+            } catch {
+                throw LoginError.shopifyCustomerNotFound
+            }
+        } catch {
+            throw LoginError.shopifyCustomerNotFound
+        }
+        
+        guard let customer = shopifyCustomer else {
+            throw LoginError.shopifyCustomerNotFound
+        }
+        
+        if let customerId = customer.id {
+            UserDefaults.standard.set(customerId, forKey: AppConstants.customerId)
+        }
+        
+        return LoginResult(
+            firebaseUser: user,
+            shopifyCustomer: customer
+        )
+    }
+    
     private func mapFirebaseError(_ error: AuthErrorCode) -> LoginError {
         switch error {
         case .invalidEmail:

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import GoogleSignIn
 
 @main
 struct shopify_ecommerce_iosApp: App {
@@ -31,6 +32,9 @@ struct shopify_ecommerce_iosApp: App {
                         SignupView(viewmodel: SignupViewModel())
                     }
                 }
+            }
+            .onOpenURL { url in
+                GIDSignIn.sharedInstance.handle(url)
             }
         }
         .modelContainer(SwiftDataHandler.shared.sharedModelContainer)

@@ -43,7 +43,13 @@ struct LoginView: View {
                     
                     Spacer()
                     
-                    SocialLoginView(onGoogleTap: {}, onAppleTap: {}, onFacebookTap: {})
+                    SocialLoginView(
+                        onGoogleTap: {
+                            if let rootVC = UIApplication.shared.rootViewController {
+                                viewmodel.loginWithGoogle(presenting: rootVC)
+                            }
+                        },
+                    )
                     
                     Spacer()
                     
@@ -84,6 +90,9 @@ struct LoginView: View {
                 if newValue {
                     showHome = true
                 }
+            }
+            .sheet(isPresented: $viewmodel.showPhonePopup) {
+                GooglePhoneSheet(viewmodel: $viewmodel)
             }
         }
     }

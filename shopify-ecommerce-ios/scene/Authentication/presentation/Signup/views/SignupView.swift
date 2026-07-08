@@ -60,7 +60,7 @@ struct SignupView: View {
                 // MARK: - Social Login Divider
                 HStack() {
                     Spacer()
-                    SocialLoginView(onGoogleTap: {}, onAppleTap: {}, onFacebookTap: {})
+                    SocialLoginView(onGoogleTap: {})
                     Spacer()
                 }
                 // MARK: - Footer (Sign Up)

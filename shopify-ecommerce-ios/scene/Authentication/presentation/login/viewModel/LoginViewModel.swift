@@ -6,6 +6,10 @@
 //
 
 import Foundation
+import UIKit
+import GoogleSignIn
+import FirebaseAuth
+import FirebaseCore
 
 @MainActor
 protocol LoginViewModelProtocol: AnyObject {
@@ -17,7 +21,12 @@ protocol LoginViewModelProtocol: AnyObject {
     var showSuccessMessage: Bool { get }
     
     func login()
+    func loginWithGoogle(presenting: UIViewController)
     func resetState()
+    
+    var showPhonePopup: Bool { get set }
+    var googlePhone: String { get set }
+    func submitGooglePhone()
 }
 
 @Observable
@@ -29,6 +38,14 @@ class LoginViewModel: LoginViewModelProtocol {
     private(set) var isLoading = false
     private(set) var isLoginSuccess = false
     private(set) var showSuccessMessage = false
+    
+    var showPhonePopup = false
+    var googlePhone = ""
+    
+    private var pendingGoogleCredential: AuthCredential? = nil
+    private var pendingGoogleEmail: String = ""
+    private var pendingGoogleFirstName: String? = nil
+    private var pendingGoogleLastName: String? = nil
     
     private let loginUseCase: LoginUseCase
     
@@ -82,6 +99,104 @@ class LoginViewModel: LoginViewModelProtocol {
                 }
                 isLoginSuccess = false
                 showSuccessMessage = false
+            }
+        }
+    }
+    
+    func loginWithGoogle(presenting: UIViewController) {
+        isLoading = true
+        errorMessage = nil
+        isLoginSuccess = false
+        showSuccessMessage = false
+        
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            self.errorMessage = "Firebase configuration error."
+            self.isLoading = false
+            return
+        }
+        
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        GIDSignIn.sharedInstance.signIn(withPresenting: presenting) { [weak self] result, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                Task { @MainActor in
+                    self.isLoading = false
+                    self.errorMessage = error.localizedDescription
+                }
+                return
+            }
+            
+            guard let user = result?.user,
+                  let idToken = user.idToken?.tokenString else {
+                Task { @MainActor in
+                    self.isLoading = false
+                    self.errorMessage = "Failed to get Google ID token."
+                }
+                return
+            }
+            
+            let accessToken = user.accessToken.tokenString
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: accessToken)
+            let email = user.profile?.email ?? ""
+            let firstName = user.profile?.givenName ?? ""
+            let lastName = user.profile?.familyName ?? ""
+            
+            Task { @MainActor in
+                self.pendingGoogleCredential = credential
+                self.pendingGoogleEmail = email
+                self.pendingGoogleFirstName = firstName
+                self.pendingGoogleLastName = lastName
+                self.isLoading = false
+                self.showPhonePopup = true
+            }
+        }
+    }
+    
+    func submitGooglePhone() {
+        guard !googlePhone.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            self.errorMessage = "Please enter a valid phone number."
+            return
+        }
+        
+        guard let credential = pendingGoogleCredential else { return }
+        let email = pendingGoogleEmail
+        
+        isLoading = true
+        errorMessage = nil
+        isLoginSuccess = false
+        showSuccessMessage = false
+        showPhonePopup = false
+        
+        Task { @MainActor in
+            defer { self.isLoading = false }
+            
+            do {
+                let result = try await self.loginUseCase.loginWithGoogle(
+                    credential: credential,
+                    email: email,
+                    phone: googlePhone
+                )
+                
+                self.email = email // For storing user data
+                self.storeUserData(result)
+                
+                self.showSuccessMessage = true
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                
+                self.isLoginSuccess = true
+                self.errorMessage = nil
+            } catch {
+                if let loginError = error as? LoginError {
+                    self.errorMessage = loginError.errorDescription ?? "Google Login failed. Please try again."
+                } else {
+                    self.errorMessage = "Something went wrong. Please try again."
+                }
+                self.isLoginSuccess = false
+                self.showSuccessMessage = false
             }
         }
     }
