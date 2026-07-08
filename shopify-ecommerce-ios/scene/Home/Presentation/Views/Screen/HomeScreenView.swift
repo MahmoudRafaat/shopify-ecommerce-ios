@@ -117,7 +117,7 @@ struct HomeScreenView: View {
                 coordinator.goToAIAssistant()
             }
             .padding(.trailing, 20)
-            .padding(.bottom, 25)
+            .padding(.bottom, 35)
         }
         .refreshable {
             await viewModel.refreshData()
