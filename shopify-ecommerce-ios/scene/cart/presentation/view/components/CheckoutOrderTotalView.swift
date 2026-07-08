@@ -2,10 +2,11 @@ import SwiftUI
 
 struct CheckoutOrderTotalView: View {
     @Environment(CartViewModel.self) var viewModel
+    @Environment(CurrencyService.self) private var currencyService
     
     var body: some View {
         VStack(spacing: 8) {
-            CheckoutTextRowView(title: "Order Total", value: "\(viewModel.orderTotal)", font: .headline)
+            CheckoutTextRowView(title: "Order Total", value: PriceFormatter.format(amountString: viewModel.orderTotal, currencyService: currencyService), font: .headline)
             
             HStack(spacing: 8) {
                 Text("EMI Available")

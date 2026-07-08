@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CheckoutPaymentDetailsView: View {
     @Environment(CartViewModel.self) var viewModel
+    @Environment(CurrencyService.self) private var currencyService
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -11,7 +12,7 @@ struct CheckoutPaymentDetailsView: View {
                 .padding(.bottom, 8)
             
             // Order Amounts
-            CheckoutTextRowView(title: "Order Amounts", value: "\(viewModel.originalSubtotal)")
+            CheckoutTextRowView(title: "Order Amounts", value: PriceFormatter.format(amountString: viewModel.originalSubtotal, currencyService: currencyService))
             
             // Convenience
             HStack {
@@ -45,7 +46,7 @@ struct CheckoutPaymentDetailsView: View {
             
             // Discount
             if viewModel.discountAmount != "0.00" {
-                CheckoutTextRowView(title: "Discount (\(viewModel.selectedCouponCode ?? ""))", value: "-\(viewModel.discountAmount)", valueColor: .green)
+                CheckoutTextRowView(title: "Discount (\(viewModel.selectedCouponCode ?? ""))", value: "-\(PriceFormatter.format(amountString: viewModel.discountAmount, currencyService: currencyService))", valueColor: .green)
             }
             
             // Delivery Fee

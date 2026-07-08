@@ -12,9 +12,9 @@ struct ProductDetailsScreen: View {
     @StateObject
     private var viewModel: ProductDetailsViewModel
 
-    init(viewModel: ProductDetailsViewModel) {
+    init(id: Int) {
         _viewModel = StateObject(
-            wrappedValue: viewModel
+            wrappedValue: ProductDetailsFactory.makeProductDetailsViewModel(productId: id)
         )
     }
 
