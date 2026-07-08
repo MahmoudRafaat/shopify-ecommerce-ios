@@ -11,6 +11,7 @@ import Alamofire
 enum HomeEndpoint: ApiEndpoint {
     case products
     case categories
+    case brands
     
     var path: String {
         switch self {
@@ -18,6 +19,8 @@ enum HomeEndpoint: ApiEndpoint {
             return "products.json"
         case .categories:
             return "custom_collections.json"
+        case .brands:
+            return "smart_collections.json"
         }
     }
     var method: Alamofire.HTTPMethod {

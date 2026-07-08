@@ -2,6 +2,7 @@ import SwiftUI
 import Kingfisher
 struct CheckoutProductItemView: View {
     @Environment(CartViewModel.self) var viewModel
+    @Environment(CurrencyService.self) private var currencyService
     let item: OrderItemUIModel
     
     var body: some View {
@@ -42,7 +43,7 @@ struct CheckoutProductItemView: View {
                     .foregroundColor(.gray)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                Text("$\(item.price)")
+                Text(PriceFormatter.format(amountString: item.price, currencyService: currencyService))
                     .font(.subheadline)
                     .fontWeight(.bold)
                     .foregroundColor(.black)

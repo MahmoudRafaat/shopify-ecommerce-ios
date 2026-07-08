@@ -17,12 +17,8 @@ struct SearchRootView: View {
             SearchView()
                 .navigationDestination(for: SearchCoordinator.Destination.self) { destination in
                 switch destination {
-                case.productDetail(productId: let productId):
-                    let remoteDataSource = ProductDetailsRemoteDataSourceImpl()
-                    let repository = ProductDetailsRepositoryImpl(remoteDataSource: remoteDataSource)
-                    let useCase = GetProductDetailsUseCaseImpl(repository: repository)
-                    let viewModel = ProductDetailsViewModel(productId: productId, getProductDetailsUseCase: useCase)
-                    ProductDetailsScreen(viewModel: viewModel)
+                case .productDetail(productId: let productId):
+                    ProductDetailsScreen(id: productId)
                 }
             }
         }

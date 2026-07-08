@@ -8,8 +8,10 @@
 
 struct CategoryResponse: Codable {
     let customCollections: [CategoryDTO]?
+    let smartCollections: [CategoryDTO]?
     
     enum CodingKeys: String, CodingKey {
         case customCollections = "custom_collections"
+        case smartCollections = "smart_collections"
     }
 }

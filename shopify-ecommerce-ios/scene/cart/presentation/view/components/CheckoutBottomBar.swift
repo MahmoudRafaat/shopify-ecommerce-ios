@@ -3,10 +3,12 @@ import SwiftUI
 struct CheckoutBottomBar: View {
     @Environment(CartViewModel.self) var viewModel
     @Environment(CartCoordinator.self) private var coordinator
+    @Environment(CurrencyService.self) private var currencyService
+    
     var body: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(viewModel.orderTotal)")
+                Text(PriceFormatter.format(amountString: viewModel.orderTotal, currencyService: currencyService))
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundColor(.black)

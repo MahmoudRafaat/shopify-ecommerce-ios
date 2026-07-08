@@ -27,12 +27,6 @@ struct HomeScreenView: View {
                     }
                 )
                 
-                Text("All Featured")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 16)
-                
                 if viewModel.errorMessage != nil {
                     ContentUnavailableView {
                         Label("Oops.. Something went wrong.", systemImage: "exclamationmark.triangle.fill")
@@ -49,15 +43,35 @@ struct HomeScreenView: View {
                         .controlSize(.regular)
                     }
                 } else {
-                    if viewModel.isCategoriesLoading {
-                        ProgressView()
-                            .padding(.top, 16)
-                    } else {
-                        CategoriesSectionView(categories: viewModel.categories)
-                            .padding(.top, 16)
+                    VStack(spacing: 8) {
+                        Text("All Featured")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 16)
+                            
+                        if viewModel.isCategoriesLoading {
+                            ProgressView()
+                        } else {
+                            CategoriesSectionView(categories: viewModel.categories)
+                        }
                     }
                     
                     CollectionOfAds()
+                    
+                    VStack(spacing: 8) {
+                        Text("Top Brands")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 16)
+                            
+                        if viewModel.isBrandsLoading {
+                            ProgressView()
+                        } else {
+                            CategoriesSectionView(categories: viewModel.brands)
+                        }
+                    }
                     
                     DealCard(
                         dealName: "Deal of the Day",
@@ -98,6 +112,10 @@ struct HomeScreenView: View {
                 }
             }
         }
+        .refreshable {
+            await viewModel.refreshData()
+        }
+        .tint(.appBlue)
         .task {
             await viewModel.fetchData()
         }

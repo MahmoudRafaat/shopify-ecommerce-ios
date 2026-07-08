@@ -57,4 +57,15 @@ struct ProductUIState : Identifiable {
         self.productType = searchProduct.productType
         self.vendor = searchProduct.vendor
     }
+    
+    init(favoriteProduct: FavoriteProduct) {
+        self.id = favoriteProduct.id
+        self.image = favoriteProduct.image
+        self.name = favoriteProduct.name
+        self.description = favoriteProduct.productDescription
+        self.price = favoriteProduct.price
+        self.isAvailabe = favoriteProduct.isAvailable
+        self.productType = favoriteProduct.productType
+        self.vendor = favoriteProduct.vendor
+    }
 }

@@ -9,17 +9,57 @@ import SwiftUI
 
 struct ProductCardView: View {
     let uiState: ProductUIState
+    var onFavoriteToggle: (() -> Void)? = nil
     var onTap: () -> Void
+
+    
+    @State private var favoritesViewModel = FavoritesViewModel()
+    @State private var isFavorite: Bool = false
+
+    @Environment(CurrencyService.self) private var currencyService
+    
     var body: some View {
         VStack(spacing: 8) {
             
-            CachedImageLoader(
-                urlString: uiState.image,
-                width: nil,
-                height: 124
-            )
-            .frame(maxWidth: .infinity)
-            .cornerRadius(10)
+            Color.clear
+                .frame(height: 124)
+                .overlay(
+                    CachedImageLoader(
+                        urlString: uiState.image,
+                        width: nil,
+                        height: nil
+                    )
+                )
+                .clipped()
+                .cornerRadius(10)
+            .overlay(alignment: .topTrailing) {
+                Button(action: {
+                    if isFavorite {
+                        favoritesViewModel.removeFavorite(id: uiState.id)
+                    } else {
+                        let favProduct = FavoriteProduct(
+                            id: uiState.id,
+                            image: uiState.image,
+                            name: uiState.name,
+                            productDescription: uiState.description,
+                            price: uiState.price,
+                            isAvailable: uiState.isAvailabe,
+                            productType: uiState.productType,
+                            vendor: uiState.vendor
+                        )
+                        favoritesViewModel.addFavorite(product: favProduct)
+                    }
+                    isFavorite.toggle()
+                    onFavoriteToggle?()
+                }) {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .font(.system(size: 16))
+                        .foregroundColor(isFavorite ? .appPrimary : .gray)
+                        .padding(8)
+                        .background(Circle().fill(Color.white.opacity(0.8)))
+                }
+                .padding(6)
+            }
             
             
             VStack(alignment: .leading, spacing: 4) {
@@ -51,10 +91,10 @@ struct ProductCardView: View {
                     .foregroundColor(.gray)
                     .lineLimit(1)
                 Spacer()
-                Text(uiState.price, format: .currency(code: "USD"))
+                Text(PriceFormatter.format(amount: uiState.price, currencyService: currencyService))
                     .font(.system(size: 12, weight: .bold))
                 HStack(spacing: 4) {
-                    Text(uiState.oldPrice, format: .currency(code: "USD"))
+                    Text(PriceFormatter.format(amount: uiState.oldPrice, currencyService: currencyService))
                         .font(.system(size: 10, weight: .regular))
                         .strikethrough()
                         .foregroundStyle(Color.gray)
@@ -83,6 +123,9 @@ struct ProductCardView: View {
         .shadow(color: .gray.opacity(0.15), radius: 8, x: 0, y: 4)
         .onTapGesture {
             onTap()
+        }
+        .onAppear {
+            isFavorite = favoritesViewModel.checkIsFavorite(id: uiState.id)
         }
     }
     

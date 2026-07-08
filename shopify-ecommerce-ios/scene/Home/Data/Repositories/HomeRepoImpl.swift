@@ -43,4 +43,15 @@ class HomeRepoImpl: HomeRepo {
                 imageName: data.image?.src ?? "placeholder_image")
         }
     }
+    
+    func getBrands() async throws -> [Category] {
+        let data = try await service.loadBrands()
+        
+        return data.map{ data in
+            Category(
+                id: data.id ?? 0,
+                title: data.title ?? "Brand",
+                imageName: data.image?.src ?? "placeholder_image")
+        }
+    }
 }

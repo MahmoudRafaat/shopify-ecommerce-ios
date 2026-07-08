@@ -14,10 +14,12 @@ final class HomeFactory {
         let repository = HomeRepoImpl(service: remoteService)
         let getProductsUseCase = GetProductsUseCase(repository: repository)
         let getCategoriesUseCase = GetCategoriesUseCase(repository: repository)
+        let getBrandsUseCase = GetBrandsUseCase(repository: repository)
         
         return HomeViewModel(
             getProductsUseCase: getProductsUseCase,
-            getCategoriesUseCase: getCategoriesUseCase
+            getCategoriesUseCase: getCategoriesUseCase,
+            getBrandsUseCase: getBrandsUseCase
         )
     }
 }

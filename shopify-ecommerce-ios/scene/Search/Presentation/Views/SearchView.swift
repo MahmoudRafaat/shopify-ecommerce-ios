@@ -76,11 +76,16 @@ struct SearchView: View {
         case .loading:
             loadingView
             
-        case .success(let products):
+        case .loadingMore, .success:
+            let products = viewModel.currentProducts
             if products.isEmpty {
                 emptyView
             } else {
-                SearchProductGrid(products: products)
+                SearchProductGrid(
+                    products: products,
+                    canLoadMore: viewModel.canLoadMore,
+                    onReachedBottom: { viewModel.loadMoreIfNeeded() }
+                )
             }
             
         case .error(let message):

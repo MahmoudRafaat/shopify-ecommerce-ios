@@ -13,7 +13,7 @@ struct CategoriesSectionView: View {
     let categories: [Category]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 16) {
+            HStack(alignment: .top, spacing: 16) {
                 ForEach(categories) { category in
                     CategoryItem(category: category) {
                         coordinator.goToCategoriesScreen(id: category.id)
