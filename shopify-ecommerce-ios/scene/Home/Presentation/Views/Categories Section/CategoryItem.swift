@@ -22,8 +22,9 @@ struct CategoryItem: View {
             .clipShape(Circle())
             
             Text(category.title)
-                .font(.subheadline)
+                .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(.black)
+                .multilineTextAlignment(.center)
         }
         .frame(width: 80)
         .onTapGesture {
