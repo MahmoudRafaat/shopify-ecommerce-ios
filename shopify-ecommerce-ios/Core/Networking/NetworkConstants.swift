@@ -15,5 +15,7 @@ struct Constants {
     
     static let adminToken = SecretConstants.password
     static let apiKey = SecretConstants.apiKey
-    static let customerId = UserDefaults.standard.string(forKey: AppConstants.customerId)
+    static var customerId: String? {
+        return UserDefaults.standard.string(forKey: AppConstants.customerId)
+    }
 }

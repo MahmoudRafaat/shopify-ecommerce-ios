@@ -35,6 +35,7 @@ class SettingsRepository: SettingsRepositoryProtocol {
             userDefaults.removeObject(forKey: AppConstants.isLoggedIn)
             userDefaults.removeObject(forKey: AppConstants.customerId)
             userDefaults.synchronize()
+            CartService.shared.clear()
         } catch {
             throw SettingsError.logoutFailed(error.localizedDescription)
         }
