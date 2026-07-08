@@ -14,6 +14,9 @@ struct ProductActionButtons: View {
     let onAddToCart: () -> Void
     let onBuyNow: () -> Void
 
+    @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
+    @State private var showLoginAlert = false
+
     private let buttonHeight: CGFloat = 52
 
     var body: some View {
@@ -21,7 +24,13 @@ struct ProductActionButtons: View {
         HStack(spacing: 12) {
 
             // Cart Button
-            Button(action: onAddToCart) {
+            Button(action: {
+                if isGuestMode {
+                    showLoginAlert = true
+                } else {
+                    onAddToCart()
+                }
+            }) {
 
                 HStack(spacing: 10) {
 
@@ -57,7 +66,13 @@ struct ProductActionButtons: View {
             }
 
             // Buy Now Button
-            Button(action: onBuyNow) {
+            Button(action: {
+                if isGuestMode {
+                    showLoginAlert = true
+                } else {
+                    onBuyNow()
+                }
+            }) {
 
                 HStack(spacing: 10) {
 
@@ -91,6 +106,14 @@ struct ProductActionButtons: View {
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 18))
             }
+        }
+        .alert("Login Required", isPresented: $showLoginAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Login Now") {
+                isGuestMode = false
+            }
+        } message: {
+            Text("Please login to access this feature.")
         }
     }
 }

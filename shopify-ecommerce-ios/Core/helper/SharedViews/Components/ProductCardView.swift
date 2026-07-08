@@ -15,6 +15,8 @@ struct ProductCardView: View {
     
     @State private var favoritesViewModel = FavoritesViewModel()
     @State private var isFavorite: Bool = false
+    @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
+    @State private var showLoginAlert = false
 
     @Environment(CurrencyService.self) private var currencyService
     
@@ -34,6 +36,10 @@ struct ProductCardView: View {
                 .cornerRadius(10)
             .overlay(alignment: .topTrailing) {
                 Button(action: {
+                    if isGuestMode {
+                        showLoginAlert = true
+                        return
+                    }
                     if isFavorite {
                         favoritesViewModel.removeFavorite(id: uiState.id)
                     } else {
@@ -126,6 +132,14 @@ struct ProductCardView: View {
         }
         .onAppear {
             isFavorite = favoritesViewModel.checkIsFavorite(id: uiState.id)
+        }
+        .alert("Login Required", isPresented: $showLoginAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Login Now") {
+                isGuestMode = false
+            }
+        } message: {
+            Text("Please login to access this feature.")
         }
     }
     

@@ -58,7 +58,16 @@ struct LoginView: View {
                     })
                 }
                 .padding(.horizontal, 24)
-                .showLoading(if: viewmodel.isLoading)
+                .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Skip") {
+                    UserDefaults.standard.set(true, forKey: AppConstants.isGuestMode)
+                }
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.appPrimary)
+            }
+        }
+        .showLoading(if: viewmodel.isLoading)
                 .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
                 .background(Color.white.ignoresSafeArea())
                 .disabled(viewmodel.showSuccessMessage)

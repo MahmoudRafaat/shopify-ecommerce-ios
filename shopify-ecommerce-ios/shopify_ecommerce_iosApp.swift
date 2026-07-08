@@ -20,13 +20,14 @@ struct shopify_ecommerce_iosApp: App {
     
     @AppStorage(AppConstants.hasSeenOnboarding) private var hasSeenOnboarding = false
     @AppStorage(AppConstants.isLoggedIn) private var isLoggedIn = false
+    @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
     
     var body: some Scene {
         WindowGroup {
             AnimatedSplashScreen {
                 if !hasSeenOnboarding {
                     OnboardingScreen()
-                } else if isLoggedIn {
+                } else if isLoggedIn || isGuestMode {
                     TabBarView()
                 } else {
                     NavigationStack {
