@@ -30,7 +30,7 @@ struct HomeRootView: View {
                                  ToolbarItem(placement: .topBarTrailing) {
                                      Button {
                                          if isGuestMode { showLoginAlert = true }
-                                         else { /* Go to cart */ }
+                                         else { selectedTab = .cart }
                                      } label: {
                                          Image(systemName: "cart")
                                              .font(.system(size: 18, weight: .medium))
@@ -74,7 +74,11 @@ struct HomeRootView: View {
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            // Cart action
+                            if isGuestMode { showLoginAlert = true }
+                            else {
+                                coordinator.dismissAIAssistant()
+                                selectedTab = .cart
+                            }
                         } label: {
                             Image(systemName: "cart")
                                 .font(.system(size: 18, weight: .medium))
