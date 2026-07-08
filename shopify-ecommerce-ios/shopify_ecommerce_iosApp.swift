@@ -30,18 +30,19 @@ struct shopify_ecommerce_iosApp: App {
                     TabBarView()
                 } else {
                     NavigationStack {
-                        SignupView(viewmodel: SignupViewModel())
+                        SignupView(viewmodel: AuthFactory.makeSignupViewModel())
                     }
                 }
             }
             .onOpenURL { url in
                 GIDSignIn.sharedInstance.handle(url)
+            }
             .task {
                 await currencyService.refreshRatesIfNeeded()
             }
+            .modelContainer(SwiftDataHandler.shared.sharedModelContainer)
+            .environment(networkMonitor)
+            .environment(currencyService)
         }
-        .modelContainer(SwiftDataHandler.shared.sharedModelContainer)
-        .environment(networkMonitor)
-        .environment(currencyService)
     }
 }

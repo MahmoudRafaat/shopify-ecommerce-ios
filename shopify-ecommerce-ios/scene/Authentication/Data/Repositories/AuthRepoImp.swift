@@ -24,8 +24,9 @@ class AuthRepoImp: AuthRepoProtocol {
         return try await authService.registerUser(withEmail: email, password: password)
     }
     
-    func createCustomerInShopify(customerInput: CustomerInput) async throws -> CustomerOutput {
-        return try await shopifyService.createCustomer(input: customerInput)
+    func createCustomerInShopify(customerInput: CustomerInput) async throws -> Customer {
+        let output = try await shopifyService.createCustomer(input: customerInput)
+        return CustomerMapper.map(from: output)
     }
     
     func loginByFireBase(email: String, password: String) async throws -> User? {
@@ -36,7 +37,8 @@ class AuthRepoImp: AuthRepoProtocol {
         return try await authService.loginWithGoogle(credential: credential)
     }
     
-    func searchCustomerInShopify(email: String) async throws -> CustomerOutput {
-        return try await shopifyService.searchCustomer(email: email)
+    func searchCustomerInShopify(email: String) async throws -> Customer {
+        let output = try await shopifyService.searchCustomer(email: email)
+        return CustomerMapper.map(from: output)
     }
 }

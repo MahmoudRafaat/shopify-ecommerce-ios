@@ -14,6 +14,9 @@ struct CustomerResponse: Decodable {
 struct CustomerOutput: Decodable {
     let id: Int?
     let email: String?
+    let firstName: String?
+    let lastName: String?
+    let phone: String?
     let createdAt: String?
     let updatedAt: String?
     let ordersCount: Int?
@@ -27,6 +30,9 @@ struct CustomerOutput: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case email
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case phone
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case ordersCount = "orders_count"

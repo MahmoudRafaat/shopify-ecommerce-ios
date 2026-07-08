@@ -13,7 +13,7 @@ struct SignupFooter: View {
             Text("I Already Have an Account")
                 .foregroundColor(.gray)
             NavigationLink(
-                destination: LoginView(viewmodel: LoginViewModel())
+                destination: LoginView(viewmodel: AuthFactory.makeLoginViewModel())
                     .navigationBarBackButtonHidden(true)
             ) {
                 Text("Login")

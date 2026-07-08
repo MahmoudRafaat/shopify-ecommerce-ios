@@ -50,7 +50,7 @@ class LoginViewModel: LoginViewModelProtocol {
     private let loginUseCase: LoginUseCase
     private let googleAuthUseCase: GoogleAuthUseCase
     
-    init(loginUseCase: LoginUseCase = LoginUseCase(), googleAuthUseCase: GoogleAuthUseCase = GoogleAuthUseCase()) {
+    init(loginUseCase: LoginUseCase, googleAuthUseCase: GoogleAuthUseCase) {
         self.loginUseCase = loginUseCase
         self.googleAuthUseCase = googleAuthUseCase
     }
@@ -249,9 +249,7 @@ class LoginViewModel: LoginViewModelProtocol {
     private func storeUserData(_ result: LoginResult) {
         UserDefaults.standard.set(result.firebaseUser.uid, forKey: "firebase_user_id")
         
-        if let customerId = result.shopifyCustomer.id {
-            UserDefaults.standard.set(customerId, forKey: "shopify_customer_id")
-        }
+        UserDefaults.standard.set(result.shopifyCustomer.id, forKey: "shopify_customer_id")
         
         UserDefaults.standard.set(email, forKey: "user_email")
         UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)

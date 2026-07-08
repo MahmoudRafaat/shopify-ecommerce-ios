@@ -1,26 +1,26 @@
 //
-//  GoogleAuthUseCase.swift
+//  LoginUsecase.swift
 //  shopify-ecommerce-ios
 //
-//  Created by Antigravity on 08/07/2026.
+//  Created by Mahmoud Raafat Mustafa on 30/06/2026.
 //
 
 import Foundation
 import FirebaseAuth
 
-class GoogleAuthUseCase {
+class LoginUseCase {
     private let repository: AuthRepoProtocol
     
-    init(repository: AuthRepoProtocol = AuthRepoImp()) {
+    init(repository: AuthRepoProtocol) {
         self.repository = repository
     }
     
-    func execute(credential: AuthCredential, email: String, phone: String?) async throws -> LoginResult {
+    func execute(email: String, password: String) async throws -> LoginResult {
         var firebaseUser: User?
-        var shopifyCustomer: CustomerOutput?
+        var shopifyCustomer: Customer?
         
         do {
-            firebaseUser = try await repository.loginWithGoogle(credential: credential)
+            firebaseUser = try await repository.loginByFireBase(email: email, password: password)
         } catch let error as NSError {
             if let authError = AuthErrorCode(rawValue: error.code) {
                 throw mapFirebaseError(authError)
@@ -35,21 +35,6 @@ class GoogleAuthUseCase {
         
         do {
             shopifyCustomer = try await repository.searchCustomerInShopify(email: email)
-        } catch LoginError.firebaseUserNotFound {
-            // Customer not found in Shopify. Check if we have a phone number to create one.
-            guard let validPhone = phone, !validPhone.isEmpty else {
-                throw LoginError.phoneRequiredForGoogleAuth
-            }
-            
-            let input = CustomerInput(
-                email: email,
-                phone: "+2" + validPhone
-            )
-            do {
-                shopifyCustomer = try await repository.createCustomerInShopify(customerInput: input)
-            } catch {
-                throw LoginError.shopifyCustomerNotFound
-            }
         } catch {
             throw LoginError.shopifyCustomerNotFound
         }
@@ -58,7 +43,7 @@ class GoogleAuthUseCase {
             throw LoginError.shopifyCustomerNotFound
         }
         
-        if let customerId = customer.id {
+        if let customerId = customer.id as Int? {
             UserDefaults.standard.set(customerId, forKey: AppConstants.customerId)
         }
         
@@ -68,6 +53,7 @@ class GoogleAuthUseCase {
         )
     }
     
+
     private func mapFirebaseError(_ error: AuthErrorCode) -> LoginError {
         switch error {
         case .invalidEmail:
@@ -117,4 +103,9 @@ class GoogleAuthUseCase {
             return .unknown(error.localizedDescription)
         }
     }
+}
+
+struct LoginResult {
+    let firebaseUser: User
+    let shopifyCustomer: Customer
 }

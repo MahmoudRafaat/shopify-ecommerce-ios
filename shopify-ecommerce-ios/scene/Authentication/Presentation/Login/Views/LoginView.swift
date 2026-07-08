@@ -84,7 +84,7 @@ struct LoginView: View {
               TabBarView()
             }
             .navigationDestination(isPresented: $navigateToSignup) {
-                SignupView(viewmodel: SignupViewModel())
+                SignupView(viewmodel: AuthFactory.makeSignupViewModel())
             }
             .onChange(of: viewmodel.isLoginSuccess) { _, newValue in
                 if newValue {
@@ -102,5 +102,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(viewmodel: LoginViewModel())
+    LoginView(viewmodel: AuthFactory.makeLoginViewModel())
 }

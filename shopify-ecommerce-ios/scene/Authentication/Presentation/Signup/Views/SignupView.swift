@@ -97,5 +97,5 @@ struct SignupView: View {
 }
 
 #Preview {
-    SignupView(viewmodel: SignupViewModel())
+    SignupView(viewmodel: AuthFactory.makeSignupViewModel())
 }

@@ -64,7 +64,7 @@ class SignupViewModel: SignupViewModelProtocol {
     private let signupUseCase: SignupUseCase
     private let googleAuthUseCase: GoogleAuthUseCase
     
-    init(signupUseCase: SignupUseCase = SignupUseCase(), googleAuthUseCase: GoogleAuthUseCase = GoogleAuthUseCase()) {
+    init(signupUseCase: SignupUseCase, googleAuthUseCase: GoogleAuthUseCase) {
         self.signupUseCase = signupUseCase
         self.googleAuthUseCase = googleAuthUseCase
     }
@@ -136,9 +136,7 @@ class SignupViewModel: SignupViewModelProtocol {
                     
                     UserDefaults.standard.set(result.firebaseUser.uid, forKey: "firebase_user_id")
                     
-                    if let customerId = result.shopifyCustomer.id {
-                        UserDefaults.standard.set(customerId, forKey: "shopify_customer_id")
-                    }
+                    UserDefaults.standard.set(result.shopifyCustomer.id, forKey: "shopify_customer_id")
                     
                     UserDefaults.standard.set(email, forKey: "user_email")
                     UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)
@@ -193,9 +191,7 @@ class SignupViewModel: SignupViewModelProtocol {
                 
                 UserDefaults.standard.set(result.firebaseUser.uid, forKey: "firebase_user_id")
                 
-                if let customerId = result.shopifyCustomer.id {
-                    UserDefaults.standard.set(customerId, forKey: "shopify_customer_id")
-                }
+                UserDefaults.standard.set(result.shopifyCustomer.id, forKey: "shopify_customer_id")
                 
                 UserDefaults.standard.set(email, forKey: "user_email")
                 UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)

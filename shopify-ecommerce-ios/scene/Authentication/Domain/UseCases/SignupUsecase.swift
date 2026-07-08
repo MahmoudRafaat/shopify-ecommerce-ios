@@ -11,7 +11,7 @@ import FirebaseAuth
 class SignupUseCase {
     private let repository: AuthRepoProtocol
     
-    init(repository: AuthRepoProtocol = AuthRepoImp()) {
+    init(repository: AuthRepoProtocol) {
         self.repository = repository
     }
     
@@ -41,8 +41,6 @@ class SignupUseCase {
         )
         
         let customer = try await repository.createCustomerInShopify(customerInput: customerInput)
-        if let customerId = customer.id {
-            UserDefaults.standard.set(customerId, forKey: AppConstants.customerId)
-        }
+        UserDefaults.standard.set(customer.id, forKey: AppConstants.customerId)
     }
 }
