@@ -13,6 +13,8 @@ struct PaymentScreenView: View {
     /// Injected by CartRootView — called after a successful order to navigate to the success screen.
     /// Optional so the view works standalone in previews.
     var onOrderSuccess: (() -> Void)? = nil
+    
+    @Environment(CurrencyService.self) private var currencyService
 
     @State private var selectedIndex: Int = 0
     @State private var alertMessage: String? = nil
@@ -24,10 +26,10 @@ struct PaymentScreenView: View {
 
                     // MARK: Price Summary
                     VStack(spacing: 18) {
-                        titleWithPrice(title: "Subtotal",     price: viewModel.totalPrice, color: .gray)
-                        titleWithPrice(title: "Shipping",     price: "0.00",               color: .gray)
+                        titleWithPrice(title: "Subtotal",     price: PriceFormatter.format(amountString: viewModel.totalPrice, currencyService: currencyService), color: .gray)
+                        titleWithPrice(title: "Shipping",     price: "Free", color: .gray)
                         Divider()
-                        titleWithPrice(title: "Order Total",  price: viewModel.totalPrice, color: .primary)
+                        titleWithPrice(title: "Order Total",  price: PriceFormatter.format(amountString: viewModel.totalPrice, currencyService: currencyService), color: .primary)
                     }
 
                     Divider()
@@ -54,8 +56,8 @@ struct PaymentScreenView: View {
                 }
             }
             .padding(24)
+            .padding(.bottom, 50) // Pad for tab bar
         }
-        .navigationBarHidden(true)
         .task {
             await viewModel.getTotalPrice()
         }
@@ -80,7 +82,7 @@ struct PaymentScreenView: View {
                 .font(.system(size: 18, weight: .medium))
                 .foregroundStyle(color)
             Spacer()
-            Text("$\(price)")
+            Text(price)
                 .font(.system(size: 18, weight: .medium))
                 .foregroundStyle(color)
         }
@@ -94,7 +96,7 @@ struct PaymentScreenView: View {
                 .font(.system(size: 18, weight: .medium))
                 .foregroundStyle(.gray)
         }
-        .frame(height: 50)
+        .frame(height: 40)
         .padding(20)
         .overlay {
             RoundedRectangle(cornerRadius: 12)
