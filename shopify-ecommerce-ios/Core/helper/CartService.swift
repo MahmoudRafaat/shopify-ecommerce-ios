@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import Combine
 
 @Observable
 final class CartService {
@@ -14,6 +15,9 @@ final class CartService {
     static let shared = CartService()
 
     private(set) var products: [ProductDataModel] = []
+    
+    /// Event bus for signaling that the cart has been completely cleared.
+    let clearCartSubject = PassthroughSubject<Void, Never>()
 
     private init() {}
 
@@ -33,6 +37,8 @@ final class CartService {
 
     func clear() {
         products.removeAll()
+        // Broadcast that the cart was cleared so ViewModels can drop remote state.
+        clearCartSubject.send()
     }
     
     func sync(products: [ProductDataModel]) {

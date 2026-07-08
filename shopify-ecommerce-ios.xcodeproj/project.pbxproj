@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6D6FCC222FF2531B00A82A9C /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC232FF2533100A82A9C /* Kingfisher */; };
+		6FC1DB9C2FFC6B370020A6F3 /* PaymobSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC1DB9A2FFC6A550020A6F3 /* PaymobSDK.xcframework */; };
+		6FC1DB9D2FFC6B370020A6F3 /* PaymobSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC1DB9A2FFC6A550020A6F3 /* PaymobSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9D3861692FF6B4180009D227 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9D3861682FF6B4180009D227 /* Alamofire */; };
 		B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8012FF520990008A453 /* FirebaseAnalytics */; };
 		B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B361E8032FF520A20008A453 /* FirebaseAuth */; };
@@ -31,7 +33,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6FC1DB9E2FFC6B370020A6F3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6FC1DB9D2FFC6B370020A6F3 /* PaymobSDK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		6FC1DB9A2FFC6A550020A6F3 /* PaymobSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = PaymobSDK.xcframework; sourceTree = "<group>"; };
 		B3AEA0402FEFCC8200BE7867 /* shopify-ecommerce-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "shopify-ecommerce-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3AEA0522FEFCC8500BE7867 /* shopify-ecommerce-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "shopify-ecommerce-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3AEA05C2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "shopify-ecommerce-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +92,7 @@
 			files = (
 				9D3861692FF6B4180009D227 /* Alamofire in Frameworks */,
 				6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */,
+				6FC1DB9C2FFC6B370020A6F3 /* PaymobSDK.xcframework in Frameworks */,
 				6D6FCC222FF2531B00A82A9C /* (null) in Frameworks */,
 				B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */,
 				B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */,
@@ -114,6 +132,7 @@
 				C5F8D4952FF3F8C800E68249 /* Frameworks */,
 				B3AEA0412FEFCC8200BE7867 /* Products */,
 				B361E8002FF520990008A453 /* Frameworks */,
+				6FC1DB9A2FFC6A550020A6F3 /* PaymobSDK.xcframework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,6 +163,7 @@
 				B3AEA03C2FEFCC8200BE7867 /* Sources */,
 				B3AEA03D2FEFCC8200BE7867 /* Frameworks */,
 				B3AEA03E2FEFCC8200BE7867 /* Resources */,
+				6FC1DB9E2FFC6B370020A6F3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

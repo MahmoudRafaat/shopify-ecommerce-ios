@@ -16,19 +16,14 @@ enum PaymentEndPoint: ApiEndpoint {
     var path: String {
         switch self {
         case .draftOrder(let id):
-            return "/draft_orders/\(id).json"
-        case .completeOrder(let id, _):
-            return "/draft_orders/\(id)/complete.json"
+            return "draft_orders/\(id).json"
+        case .completeOrder(let id, let paymentPending):
+            return "draft_orders/\(id)/complete.json?payment_pending=\(paymentPending)"
         }
     }
     
     var queryParameters: Parameters? {
-        switch self {
-        case .draftOrder:
-            return nil
-        case .completeOrder(_, let paymentPending):
-            return ["payment_pending": paymentPending]
-        }
+        nil
     }
 
     var method: HTTPMethod {
