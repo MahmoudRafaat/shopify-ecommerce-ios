@@ -111,21 +111,10 @@ struct HomeScreenView: View {
                 }
                 .padding(.bottom, 80) 
             }
-            .task {
-                await viewModel.fetchData()
-            }
 
 
-            Button {
+            AIFloatingActionButton {
                 coordinator.goToAIAssistant()
-            } label: {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .frame(width: 56, height: 56)
-                    .background(Color.blue)
-                    .clipShape(Circle())
-                    .shadow(radius: 6, y: 3)
             }
             .padding(.trailing, 20)
             .padding(.bottom, 25)

@@ -5,12 +5,6 @@
 //  Created by Mahmoud Raafat Mustafa on 07/07/2026.
 //
 
-
-//
-//  VoiceInputManager.swift
-//  shopify-ecommerce-ios
-//
-
 import Foundation
 import Speech
 import AVFoundation
@@ -59,12 +53,10 @@ class VoiceInputManager: NSObject, ObservableObject {
     
     func startRecording() {
         guard !isRecording else { return }
-        
-        // Cancel previous task
+
         recognitionTask?.cancel()
         recognitionTask = nil
-        
-        // Configure audio session
+
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
@@ -96,8 +88,7 @@ class VoiceInputManager: NSObject, ObservableObject {
                 self.stopRecording()
             }
         }
-        
-        // Configure microphone input
+
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
             recognitionRequest.append(buffer)
@@ -119,8 +110,7 @@ class VoiceInputManager: NSObject, ObservableObject {
         recognitionTask?.cancel()
         
         isRecording = false
-        
-        // Reset audio session
+
         do {
             try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         } catch {

@@ -2,6 +2,8 @@
 //  ProductContextProvider.swift
 //  shopify-ecommerce-ios
 //
+//  Created by Mahmoud Raafat Mustafa on 07/07/2026.
+//
 
 import Foundation
 
@@ -12,9 +14,6 @@ protocol ProductContextProviderProtocol {
     func searchProducts(query: String, limit: Int) async throws -> [Product]
 }
 
-/// Minimal, cheap context for queries that AREN'T about specific products.
-/// No per-product data — just enough for the assistant to know what kind
-/// of store this is.
 struct StoreOverview {
     let brandNames: [String]
     let categoryNames: [String]
@@ -28,7 +27,6 @@ class ProductContextProvider: ProductContextProviderProtocol {
     }
 
     func getStoreOverview() async throws -> StoreOverview {
-        // These can be cached (see note below) since they change rarely.
         let products = try await homeRepo.getProducts()
         let categories = try await homeRepo.getCategories()
 
@@ -51,9 +49,7 @@ class ProductContextProvider: ProductContextProviderProtocol {
         return categories + brands
     }
 
-    /// Targeted search — only pulls back what's relevant to the query,
-    /// not the whole catalog. This is what actually goes into the prompt
-    /// for product-related questions.
+    
     func searchProducts(query: String, limit: Int = 8) async throws -> [Product] {
         guard !query.trimmingCharacters(in: .whitespaces).isEmpty else { return [] }
 

@@ -5,18 +5,12 @@
 //  Created by Mahmoud Raafat Mustafa on 07/07/2026.
 //
 
-
-//
-//  QueryIntentClassifier.swift
-//  shopify-ecommerce-ios
-//
-
 import Foundation
 
 enum QueryIntent {
-    case general        // store policy, greeting, small talk, unrelated question
-    case productSearch   // "show me running shoes", "looking for a jacket under $50"
-    case comparison      // "compare X and Y", "which is better"
+    case general
+    case productSearch
+    case comparison
     case overallSuggestions
 }
 
@@ -30,10 +24,8 @@ struct QueryIntentClassifier {
         "available", "in stock", "size", "color", "brand"
     ]
 
-    /// Very lightweight heuristic — good enough to gate whether we spend
-    /// tokens/API calls fetching product context. False negatives just mean
-    /// a product question gets a slightly more generic answer; false positives
-    /// just mean we searched unnecessarily. Neither is catastrophic.
+    
+
     static func classify(_ text: String) -> QueryIntent {
         let lower = text.lowercased()
 
@@ -55,8 +47,7 @@ struct QueryIntentClassifier {
         return .general
     }
 
-    /// Pulls out plausible search terms for a product-search intent.
-    /// Simple approach: strip common filler words, keep the rest as the query.
+    
     static func extractSearchQuery(from text: String) -> String {
         let fillers: Set<String> = [
             "i", "am", "im", "looking", "for", "want", "need", "show", "me",

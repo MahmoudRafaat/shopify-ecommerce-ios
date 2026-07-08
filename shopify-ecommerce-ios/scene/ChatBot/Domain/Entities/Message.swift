@@ -5,7 +5,6 @@
 //  Created by Mahmoud Raafat Mustafa on 07/07/2026.
 //
 
-
 import Foundation
 import SwiftUI
 
@@ -40,19 +39,8 @@ struct ProductContext {
     let matchingKeywords: [String]
 }
 
-
 struct AIResponse {
     let text: String
     let suggestedProducts: [Product]
     let suggestedCategories: [Category]
-}
-
-/// Raw shape we ask Gemini to return. Decoded directly — never inferred
-/// by scanning prose for name matches.
-struct GeminiStructuredReply: Decodable {
-    let reply: String
-    let isInScope: Bool
-    let isProductRecommendation: Bool
-    let recommendedProductIds: [Int]
-    let recommendedCategoryIds: [Int]
 }

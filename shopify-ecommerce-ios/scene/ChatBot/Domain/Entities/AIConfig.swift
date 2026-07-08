@@ -5,22 +5,17 @@
 //  Created by Mahmoud Raafat Mustafa on 07/07/2026.
 //
 
-
-
 import Foundation
 
 struct AIConfig {
-    static let geminiAPIKey = ""
-        //
-          // Guest mode restriction
-        static let guestModeRestricted = true
-        
-        static let modelName = "gemini-2.5-flash-lite"
-     
-        
-        static let maxTokens = 2048
-        static let temperature: Float = 0.7
+    static var geminiAPIKey: String {
+        SecretConstants.geminiApiKey
     }
+    static let guestModeRestricted = true
+    static let modelName = "gemini-2.5-flash-lite"
+    static let maxTokens = 2048
+    static let temperature: Float = 0.7
+}
 
 enum AIError: Error {
     case apiKeyMissing

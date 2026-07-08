@@ -1,20 +1,24 @@
 //
-//  GeminiService.swift
+//  ChatRemoteDataSource.swift
 //  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 07/07/2026.
 //
 
 import Foundation
 import GoogleGenerativeAI
 import UIKit
 
-protocol GeminiServiceProtocol {
+
+protocol ChatRemoteDataSourceProtocol {
     func sendMessage(_ message: String) async throws -> AIResponse
     func sendMessageWithImage(_ image: UIImage, message: String?) async throws -> AIResponse
     func compareProducts(_ product1: Product, _ product2: Product) async throws -> AIResponse
     func getOverallSuggestions() async throws -> AIResponse
 }
 
-class GeminiService: GeminiServiceProtocol {
+
+class ChatRemoteDataSource: ChatRemoteDataSourceProtocol {
     private let generativeModel: GenerativeModel
     private let productContextProvider: ProductContextProviderProtocol
 
@@ -22,7 +26,7 @@ class GeminiService: GeminiServiceProtocol {
         let config = GenerationConfig(
             temperature: AIConfig.temperature,
             maxOutputTokens: AIConfig.maxTokens,
-            responseMIMEType: "application/json" // ask Gemini for strict JSON back
+            responseMIMEType: "application/json"
         )
 
         self.generativeModel = GenerativeModel(
@@ -33,7 +37,6 @@ class GeminiService: GeminiServiceProtocol {
         self.productContextProvider = productContextProvider
     }
 
-    // MARK: - Main entry point
 
     func sendMessage(_ message: String) async throws -> AIResponse {
         let intent = QueryIntentClassifier.classify(message)
@@ -44,8 +47,6 @@ class GeminiService: GeminiServiceProtocol {
         case .productSearch:
             return try await handleProductSearch(message)
         case .comparison:
-            // Comparison without two explicit Product objects still benefits
-            // from a narrow search rather than the full catalog.
             return try await handleProductSearch(message)
         case .overallSuggestions:
             return try await getOverallSuggestions()
@@ -53,8 +54,6 @@ class GeminiService: GeminiServiceProtocol {
     }
 
     func sendMessageWithImage(_ image: UIImage, message: String?) async throws -> AIResponse {
-        // Image queries are inherently product-related — do a broad-ish
-        // catalog fetch here since we don't have text to search against yet.
         let overview = try await productContextProvider.getStoreOverview()
 
         let prompt = """
@@ -102,7 +101,7 @@ class GeminiService: GeminiServiceProtocol {
 
     func getOverallSuggestions() async throws -> AIResponse {
         let products = try await productContextProvider.getAllProducts()
-        let sample = Array(products.prefix(15)) // don't dump everything even here
+        let sample = Array(products.prefix(15))
 
         let summaries = sample.map { "id:\($0.id) — \($0.name), $\($0.price), \($0.vendor)" }
             .joined(separator: "\n")
@@ -126,11 +125,8 @@ class GeminiService: GeminiServiceProtocol {
         }
     }
 
-    // MARK: - Intent handlers
 
     private func handleGeneral(_ message: String) async throws -> AIResponse {
-        // No product data fetched at all — this is the fix for "why is it
-        // suggesting products when I ask about shipping."
         let prompt = """
         \(basePersona(overview: nil))
 
@@ -155,8 +151,6 @@ class GeminiService: GeminiServiceProtocol {
         let searchTerms = QueryIntentClassifier.extractSearchQuery(from: message)
         let candidates = try await productContextProvider.searchProducts(query: searchTerms, limit: 8)
 
-        // If search found nothing, fall back to a general answer rather
-        // than silently sending an empty product list into the prompt.
         guard !candidates.isEmpty else {
             return try await handleGeneral(message)
         }
@@ -187,7 +181,6 @@ class GeminiService: GeminiServiceProtocol {
         }
     }
 
-    // MARK: - Shared prompt pieces
 
     private func basePersona(overview: StoreOverview?) -> String {
         var text = """
@@ -223,12 +216,7 @@ class GeminiService: GeminiServiceProtocol {
         """
     }
 
-    // MARK: - Error handling
 
-    /// Maps raw SDK errors to AIError cases we can present meaningfully in
-    /// the UI. In particular, detects 429/RESOURCE_EXHAUSTED so the view
-    /// model can show a friendly "please wait" message instead of a raw
-    /// error dump.
     private func handleGenerationError(_ error: Error) -> Error {
         let message = "\(error)"
 
@@ -243,10 +231,6 @@ class GeminiService: GeminiServiceProtocol {
         return AIError.networkError
     }
 
-    /// Best-effort extraction of the retryDelay seconds Google includes in
-    /// the error payload (e.g. "retryDelay": "54s"). Falls back to nil if
-    /// the format isn't found — the UI handles that case with a generic
-    /// "try again shortly" message.
     private func extractRetryDelay(from message: String) -> Int? {
         guard let range = message.range(of: #""retryDelay":\s*"(\d+)s""#, options: .regularExpression) else {
             return nil
@@ -256,7 +240,6 @@ class GeminiService: GeminiServiceProtocol {
         return Int(digits)
     }
 
-    // MARK: - Parsing
 
     private func parseStructured(_ response: GenerateContentResponse, candidates: [Product]) throws -> AIResponse {
         guard let raw = response.text else { throw AIError.invalidResponse }
@@ -271,8 +254,6 @@ class GeminiService: GeminiServiceProtocol {
             return AIResponse(text: raw, suggestedProducts: [], suggestedCategories: [])
         }
 
-        // Belt-and-suspenders: even if the model answers off-topic anyway,
-        // never show product suggestions alongside an out-of-scope reply.
         guard decoded.isInScope else {
             return AIResponse(text: decoded.reply, suggestedProducts: [], suggestedCategories: [])
         }

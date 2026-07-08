@@ -2,15 +2,20 @@
 //  AIAssistantViewModel.swift
 //  shopify-ecommerce-ios
 //
+//  Created by Mahmoud Raafat Mustafa on 07/07/2026.
+//
 
 import Foundation
 import SwiftUI
 import Observation
+import PhotosUI
 
 @Observable
 final class AIAssistantViewModel {
-    private let geminiService: GeminiServiceProtocol
-    private let productContextProvider: ProductContextProviderProtocol
+    private let sendMessageUseCase: SendMessageUseCaseProtocol
+    private let sendImageMessageUseCase: SendImageMessageUseCaseProtocol
+    private let compareProductsUseCase: CompareProductsUseCaseProtocol
+    private let getSuggestionsUseCase: GetSuggestionsUseCaseProtocol
 
     var messages: [Message] = []
     var isLoading = false
@@ -21,20 +26,42 @@ final class AIAssistantViewModel {
     var suggestedProducts: [Product] = []
     var suggestedCategories: [Category] = []
 
-    // Voice Input
     var isRecording = false
     var voiceInputText = ""
 
-    // Image Picker
     var selectedImage: UIImage?
+    var selectedPhotoItem: PhotosPickerItem? {
+        didSet {
+            Task {
+                await loadSelectedPhoto()
+            }
+        }
+    }
     var isImagePickerPresented = false
+    
+    @MainActor
+    private func loadSelectedPhoto() async {
+        guard let item = selectedPhotoItem else { return }
+        do {
+            if let data = try await item.loadTransferable(type: Data.self),
+               let image = UIImage(data: data) {
+                self.selectedImage = image
+            }
+        } catch {
+            self.errorMessage = "Failed to load image."
+        }
+    }
 
     init(
-        geminiService: GeminiServiceProtocol,
-        productContextProvider: ProductContextProviderProtocol
+        sendMessageUseCase: SendMessageUseCaseProtocol,
+        sendImageMessageUseCase: SendImageMessageUseCaseProtocol,
+        compareProductsUseCase: CompareProductsUseCaseProtocol,
+        getSuggestionsUseCase: GetSuggestionsUseCaseProtocol
     ) {
-        self.geminiService = geminiService
-        self.productContextProvider = productContextProvider
+        self.sendMessageUseCase = sendMessageUseCase
+        self.sendImageMessageUseCase = sendImageMessageUseCase
+        self.compareProductsUseCase = compareProductsUseCase
+        self.getSuggestionsUseCase = getSuggestionsUseCase
         addWelcomeMessage()
     }
 
@@ -75,7 +102,7 @@ final class AIAssistantViewModel {
 
         Task {
             do {
-                let response = try await geminiService.sendMessage(text)
+                let response = try await sendMessageUseCase.execute(message: text)
 
                 await MainActor.run {
                     self.isLoading = false
@@ -83,7 +110,6 @@ final class AIAssistantViewModel {
                     self.suggestedCategories = response.suggestedCategories
                 }
 
-                // Reveal the reply progressively instead of all at once
                 await revealMessage(response.text, isUser: false)
 
             } catch {
@@ -95,15 +121,13 @@ final class AIAssistantViewModel {
         }
     }
 
-    /// Appends a message and grows its content over time, simulating streaming.
     @MainActor
     private func revealMessage(_ fullText: String, isUser: Bool) async {
         let message = Message(content: "", isUser: isUser, timestamp: Date())
         messages.append(message)
         guard let index = messages.firstIndex(where: { $0.id == message.id }) else { return }
 
-        // Reveal word by word — feels more natural than character-by-character
-        // and is much cheaper than animating every single character.
+        
         let words = fullText.split(separator: " ", omittingEmptySubsequences: false)
         var current = ""
 
@@ -115,7 +139,7 @@ final class AIAssistantViewModel {
                 timestamp: message.timestamp,
                 attachments: message.attachments
             )
-            try? await Task.sleep(nanoseconds: 40_000_000) // ~40ms per word, tune to taste
+            try? await Task.sleep(nanoseconds: 40_000_000) 
         }
     }
 
@@ -144,7 +168,7 @@ final class AIAssistantViewModel {
 
         Task {
             do {
-                let response = try await geminiService.sendMessageWithImage(image, message: text)
+                let response = try await sendImageMessageUseCase.execute(image: image, message: text)
 
                 await MainActor.run {
                     self.isLoading = false
@@ -184,7 +208,7 @@ final class AIAssistantViewModel {
 
         Task {
             do {
-                let response = try await geminiService.compareProducts(product1, product2)
+                let response = try await compareProductsUseCase.execute(product1: product1, product2: product2)
 
                 await MainActor.run {
                     self.isLoading = false
@@ -217,7 +241,7 @@ final class AIAssistantViewModel {
 
         Task {
             do {
-                let response = try await geminiService.getOverallSuggestions()
+                let response = try await getSuggestionsUseCase.execute()
 
                 await MainActor.run {
                     self.isLoading = false
@@ -240,12 +264,9 @@ final class AIAssistantViewModel {
         }
     }
 
-    // MARK: - Centralized error handling
 
-    /// Routes errors to the right presentation: rate-limit and model-not-found
-    /// errors show up as a normal assistant chat bubble (feels conversational,
-    /// not alarming); everything else falls back to the error banner.
-    /// Must be called on the main actor.
+
+    
     private func handle(_ error: Error) {
         if let aiError = error as? AIError {
             switch aiError {
