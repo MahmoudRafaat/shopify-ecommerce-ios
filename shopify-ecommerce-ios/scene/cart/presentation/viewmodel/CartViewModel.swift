@@ -248,24 +248,24 @@ final class CartViewModel: CartViewModelProtocol {
         self.isLoading = false
     }
     
-    // MARK: - Private Helpers
+    // MARK: - Cart lifecycle
+
+    /// Clears all local and remote cart state after a successful order.
+    /// Called by `PaymentViewModel.checkout()` on order completion.
     @MainActor
-    func proceedToPayment() async {
-        guard let orderId = draftOrderId else { return }
-        self.isLoading = true
-        self.errorMessage = nil
-        
-        do {
-            let response = try await useCases.completeDraftOrder.execute(draftOrderId: orderId)
-            
-            try await useCases.setCustomerCartMetafield.execute(draftOrderId: 0)
-            updateUI(with: response)
-            print("Successfully completed draft order into an actual order!")
-        } catch {
-            self.errorMessage = error.localizedDescription
-        }
-        
-        self.isLoading = false
+    func clearCart() async {
+        // Reset the customer's cart metafield so a fresh cart is created next time.
+        try? await useCases.setCustomerCartMetafield.execute(draftOrderId: 0)
+        cartLineItems = []
+        draftOrderId  = nil
+        orderTotal    = "0.00"
+        subtotal      = "0.00"
+        originalSubtotal = "0.00"
+        tax           = "0.00"
+        discountAmount = "0.00"
+        selectedCoupon = nil
+        selectedCouponCode = nil
+        CartService.shared.clear()
     }
     private func updateUI(with response: CheckoutOrderInfo) {
         self.draftOrderId = response.id

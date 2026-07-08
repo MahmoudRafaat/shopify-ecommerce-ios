@@ -6,5 +6,11 @@
 	<string>$(SHOPIFY_ADMIN_TOKEN)</string>
 	<key>ShopifyApiKey</key>
 	<string>$(SHOPIFY_API_KEY)</string>
+	<key>PAYMOB_PUBLIC_KEY</key>
+	<string>$(PAYMOB_PUBLIC_KEY)</string>
+	<key>PAYMOB_SECRET_KEY</key>
+	<string>$(PAYMOB_SECRET_KEY)</string>
+	<key>PAYMOB_CARD_INTEGRATION_ID</key>
+	<string>$(PAYMOB_CARD_INTEGRATION_ID)</string>
 </dict>
 </plist>

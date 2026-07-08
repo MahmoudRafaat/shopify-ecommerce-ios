@@ -11,7 +11,6 @@ struct CartView: View {
     @State private var viewModel = CartViewModel()
     @Environment(\.presentationMode) var presentationMode
     
-
     var products: [ProductDataModel] = CartService.shared.products
     
     var body: some View {
@@ -25,16 +24,13 @@ struct CartView: View {
                     presentationMode.wrappedValue.dismiss()
                 })
             } else {
-                // Checkout Content Body
                 CartViewBody()
-                
-                // Bottom Sticky Bar
                 CheckoutBottomBar()
+                    .padding(.bottom, 75)
             }
         }
         .environment(viewModel)
         .navigationBarHidden(true)
-        .edgesIgnoringSafeArea(.bottom)
         .showLoading(if: viewModel.isLoading)
         .showCustomAlert(title: "Error", errorMessage: Bindable(viewModel).errorMessage)
         .sheet(isPresented: Bindable(viewModel).isAddressSheetPresented) {

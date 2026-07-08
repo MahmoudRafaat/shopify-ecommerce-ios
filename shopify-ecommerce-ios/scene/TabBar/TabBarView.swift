@@ -24,7 +24,7 @@ struct TabBarView: View {
                 .tag(Tab.wishlist)
                 
                 NavigationStack {
-                    CartView()
+                    CartRootView()
                 }
                 .tag(Tab.cart)
                 

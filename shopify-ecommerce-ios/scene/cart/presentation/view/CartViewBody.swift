@@ -36,7 +36,6 @@ struct CartViewBody: View {
                     .padding(.horizontal)
                 
                 CheckoutOrderTotalView()
-                CheckoutBottomBar()
             }
             .padding(.bottom, 20)
         }

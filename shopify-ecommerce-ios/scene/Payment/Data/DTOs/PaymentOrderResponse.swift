@@ -9,4 +9,8 @@ import Foundation
 
 struct PaymentOrderResponse : Decodable {
     let draftOrder: PaymentOrderDTO?
+    
+    enum CodingKeys: String, CodingKey {
+        case draftOrder = "draft_order"
+    }
 }
