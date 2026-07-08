@@ -31,7 +31,7 @@ struct ProductPriceView: View {
             Text(discount)
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundStyle(.red)
+                .foregroundStyle(AppColor.dangerDefault)
 
             Spacer()
         }

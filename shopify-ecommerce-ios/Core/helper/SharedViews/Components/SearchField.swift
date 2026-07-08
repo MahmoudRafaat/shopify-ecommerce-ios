@@ -13,7 +13,7 @@ struct SearchField: View {
         HStack(spacing: 10){
             Image(systemName: "magnifyingglass")
                 .font(.title3)
-                .foregroundStyle(.gray)
+                .foregroundStyle(AppColor.textSecondary)
             TextField("Search any Product...",text: $searchText)
                 .font(.system(size: 18))
                 .autocorrectionDisabled()
@@ -22,13 +22,13 @@ struct SearchField: View {
                     searchText = ""
                 } label: {
                     Image(systemName: "xmark.circle")
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColor.textSecondary)
                 }
             }
             
         } .padding(.horizontal, 20)
             .frame(height: 56)
-            .background(.white)
+            .background(AppColor.backgroundPrimary)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(
                 color: .black.opacity(0.05),

@@ -11,7 +11,7 @@ struct LoadingView: View {
     
     var body: some View {
         ZStack {
-            Color.black.opacity(0.15)
+            AppColor.textPrimary.opacity(0.15)
                 .ignoresSafeArea()
             
             VStack(spacing: 16) {
@@ -25,7 +25,7 @@ struct LoadingView: View {
             .padding(24)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.white)
+                    .fill(AppColor.backgroundPrimary)
                     .shadow(color: Color.black.opacity(0.08), radius: 10, x: 0, y: 4)
             )
         }

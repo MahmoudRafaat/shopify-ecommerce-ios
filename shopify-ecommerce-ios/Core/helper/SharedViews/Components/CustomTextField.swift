@@ -43,12 +43,12 @@ struct CustomTextField: View {
                     .overlay {
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(
-                                hasError ? .red : .black,
+                                hasError ? AppColor.dangerDefault : AppColor.textPrimary,
                                 lineWidth: 0.5)
                     }
                     if hasError , let errorMessage{
                         Text(errorMessage).font(.caption)
-                            .foregroundStyle(.red)
+                            .foregroundStyle(AppColor.dangerDefault)
                             .padding(.leading,4)
                     }
         }.padding(.horizontal,28)

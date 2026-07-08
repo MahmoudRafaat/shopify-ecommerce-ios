@@ -30,7 +30,7 @@ struct AddressView: View {
         }
         .padding(12)
         .frame(width: .infinity, height: 80)
-        .background(.white)
+        .background(AppColor.backgroundPrimary)
         .cornerRadius(8)
         .shadow(color: Color.black.opacity(0.1), radius: 20, x: 0, y: 0)
     }

@@ -30,13 +30,13 @@ struct ProductTagChip: View {
                 .font(.caption)
                 .fontWeight(.medium)
         }
-        .foregroundStyle(.gray)
+        .foregroundStyle(AppColor.textSecondary)
         .padding(.horizontal, 12)
         .frame(height: 32)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white)
-                .stroke(Color.gray.opacity(0.3))
+                .fill(AppColor.backgroundPrimary)
+                .stroke(AppColor.textSecondary.opacity(0.3))
         )
     }
 }

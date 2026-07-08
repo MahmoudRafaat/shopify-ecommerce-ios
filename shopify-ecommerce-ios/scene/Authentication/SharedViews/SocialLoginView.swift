@@ -50,11 +50,11 @@ struct GoogleWideButton: View {
                 Text("Sign in with Google")
                     .font(.headline)
                     .fontWeight(.medium)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColor.textPrimary)
             }
             .frame(maxWidth: .infinity)
             .frame(height: 50)
-            .background(Color.white)
+            .background(AppColor.backgroundPrimary)
             .cornerRadius(12)
             .shadow(color: Color.black.opacity(0.08), radius: 6, x: 0, y: 3)
             .overlay(

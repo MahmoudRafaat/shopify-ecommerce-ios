@@ -21,7 +21,7 @@ struct CheckoutProductItemView: View {
                     Text(item.title)
                         .font(.headline)
                         .fontWeight(.bold)
-                        .foregroundColor(.black)
+                        .foregroundColor(AppColor.textPrimary)
                         .lineLimit(2)
                     
                     Spacer()
@@ -33,20 +33,20 @@ struct CheckoutProductItemView: View {
                     } label: {
                         Image(systemName: "trash")
                             .font(.system(size: 16))
-                            .foregroundColor(.red)
+                            .foregroundColor(AppColor.dangerDefault)
                     }
                     .buttonStyle(.plain)
                 }
                 
                 Text(item.variantTitle)
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                 
                 Text(PriceFormatter.format(amountString: item.price, currencyService: currencyService))
                     .font(.subheadline)
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColor.textPrimary)
                 
                 HStack(spacing: 12) {
                     Menu {
@@ -70,11 +70,11 @@ struct CheckoutProductItemView: View {
                 HStack(spacing: 4) {
                     Text("Delivery by")
                         .font(.footnote)
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColor.textSecondary)
                     Text("10 May 2XXX")
                         .font(.footnote)
                         .fontWeight(.bold)
-                        .foregroundColor(.black)
+                        .foregroundColor(AppColor.textPrimary)
                 }
                 .padding(.top, 4)
             }

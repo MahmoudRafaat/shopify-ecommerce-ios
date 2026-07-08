@@ -70,13 +70,13 @@ struct AIAssistantView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: { viewModel.clearConversation() }) {
                     Image(systemName: "trash")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(AppColor.dangerDefault)
                 }
             }
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: { viewModel.getOverallSuggestions() }) {
                     Image(systemName: "sparkles")
-                        .foregroundStyle(.blue)
+                        .foregroundStyle(AppColor.brandPrimary)
                 }
             }
         }
@@ -98,12 +98,12 @@ struct AIAssistantView: View {
                 ZStack {
                     Circle()
                         .fill(
-                            LinearGradient(colors: [.appBlue, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            LinearGradient(colors: [.appBlue, AppColor.brandPrimary], startPoint: .topLeading, endPoint: .bottomTrailing)
                         )
                         .frame(width: 40, height: 40)
                     Image(systemName: "sparkles")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                 }
                 
                 VStack(alignment: .leading, spacing: 2) {
@@ -120,10 +120,10 @@ struct AIAssistantView: View {
                 if viewModel.isGuestMode && AIConfig.guestModeRestricted {
                     Label("Guest", systemImage: "person.crop.circle.badge.exclamationmark")
                         .font(.caption2.bold())
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(AppColor.warningDefault)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
-                        .background(Color.orange.opacity(0.15))
+                        .background(AppColor.warningDefault.opacity(0.15))
                         .clipShape(Capsule())
                 }
             }
@@ -168,9 +168,9 @@ struct AIAssistantView: View {
                 } label: {
                     Image(systemName: "arrow.up")
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                         .frame(width: 36, height: 36)
-                        .background(inputText.isEmpty ? Color.gray.opacity(0.5) : Color.appBlue)
+                        .background(inputText.isEmpty ? AppColor.textSecondary.opacity(0.5) : Color.appBlue)
                         .clipShape(Circle())
                 }
                 .disabled(inputText.isEmpty || (viewModel.isGuestMode && AIConfig.guestModeRestricted))
@@ -184,20 +184,20 @@ struct AIAssistantView: View {
     private func errorBanner(_ error: String) -> some View {
         HStack {
             Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColor.backgroundPrimary)
             Text(error)
                 .font(.caption)
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColor.backgroundPrimary)
             Spacer()
             Button {
                 viewModel.errorMessage = nil
             } label: {
                 Image(systemName: "xmark.circle.fill")
-                    .foregroundStyle(.white.opacity(0.7))
+                    .foregroundStyle(AppColor.backgroundPrimary.opacity(0.7))
             }
         }
         .padding()
-        .background(Color.red)
+        .background(AppColor.dangerDefault)
         .transition(.move(edge: .top))
     }
     

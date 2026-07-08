@@ -39,7 +39,7 @@ struct OrdersListView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 16)
         }
-        .background(Color(white: 0.98))
+        .background(AppColor.backgroundPrimary)
         .navigationTitle("Orders")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
@@ -79,7 +79,7 @@ struct EmptyOrdersView: View {
         VStack(spacing: 20) {
             Image(systemName: "shippingbox")
                 .font(.system(size: 56))
-                .foregroundStyle(.gray.opacity(0.5))
+                .foregroundStyle(AppColor.textSecondary.opacity(0.5))
             
             Text("No Orders Yet")
                 .font(.title2)
@@ -88,7 +88,7 @@ struct EmptyOrdersView: View {
             
             Text("Your purchases will show up here once you start shopping")
                 .font(.subheadline)
-                .foregroundStyle(.gray)
+                .foregroundStyle(AppColor.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
         }

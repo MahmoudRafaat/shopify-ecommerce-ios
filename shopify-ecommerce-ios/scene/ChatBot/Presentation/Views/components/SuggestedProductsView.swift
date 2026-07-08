@@ -39,7 +39,7 @@ struct SuggestedProductsView: View {
                             }
                             .frame(width: 100)
                             .padding(8)
-                            .background(Color.white)
+                            .background(AppColor.backgroundPrimary)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .shadow(radius: 2)
                         }
@@ -49,7 +49,7 @@ struct SuggestedProductsView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 2)
     }

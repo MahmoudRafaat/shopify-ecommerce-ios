@@ -46,7 +46,7 @@ struct PaymentDetailsSection: View {
                         isEditing = true
                     }
                     .font(.system(size: 14))
-                    .foregroundStyle(Color.blue)
+                    .foregroundStyle(AppColor.brandPrimary)
                 }
             }
             .padding(.horizontal, 28)
@@ -109,7 +109,7 @@ struct PaymentDetailsSection: View {
                         isEditing = false
                     }
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
                     
@@ -118,16 +118,16 @@ struct PaymentDetailsSection: View {
                     } label: {
                         if uiState.isSavingPayment {
                             ProgressView()
-                                .tint(.white)
+                                .tint(AppColor.backgroundPrimary)
                         } else {
                             Text("Save Payment")
                         }
                     }
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
-                    .background(isPaymentValid && uiState.isLoggedIn ? brandColor : Color.gray)
+                    .background(isPaymentValid && uiState.isLoggedIn ? brandColor : AppColor.textSecondary)
 
 
                     .clipShape(RoundedRectangle(cornerRadius: 8))

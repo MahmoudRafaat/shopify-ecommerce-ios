@@ -36,7 +36,7 @@ struct LoginView: View {
                         } label: {
                             Text("Continue as Guest")
                                 .font(.subheadline)
-                                .foregroundColor(.gray)
+                                .foregroundColor(AppColor.textSecondary)
                         }
                     }
                     .padding(.top, 10)
@@ -60,7 +60,7 @@ struct LoginView: View {
                 .padding(.horizontal, 24)
                 .showLoading(if: viewmodel.isLoading)
                 .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
-                .background(Color.white.ignoresSafeArea())
+                .background(AppColor.backgroundPrimary.ignoresSafeArea())
                 .disabled(viewmodel.showSuccessMessage)
                 
                 if viewmodel.showSuccessMessage {
@@ -68,10 +68,10 @@ struct LoginView: View {
                         Spacer()
                         Text("Login Successful!")
                             .font(.headline)
-                            .foregroundColor(.white)
+                            .foregroundColor(AppColor.backgroundPrimary)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color.green)
+                            .background(AppColor.successDefault)
                             .cornerRadius(10)
                             .padding(.horizontal, 40)
                             .padding(.bottom, 100)

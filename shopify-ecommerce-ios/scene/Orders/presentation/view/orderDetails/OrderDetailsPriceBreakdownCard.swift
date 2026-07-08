@@ -26,7 +26,7 @@ struct OrderDetailsPriceBreakdownCard: View {
             OrderDetailsPriceRow(label: "Total", value: order.formattedTotal, isTotal: true)
         }
         .padding(20)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
     }

@@ -17,35 +17,35 @@ struct OrderSkeletonRow: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.gray.opacity(0.3))
+                        .fill(AppColor.textSecondary.opacity(0.3))
                         .frame(width: 120, height: 18)
                     
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.gray.opacity(0.2))
+                        .fill(AppColor.textSecondary.opacity(0.2))
                         .frame(width: 80, height: 14)
                 }
                 
                 Spacer()
                 
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.gray.opacity(0.3))
+                    .fill(AppColor.textSecondary.opacity(0.3))
                     .frame(width: 80, height: 24)
             }
             
             HStack {
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.gray.opacity(0.2))
+                    .fill(AppColor.textSecondary.opacity(0.2))
                     .frame(width: 60, height: 14)
                 
                 Spacer()
                 
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.gray.opacity(0.3))
+                    .fill(AppColor.textSecondary.opacity(0.3))
                     .frame(width: 80, height: 18)
             }
         }
         .padding(16)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(
             color: .black.opacity(0.05),

@@ -26,16 +26,16 @@ struct SelectCouponSheet: View {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(code)
                                         .font(.headline)
-                                        .foregroundColor(.black)
+                                        .foregroundColor(AppColor.textPrimary)
                                     
                                     if rule.valueType == "percentage" {
                                         Text("\(rule.value.replacingOccurrences(of: "-", with: ""))% OFF")
                                             .font(.subheadline)
-                                            .foregroundColor(.green)
+                                            .foregroundColor(AppColor.successDefault)
                                     } else {
                                         Text("$\(rule.value.replacingOccurrences(of: "-", with: "")) OFF")
                                             .font(.subheadline)
-                                            .foregroundColor(.green)
+                                            .foregroundColor(AppColor.successDefault)
                                     }
                                 }
                                 

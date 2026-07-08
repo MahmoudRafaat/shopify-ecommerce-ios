@@ -26,7 +26,7 @@ struct AIFloatingActionButton: View {
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: [.appBlue, .blue],
+                            colors: [.appBlue, AppColor.brandPrimary],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -36,7 +36,7 @@ struct AIFloatingActionButton: View {
                 
                 Image(systemName: "sparkles")
                     .font(.system(size: 24, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     // Smooth, continuous rotation breathing effect
                     .rotationEffect(.degrees(isAnimating ? 15 : -5))
                     .scaleEffect(isAnimating ? 1.1 : 0.95)

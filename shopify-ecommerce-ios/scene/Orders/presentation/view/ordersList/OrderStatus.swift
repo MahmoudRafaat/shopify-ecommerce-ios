@@ -26,12 +26,12 @@ enum OrderStatus: Hashable {
     
     var color: Color {
         switch self {
-        case .pending: return Color.orange
-        case .processing: return Color.blue
-        case .fulfilled: return Color.green
+        case .pending: return AppColor.warningDefault
+        case .processing: return AppColor.brandPrimary
+        case .fulfilled: return AppColor.successDefault
         case .partial: return Color.purple
-        case .cancelled: return Color.gray
-        case .unknown: return Color.gray
+        case .cancelled: return AppColor.textSecondary
+        case .unknown: return AppColor.textSecondary
         }
     }
 }

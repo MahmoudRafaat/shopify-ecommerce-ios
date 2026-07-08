@@ -19,10 +19,10 @@ struct ActionChipButton: View {
                 Image(systemImage)
             }
         }
-        .foregroundStyle(.black)
+        .foregroundStyle(AppColor.textPrimary)
         .padding(.horizontal,16)
         .frame(height: 32)
-        .background(.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(color: .black.opacity(0.05),
                 radius: 4,

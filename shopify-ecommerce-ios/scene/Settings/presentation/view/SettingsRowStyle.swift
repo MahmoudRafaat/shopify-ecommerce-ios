@@ -14,7 +14,7 @@ enum SettingsRowStyle {
     var iconColor: Color {
         switch self {
         case .destructive:
-            return .red
+            return AppColor.dangerDefault
         default:
             return Color(.darkGray)
         }
@@ -23,7 +23,7 @@ enum SettingsRowStyle {
     var titleColor: Color {
         switch self {
         case .destructive:
-            return .red
+            return AppColor.dangerDefault
         default:
             return .primary
         }

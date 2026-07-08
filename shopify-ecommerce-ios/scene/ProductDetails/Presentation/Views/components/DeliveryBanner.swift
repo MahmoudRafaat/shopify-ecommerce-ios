@@ -21,11 +21,11 @@ struct DeliveryBanner: View {
 
                 Text(state.title)
                     .font(.subheadline)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(AppColor.textPrimary)
 
                 Text(state.subtitle)
                     .fontWeight(.bold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(AppColor.textPrimary)
             }
 
             Spacer()

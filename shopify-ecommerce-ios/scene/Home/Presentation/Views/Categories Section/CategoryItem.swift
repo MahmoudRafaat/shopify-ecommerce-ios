@@ -23,7 +23,7 @@ struct CategoryItem: View {
             
             Text(category.title)
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(.black)
+                .foregroundStyle(AppColor.textPrimary)
                 .multilineTextAlignment(.center)
         }
         .frame(width: 80)

@@ -39,26 +39,26 @@ struct MessageBubbleView: View {
                             Group {
                                 if message.isUser {
                                     LinearGradient(
-                                        colors: [.appBlue, .blue],
+                                        colors: [.appBlue, AppColor.brandPrimary],
                                         startPoint: .topLeading,
                                         endPoint: .bottomTrailing
                                     )
                                 } else {
-                                    Color.white
+                                    AppColor.backgroundPrimary
                                 }
                             }
                         )
-                        .foregroundStyle(message.isUser ? .white : .primary)
+                        .foregroundStyle(message.isUser ? AppColor.backgroundPrimary : .primary)
                         .clipShape(
                             AsymmetricBubbleShape(isUser: message.isUser)
                         )
-                        .shadow(color: message.isUser ? .appBlue.opacity(0.3) : .black.opacity(0.05),
+                        .shadow(color: message.isUser ? .appBlue.opacity(0.3) : AppColor.textPrimary.opacity(0.05),
                                 radius: 4, x: 0, y: 2)
                 }
                 
                 Text(message.timestamp, style: .time)
                     .font(.caption2)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColor.textSecondary)
                     .padding(message.isUser ? .trailing : .leading, 8)
             }
             

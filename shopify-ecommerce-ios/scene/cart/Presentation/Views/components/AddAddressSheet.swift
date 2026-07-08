@@ -57,7 +57,7 @@ struct AddAddressSheet: View {
                     .opacity((address1.isEmpty || city.isEmpty || country.isEmpty) ? 0.5 : 1.0)
                 }
             }
-            .background(Color(white: 0.98)) // Slight off-white to match the CustomTextField styling
+            .background(AppColor.backgroundPrimary) // Slight off-white to match the CustomTextField styling
             .navigationTitle("Shipping Address")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

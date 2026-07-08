@@ -3,7 +3,7 @@ import SwiftUI
 struct CheckoutTextRowView: View {
     var title: String
     var value: String
-    var valueColor: Color = .black
+    var valueColor: Color = AppColor.textPrimary
     var isBoldValue: Bool = true
     var font: Font = .subheadline
     
@@ -11,7 +11,7 @@ struct CheckoutTextRowView: View {
         HStack {
             Text(title)
                 .font(font)
-                .foregroundColor(.black)
+                .foregroundColor(AppColor.textPrimary)
             
             Spacer()
             

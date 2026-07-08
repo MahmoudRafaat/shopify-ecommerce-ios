@@ -44,7 +44,7 @@ struct SuggestedCategoriesView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 2)
     }

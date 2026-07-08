@@ -54,9 +54,9 @@ struct ProductCardView: View {
                 }) {
                     Image(systemName: isFavorite ? "heart.fill" : "heart")
                         .font(.system(size: 16))
-                        .foregroundColor(isFavorite ? .appPrimary : .gray)
+                        .foregroundColor(isFavorite ? .appPrimary : AppColor.textSecondary)
                         .padding(8)
-                        .background(Circle().fill(Color.white.opacity(0.8)))
+                        .background(Circle().fill(AppColor.backgroundPrimary.opacity(0.8)))
                 }
                 .padding(6)
             }
@@ -69,17 +69,17 @@ struct ProductCardView: View {
                 
                 HStack(spacing: 4) {
                     Text(uiState.vendor)
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                         .padding(.vertical, 2)
                         .padding(.horizontal, 6)
                         .background(.appBlue)
                         .cornerRadius(4)
                     Text("·")
                     Text(uiState.productType)
-                        .foregroundStyle(Color.gray)
+                        .foregroundStyle(AppColor.textSecondary)
                         .padding(.vertical, 2)
                         .padding(.horizontal, 6)
-                        .background(.gray.opacity(0.15))
+                        .background(AppColor.textSecondary.opacity(0.15))
                         .cornerRadius(4)
                 }
                 .font(.system(size: 10))
@@ -88,7 +88,7 @@ struct ProductCardView: View {
                 
                 Text(uiState.description)
                     .font(.system(size: 10))
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
                     .lineLimit(1)
                 Spacer()
                 Text(PriceFormatter.format(amount: uiState.price, currencyService: currencyService))
@@ -97,7 +97,7 @@ struct ProductCardView: View {
                     Text(PriceFormatter.format(amount: uiState.oldPrice, currencyService: currencyService))
                         .font(.system(size: 10, weight: .regular))
                         .strikethrough()
-                        .foregroundStyle(Color.gray)
+                        .foregroundStyle(AppColor.textSecondary)
                     Text("\(uiState.discount)%Off")
                         .font(.system(size: 10, weight: .regular))
                         .foregroundStyle(Color.appLightRed)
@@ -107,7 +107,7 @@ struct ProductCardView: View {
                     StarsView(rating: uiState.stars, starsSize: 10)
                     Text("(\(uiState.reviewers))")
                         .font(.system(size: 10, weight: .light))
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColor.textSecondary)
                         .padding(.leading, 2)
                 }
             }
@@ -118,7 +118,7 @@ struct ProductCardView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 250)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .cornerRadius(10)
         .shadow(color: .gray.opacity(0.15), radius: 8, x: 0, y: 4)
         .onTapGesture {
