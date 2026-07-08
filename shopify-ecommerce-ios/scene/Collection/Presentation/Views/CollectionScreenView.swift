@@ -24,7 +24,7 @@ struct CollectionScreenView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HeaderView(searchText: .constant(""))
+            HeaderView(searchText: Bindable(viewModel).searchText)
             
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVGrid(columns: columns) {
@@ -34,10 +34,25 @@ struct CollectionScreenView: View {
                         ProductCardView(uiState: ProductUIState(product: product)) {
                             coordinator.navigationPath.append(HomeCoordinator.Destination.productDetail(productId: product.id))
                         }
+                        .onAppear {
+                            if index == viewModel.products.count - 1 {
+                                viewModel.loadMoreIfNeeded()
+                            }
+                        }
                     }
                     .padding(.bottom, 16)
                 }
                 .padding(16)
+                
+                if viewModel.canLoadMore {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .appBlue))
+                            .padding(.vertical, 20)
+                        Spacer()
+                    }
+                }
             }
         }
         .task {

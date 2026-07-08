@@ -8,5 +8,6 @@
 import Foundation
 
 protocol CollectionRepo {
-    func getCollectionProducts(collectionId: Int) async throws -> [ProductCollection]
+    func getCollectionProducts(collectionId: Int, searchQuery: String?) async throws -> (products: [ProductCollection], nextPageURL: URL?)
+    func fetchNextPage(url: URL) async throws -> (products: [ProductCollection], nextPageURL: URL?)
 }
