@@ -1,26 +1,26 @@
 //
-//  LoginUsecase.swift
+//  GoogleAuthUseCase.swift
 //  shopify-ecommerce-ios
 //
-//  Created by Mahmoud Raafat Mustafa on 30/06/2026.
+//  Created by Antigravity on 08/07/2026.
 //
 
 import Foundation
 import FirebaseAuth
 
-class LoginUseCase {
+class GoogleAuthUseCase {
     private let repository: AuthRepoProtocol
     
     init(repository: AuthRepoProtocol = AuthRepoImp()) {
         self.repository = repository
     }
     
-    func execute(email: String, password: String) async throws -> LoginResult {
+    func execute(credential: AuthCredential, email: String, phone: String) async throws -> LoginResult {
         var firebaseUser: User?
         var shopifyCustomer: CustomerOutput?
         
         do {
-            firebaseUser = try await repository.loginByFireBase(email: email, password: password)
+            firebaseUser = try await repository.loginWithGoogle(credential: credential)
         } catch let error as NSError {
             if let authError = AuthErrorCode(rawValue: error.code) {
                 throw mapFirebaseError(authError)
@@ -35,6 +35,17 @@ class LoginUseCase {
         
         do {
             shopifyCustomer = try await repository.searchCustomerInShopify(email: email)
+        } catch LoginError.firebaseUserNotFound {
+            // Customer not found in Shopify (search returns empty array), so we create a new one!
+            let input = CustomerInput(
+                email: email,
+                phone: "+2" + phone
+            )
+            do {
+                shopifyCustomer = try await repository.createCustomerInShopify(customerInput: input)
+            } catch {
+                throw LoginError.shopifyCustomerNotFound
+            }
         } catch {
             throw LoginError.shopifyCustomerNotFound
         }
@@ -53,7 +64,6 @@ class LoginUseCase {
         )
     }
     
-
     private func mapFirebaseError(_ error: AuthErrorCode) -> LoginError {
         switch error {
         case .invalidEmail:
@@ -103,9 +113,4 @@ class LoginUseCase {
             return .unknown(error.localizedDescription)
         }
     }
-}
-
-struct LoginResult {
-    let firebaseUser: User
-    let shopifyCustomer: CustomerOutput
 }

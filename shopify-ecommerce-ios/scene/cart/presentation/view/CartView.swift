@@ -10,6 +10,7 @@ import SwiftUI
 struct CartView: View {
     @State private var viewModel = CartViewModel()
     @Environment(\.presentationMode) var presentationMode
+    @State private var showHome = false
     
 
     var products: [ProductDataModel] = CartService.shared.products
@@ -22,7 +23,7 @@ struct CartView: View {
             if viewModel.isOrderDeleted || viewModel.cartLineItems.isEmpty && viewModel.draftOrderId == nil && !viewModel.isLoading {
                 // Empty State
                 EmptyCartView(onGoBack: {
-                    presentationMode.wrappedValue.dismiss()
+                    showHome = true
                 })
             } else {
                 // Checkout Content Body
@@ -47,6 +48,9 @@ struct CartView: View {
         }
         .task {
             await viewModel.loadOrCreateCart(products: CartService.shared.products)
+        }
+        .fullScreenCover(isPresented: $showHome) {
+            TabBarView()
         }
     }
 }

@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct GooglePhoneSheet: View {
-    @Binding var viewmodel: LoginViewModelProtocol
+    @Binding var googlePhone: String
+    var onSubmit: () -> Void
+    
     var body: some View {
         VStack(spacing: 24) {
             Text("Complete Profile")
@@ -26,11 +28,11 @@ struct GooglePhoneSheet: View {
                 placeholder: "Phone Number",
                 type: .phone,
                 hasError: false,
-                text: $viewmodel.googlePhone
+                text: $googlePhone
             )
             
             CustomButton(text: "Submit") {
-                viewmodel.submitGooglePhone()
+                onSubmit()
             }
             .padding(.top, 16)
             

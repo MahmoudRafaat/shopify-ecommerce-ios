@@ -92,7 +92,10 @@ struct LoginView: View {
                 }
             }
             .sheet(isPresented: $viewmodel.showPhonePopup) {
-                GooglePhoneSheet(viewmodel: $viewmodel)
+                GooglePhoneSheet(
+                    googlePhone: $viewmodel.googlePhone,
+                    onSubmit: { viewmodel.submitGooglePhone() }
+                )
             }
         }
     }

@@ -48,9 +48,11 @@ class LoginViewModel: LoginViewModelProtocol {
     private var pendingGoogleLastName: String? = nil
     
     private let loginUseCase: LoginUseCase
+    private let googleAuthUseCase: GoogleAuthUseCase
     
-    init(loginUseCase: LoginUseCase = LoginUseCase()) {
+    init(loginUseCase: LoginUseCase = LoginUseCase(), googleAuthUseCase: GoogleAuthUseCase = GoogleAuthUseCase()) {
         self.loginUseCase = loginUseCase
+        self.googleAuthUseCase = googleAuthUseCase
     }
     
     func login() {
@@ -175,7 +177,7 @@ class LoginViewModel: LoginViewModelProtocol {
             defer { self.isLoading = false }
             
             do {
-                let result = try await self.loginUseCase.loginWithGoogle(
+                let result = try await self.googleAuthUseCase.execute(
                     credential: credential,
                     email: email,
                     phone: googlePhone

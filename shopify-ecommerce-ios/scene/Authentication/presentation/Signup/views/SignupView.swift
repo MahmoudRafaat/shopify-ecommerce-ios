@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SignupView: View {
     @State var viewmodel: SignupViewModelProtocol
+    @State private var showHome = false
     
     var body: some View {
         
@@ -60,7 +61,13 @@ struct SignupView: View {
                 // MARK: - Social Login Divider
                 HStack() {
                     Spacer()
-                    SocialLoginView(onGoogleTap: {})
+                    SocialLoginView(
+                        onGoogleTap: {
+                            if let rootVC = UIApplication.shared.rootViewController {
+                                viewmodel.loginWithGoogle(presenting: rootVC)
+                            }
+                        },
+                    )
                     Spacer()
                 }
                 // MARK: - Footer (Sign Up)
@@ -72,6 +79,20 @@ struct SignupView: View {
         .showLoading(if: viewmodel.isLoading)
         .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
         .background(Color.white.ignoresSafeArea())
+        .fullScreenCover(isPresented: $showHome) {
+            TabBarView()
+        }
+        .onChange(of: viewmodel.isSignupSuccess) { _, newValue in
+            if newValue {
+                showHome = true
+            }
+        }
+        .sheet(isPresented: $viewmodel.showPhonePopup) {
+            GooglePhoneSheet(
+                googlePhone: $viewmodel.googlePhone,
+                onSubmit: { viewmodel.submitGooglePhone() }
+            )
+        }
     }
 }
 
