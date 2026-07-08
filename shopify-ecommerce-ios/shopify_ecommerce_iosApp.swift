@@ -14,6 +14,7 @@ struct shopify_ecommerce_iosApp: App {
     
     // Checking internet Connction Variable
     @State private var networkMonitor = NetworkMonitor()
+    @State private var currencyService = CurrencyService.shared
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
@@ -35,9 +36,12 @@ struct shopify_ecommerce_iosApp: App {
             }
             .onOpenURL { url in
                 GIDSignIn.sharedInstance.handle(url)
+            .task {
+                await currencyService.refreshRatesIfNeeded()
             }
         }
         .modelContainer(SwiftDataHandler.shared.sharedModelContainer)
         .environment(networkMonitor)
+        .environment(currencyService)
     }
 }

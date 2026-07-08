@@ -112,6 +112,10 @@ struct HomeScreenView: View {
                 }
             }
         }
+        .refreshable {
+            await viewModel.refreshData()
+        }
+        .tint(.appBlue)
         .task {
             await viewModel.fetchData()
         }

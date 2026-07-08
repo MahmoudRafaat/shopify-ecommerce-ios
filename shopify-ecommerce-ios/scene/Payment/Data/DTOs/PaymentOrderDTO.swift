@@ -10,4 +10,9 @@ import Foundation
 struct PaymentOrderDTO : Decodable {
     let id: Int?
     let totalPrice : String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case totalPrice = "total_price"
+    }
 }

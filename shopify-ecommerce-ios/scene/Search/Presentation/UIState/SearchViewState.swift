@@ -10,6 +10,7 @@ import Foundation
 enum SearchViewState {
     case idle
     case loading
+    case loadingMore
     case success([SearchProduct])
     case error(String)
 }

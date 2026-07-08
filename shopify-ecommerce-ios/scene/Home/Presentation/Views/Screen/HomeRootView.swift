@@ -23,24 +23,8 @@ struct HomeRootView: View {
                 .navigationDestination(for: HomeCoordinator.Destination.self) { destination in
                     switch destination {
                     case .productDetail(let productId):
-                        let remoteDataSource = ProductDetailsRemoteDataSourceImpl()
-
-                             let repository = ProductDetailsRepositoryImpl(
-                                 remoteDataSource: remoteDataSource
-                             )
-
-                             let useCase = GetProductDetailsUseCaseImpl(
-                                 repository: repository
-                             )
-
-                             let viewModel = ProductDetailsViewModel(
-                                 productId: productId,
-                                 getProductDetailsUseCase: useCase
-                             )
-
-                             ProductDetailsScreen(
-                                 viewModel: viewModel
-                             ).environment(coordinator).toolbar {
+                        ProductDetailsScreen(id: productId)
+                            .environment(coordinator).toolbar {
                                  ToolbarItem(placement: .topBarTrailing) {
                                      Button {
                                          // Go to cart

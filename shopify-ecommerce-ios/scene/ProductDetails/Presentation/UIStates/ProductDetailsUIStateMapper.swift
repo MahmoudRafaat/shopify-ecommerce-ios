@@ -35,7 +35,7 @@ extension ProductDetails {
                 rating: 4.8,
                 reviewCount: 120,
 
-                oldPrice: "$150",
+                oldPrice: "150",
                 currentPrice: variants.first?.price ?? "",
                 discountText: "20% OFF",
 

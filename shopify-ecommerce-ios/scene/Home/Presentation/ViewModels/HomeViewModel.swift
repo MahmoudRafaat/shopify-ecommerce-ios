@@ -50,6 +50,11 @@ class HomeViewModel {
         _ = await (categoriesTask, brandsTask, productsTask)
     }
     
+    func refreshData() async {
+        hasFetchedData = false
+        await fetchData()
+    }
+    
     private func fetchCategories() async {
         isCategoriesLoading = true
         do {
