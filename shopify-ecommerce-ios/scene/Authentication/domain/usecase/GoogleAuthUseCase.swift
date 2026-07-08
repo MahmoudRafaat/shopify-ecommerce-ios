@@ -15,7 +15,7 @@ class GoogleAuthUseCase {
         self.repository = repository
     }
     
-    func execute(credential: AuthCredential, email: String, phone: String) async throws -> LoginResult {
+    func execute(credential: AuthCredential, email: String, phone: String?) async throws -> LoginResult {
         var firebaseUser: User?
         var shopifyCustomer: CustomerOutput?
         
@@ -36,10 +36,14 @@ class GoogleAuthUseCase {
         do {
             shopifyCustomer = try await repository.searchCustomerInShopify(email: email)
         } catch LoginError.firebaseUserNotFound {
-            // Customer not found in Shopify (search returns empty array), so we create a new one!
+            // Customer not found in Shopify. Check if we have a phone number to create one.
+            guard let validPhone = phone, !validPhone.isEmpty else {
+                throw LoginError.phoneRequiredForGoogleAuth
+            }
+            
             let input = CustomerInput(
                 email: email,
-                phone: "+2" + phone
+                phone: "+2" + validPhone
             )
             do {
                 shopifyCustomer = try await repository.createCustomerInShopify(customerInput: input)

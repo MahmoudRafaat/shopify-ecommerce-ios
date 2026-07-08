@@ -127,12 +127,42 @@ class SignupViewModel: SignupViewModelProtocol {
             let lastName = user.profile?.familyName ?? ""
             
             Task { @MainActor in
-                self.pendingGoogleCredential = credential
-                self.pendingGoogleEmail = email
-                self.pendingGoogleFirstName = firstName
-                self.pendingGoogleLastName = lastName
-                self.isLoading = false
-                self.showPhonePopup = true
+                do {
+                    let result = try await self.googleAuthUseCase.execute(
+                        credential: credential,
+                        email: email,
+                        phone: nil
+                    )
+                    
+                    UserDefaults.standard.set(result.firebaseUser.uid, forKey: "firebase_user_id")
+                    
+                    if let customerId = result.shopifyCustomer.id {
+                        UserDefaults.standard.set(customerId, forKey: "shopify_customer_id")
+                    }
+                    
+                    UserDefaults.standard.set(email, forKey: "user_email")
+                    UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)
+                    
+                    self.isSignupSuccess = true
+                    self.errorMessage = nil
+                    self.isLoading = false
+                    
+                } catch LoginError.phoneRequiredForGoogleAuth {
+                    self.pendingGoogleCredential = credential
+                    self.pendingGoogleEmail = email
+                    self.pendingGoogleFirstName = firstName
+                    self.pendingGoogleLastName = lastName
+                    self.isLoading = false
+                    self.showPhonePopup = true
+                } catch {
+                    if let loginError = error as? LoginError {
+                        self.errorMessage = loginError.errorDescription ?? "Google Login failed. Please try again."
+                    } else {
+                        self.errorMessage = "Something went wrong. Please try again."
+                    }
+                    self.isSignupSuccess = false
+                    self.isLoading = false
+                }
             }
         }
     }

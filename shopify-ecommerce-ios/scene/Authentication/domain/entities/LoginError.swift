@@ -10,6 +10,7 @@ import Foundation
 enum LoginError: LocalizedError {
     case firebaseUserNotFound
     case shopifyCustomerNotFound
+    case phoneRequiredForGoogleAuth
     case invalidEmail
     case invalidCredentials
     case accountDisabled
@@ -77,6 +78,8 @@ enum LoginError: LocalizedError {
             return "An error occurred: \(message)"
         case .unacceptableStatusCode(let code):
             return "Server returned an unacceptable status code: \(code). Please try again later."
+        case .phoneRequiredForGoogleAuth:
+            return "Please provide your phone number to complete Google registration."
         }
     }
 }

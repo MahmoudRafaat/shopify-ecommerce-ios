@@ -148,12 +148,40 @@ class LoginViewModel: LoginViewModelProtocol {
             let lastName = user.profile?.familyName ?? ""
             
             Task { @MainActor in
-                self.pendingGoogleCredential = credential
-                self.pendingGoogleEmail = email
-                self.pendingGoogleFirstName = firstName
-                self.pendingGoogleLastName = lastName
-                self.isLoading = false
-                self.showPhonePopup = true
+                do {
+                    let result = try await self.googleAuthUseCase.execute(
+                        credential: credential,
+                        email: email,
+                        phone: nil
+                    )
+                    
+                    self.email = email // For storing user data
+                    self.storeUserData(result)
+                    
+                    self.showSuccessMessage = true
+                    try? await Task.sleep(nanoseconds: 2_000_000_000)
+                    
+                    self.isLoginSuccess = true
+                    self.errorMessage = nil
+                    self.isLoading = false
+                    
+                } catch LoginError.phoneRequiredForGoogleAuth {
+                    self.pendingGoogleCredential = credential
+                    self.pendingGoogleEmail = email
+                    self.pendingGoogleFirstName = firstName
+                    self.pendingGoogleLastName = lastName
+                    self.isLoading = false
+                    self.showPhonePopup = true
+                } catch {
+                    if let loginError = error as? LoginError {
+                        self.errorMessage = loginError.errorDescription ?? "Google Login failed. Please try again."
+                    } else {
+                        self.errorMessage = "Something went wrong. Please try again."
+                    }
+                    self.isLoginSuccess = false
+                    self.showSuccessMessage = false
+                    self.isLoading = false
+                }
             }
         }
     }
