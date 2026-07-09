@@ -32,58 +32,58 @@ struct ProfileDetailsView: View {
                                 showLoginScreen = true
                             }
                         )
-                    }
-                    
-                    ProfilePhotoEditView()
-                        .padding(.top, 16)
-                    
-                    PersonalDetailsSection(
-                        uiState: viewModel.uiState,
-                        isEditingName: $isEditingName,
+                    } else {
+                        ProfilePhotoEditView()
+                            .padding(.top, 16)
                         
-                        tempFirstName: $viewModel.tempFirstName,
-                        tempLastName: $viewModel.tempLastName,
-                        brandColor: brandRed,
-                        onSaveName: {
-                            Task { await viewModel.saveName() }
-                            isEditingName = false
-                        }
-                    )
-                    
-                    Divider().padding(.horizontal, 28)
-                    
-                    AddressProfileSection(
-                        uiState: viewModel.uiState,
-                        isEditing: $isEditingAddress,
-                        tempAddress1: $viewModel.tempAddress1,
-                        tempCity: $viewModel.tempCity,
-                        tempProvince: $viewModel.tempProvince,
-                        tempCountry: $viewModel.tempCountry,
-                        tempZip: $viewModel.tempZip,
-                        tempPhone: $viewModel.tempPhone,
-                        brandColor: brandRed,
-                        onSave: {
-                            Task { await viewModel.saveAddress() }
-                            isEditingAddress = false
-                        }
-                    )
-                    
-                    Divider().padding(.horizontal, 28)
-                    
-                    PaymentDetailsSection(
-                        uiState: viewModel.uiState,
-                        isEditing: $isEditingPayment,
-                        tempCardholderName: $viewModel.tempCardholderName,
-                        tempCardNumber: $viewModel.tempCardNumber,
-                        tempExpiryMonth: $viewModel.tempExpiryMonth,
-                        tempExpiryYear: $viewModel.tempExpiryYear,
-                        tempCvv: $viewModel.tempCvv,
-                        brandColor: brandRed,
-                        onSave: {
-                            Task { await viewModel.savePaymentDetails() }
-                            isEditingPayment = false
-                        }
-                    )
+                        PersonalDetailsSection(
+                            uiState: viewModel.uiState,
+                            isEditingName: $isEditingName,
+                            
+                            tempFirstName: $viewModel.tempFirstName,
+                            tempLastName: $viewModel.tempLastName,
+                            brandColor: brandRed,
+                            onSaveName: {
+                                Task { await viewModel.saveName() }
+                                isEditingName = false
+                            }
+                        )
+                        
+                        Divider().padding(.horizontal, 28)
+                        
+                        AddressProfileSection(
+                            uiState: viewModel.uiState,
+                            isEditing: $isEditingAddress,
+                            tempAddress1: $viewModel.tempAddress1,
+                            tempCity: $viewModel.tempCity,
+                            tempProvince: $viewModel.tempProvince,
+                            tempCountry: $viewModel.tempCountry,
+                            tempZip: $viewModel.tempZip,
+                            tempPhone: $viewModel.tempPhone,
+                            brandColor: brandRed,
+                            onSave: {
+                                Task { await viewModel.saveAddress() }
+                                isEditingAddress = false
+                            }
+                        )
+                        
+                        Divider().padding(.horizontal, 28)
+                        
+                        PaymentDetailsSection(
+                            uiState: viewModel.uiState,
+                            isEditing: $isEditingPayment,
+                            tempCardholderName: $viewModel.tempCardholderName,
+                            tempCardNumber: $viewModel.tempCardNumber,
+                            tempExpiryMonth: $viewModel.tempExpiryMonth,
+                            tempExpiryYear: $viewModel.tempExpiryYear,
+                            tempCvv: $viewModel.tempCvv,
+                            brandColor: brandRed,
+                            onSave: {
+                                Task { await viewModel.savePaymentDetails() }
+                                isEditingPayment = false
+                            }
+                        )
+                    }
                     
                     Spacer(minLength: 40)
                 }

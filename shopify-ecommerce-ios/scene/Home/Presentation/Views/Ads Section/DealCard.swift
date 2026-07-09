@@ -11,6 +11,8 @@ struct DealCard: View {
     let dealName: String
     let dealDescription: String
     let isToday: Bool
+    var action: () -> Void = {}
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 8){
@@ -28,7 +30,7 @@ struct DealCard: View {
                 }
             }
             Spacer()
-            TrailingIconOutlinedButton(title: "View all", action: {})
+            TrailingIconOutlinedButton(title: "View all", action: action)
         }
         .padding(16)
         .background(isToday ? .appBlue : .appPink)
@@ -38,6 +40,6 @@ struct DealCard: View {
 }
 
 #Preview {
-    DealCard(dealName: "Deal of the Day", dealDescription: "22h 55m 20s remaining ", isToday: true)
-    DealCard(dealName: "Deal of the Day", dealDescription: "22h 55m 20s remaining ", isToday: false)
+    DealCard(dealName: "Deal of the Day", dealDescription: "22h 55m 20s remaining ", isToday: true) {}
+    DealCard(dealName: "Deal of the Day", dealDescription: "22h 55m 20s remaining ", isToday: false) {}
 }

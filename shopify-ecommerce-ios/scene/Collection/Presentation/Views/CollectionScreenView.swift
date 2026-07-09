@@ -24,7 +24,10 @@ struct CollectionScreenView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HeaderView(searchText: Bindable(viewModel).searchText)
+            SearchField(searchText: Bindable(viewModel).searchText)
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                .padding(.bottom, 16)
             
             if viewModel.uiState.isLoading {
                 Spacer()
@@ -47,8 +50,7 @@ struct CollectionScreenView: View {
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVGrid(columns: columns) {
-                        ForEach(0..<viewModel.uiState.products.count, id: \.self) { index in
-                            let product = viewModel.uiState.products[index]
+                        ForEach(Array(viewModel.uiState.products.enumerated()), id: \.offset) { index, product in
                             
                             ProductCardView(uiState: ProductUIState(product: product)) {
                                 coordinator.navigationPath.append(HomeCoordinator.Destination.productDetail(productId: product.id))

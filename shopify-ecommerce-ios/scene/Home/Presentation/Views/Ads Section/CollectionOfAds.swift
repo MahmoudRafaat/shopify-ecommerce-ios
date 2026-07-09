@@ -10,11 +10,15 @@ import SwiftUI
 struct CollectionOfAds: View {
     
     @State private var currentIndex = 0
-    var allAdCards: [AdCard] = [
-        AdCard(title: "50-40% OFF", category: "shoes", colors: "All colours") {},
-        AdCard(title: "30% OFF", category: "shirts", colors: "Red & Blue") {},
-        AdCard(title: "20% OFF", category: "pants", colors: "Black") {}
-    ]
+    var action: () -> Void = {}
+    
+    private var allAdCards: [AdCard] {
+        [
+            AdCard(title: "50-40% OFF", category: "shoes", colors: "All colours", action: action),
+            AdCard(title: "30% OFF", category: "shirts", colors: "Red & Blue", action: action),
+            AdCard(title: "20% OFF", category: "pants", colors: "Black", action: action)
+        ]
+    }
     
     var body: some View {
         VStack(spacing: 12) {

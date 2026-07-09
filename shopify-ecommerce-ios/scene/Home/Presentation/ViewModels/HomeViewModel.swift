@@ -37,11 +37,12 @@ class HomeViewModel {
         hasFetchedData = true
         uiState.error = nil
         
-        async let categoriesTask: () = fetchCategories()
         async let brandsTask: () = fetchBrands()
-        async let productsTask: () = fetchProducts()
         
-        _ = await (categoriesTask, brandsTask, productsTask)
+        await fetchCategories()
+        await fetchProducts()
+        
+        _ = await brandsTask
     }
     
     func refreshData() async {
@@ -76,20 +77,29 @@ class HomeViewModel {
     private func fetchProducts() async {
         uiState.isProductsLoading = true
         do {
-            let allProducts = try await getProductsUseCase.execute()
-    
-            let groupedProducts = Dictionary(grouping: allProducts) { product in
-                product.productType.trimmingCharacters(in: .whitespacesAndNewlines).capitalized
+            let targetTitles = ["Accessories", "Clothing", "Men", "Shoes", "Snowboard", "Women"]
+            let validCategories = uiState.categories.filter { category in
+                targetTitles.contains { $0.caseInsensitiveCompare(category.title) == .orderedSame }
             }
             
-            let validGroups = groupedProducts.filter { !$0.key.isEmpty && !$0.value.isEmpty }
+            var sections: [(title: String, products: [Product])] = []
             
-            let shuffledKeys = validGroups.keys.shuffled()
-            let selectedKeys = Array(shuffledKeys.prefix(2))
-            
-            self.uiState.categorySections = selectedKeys.map { key in
-                (title: key, products: validGroups[key]!)
+            try await withThrowingTaskGroup(of: (String, [Product]).self) { group in
+                for category in validCategories {
+                    group.addTask {
+                        let products = try await self.getProductsUseCase.execute(collectionId: category.id)
+                        return (category.title, products)
+                    }
+                }
+                
+                for try await (title, products) in group {
+                    if !products.isEmpty {
+                        sections.append((title, products))
+                    }
+                }
             }
+            
+            self.uiState.categorySections = sections.sorted { $0.title < $1.title }
             
         } catch {
             print("Error fetching products: \(error)")

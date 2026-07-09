@@ -33,6 +33,25 @@ class HomeRepoImpl: HomeRepo {
         }
     }
     
+    func getProductsByCollection(id: Int) async throws -> [Product] {
+        let dtos = try await service.loadCollectionProducts(id: id)
+
+        return dtos.map { dto in
+            let variants = dto.variants ?? []
+            let totalQuantity = variants.reduce(0) { $0 + ($1.inventoryQuantity ?? 0) }
+            return Product(
+                id: dto.id ?? 0,
+                image: dto.image?.src ?? "placeholder_image",
+                name: dto.title ?? "Product name",
+                description: dto.bodyHtml ?? "Product description",
+                vendor: dto.vendor ?? "Product vendor",
+                price: Float(variants.first?.price ?? "0.0") ?? 0.0,
+                isAvailabe: totalQuantity > 0,
+                productType: dto.productType ?? ""
+            )
+        }
+    }
+    
     func getCategories() async throws -> [Category] {
         let data = try await service.loadCategories()
         

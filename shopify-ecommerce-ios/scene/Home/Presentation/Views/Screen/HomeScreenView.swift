@@ -35,7 +35,7 @@ struct HomeScreenView: View {
                 .padding(.bottom, 8)
                 
                 ScrollView {
-                    VStack(spacing: 24) {
+                    VStack(spacing: 16) {
                         if let error = viewModel.uiState.error {
                         CustomContentUnavailableView(error: error, onRetry: {
                             Task {
@@ -57,7 +57,9 @@ struct HomeScreenView: View {
                             }
                         }
 
-                        CollectionOfAds()
+                        CollectionOfAds {
+                            selectedTab = .search
+                        }
 
                         VStack(spacing: 8) {
                             Text("Top Brands")
@@ -77,7 +79,9 @@ struct HomeScreenView: View {
                             dealName: "Deal of the Day",
                             dealDescription: "22h 55m 20s remaining ",
                             isToday: true
-                        )
+                        ) {
+                            selectedTab = .search
+                        }
 
                         if viewModel.uiState.isProductsLoading {
                             ProgressView()
@@ -101,11 +105,6 @@ struct HomeScreenView: View {
                             }
                         }
 
-                        DealCard(
-                            dealName: "Trending Products",
-                            dealDescription: "Last Date 29/02/22",
-                            isToday: false
-                        )
                     }
                 }
                 .padding(.bottom, 80) 

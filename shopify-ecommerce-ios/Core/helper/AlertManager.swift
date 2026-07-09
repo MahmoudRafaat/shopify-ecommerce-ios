@@ -74,28 +74,35 @@ final class AlertManager {
     }
 }
 
+struct GlobalAlertModifier: ViewModifier {
+    @Bindable var alertManager = AlertManager.shared
+    
+    func body(content: Content) -> some View {
+        content
+            .alert(
+                alertManager.alert?.title ?? "",
+                isPresented: Binding(
+                    get: { alertManager.alert != nil },
+                    set: { if !$0 { alertManager.alert = nil } }
+                ),
+                presenting: alertManager.alert
+            ) { appAlert in
+                if let secondaryText = appAlert.secondaryButtonText {
+                    Button(secondaryText, role: appAlert.secondaryButtonRole) {
+                        appAlert.secondaryAction?()
+                    }
+                }
+                Button(appAlert.primaryButtonText, role: appAlert.primaryButtonRole) {
+                    appAlert.primaryAction?()
+                }
+            } message: { appAlert in
+                Text(appAlert.message)
+            }
+    }
+}
+
 extension View {
     func withGlobalAlerts() -> some View {
-        @Bindable var alertManager = AlertManager.shared
-        
-        return self.alert(
-            alertManager.alert?.title ?? "",
-            isPresented: Binding(
-                get: { alertManager.alert != nil },
-                set: { if !$0 { alertManager.alert = nil } }
-            ),
-            presenting: alertManager.alert
-        ) { appAlert in
-            if let secondaryText = appAlert.secondaryButtonText {
-                Button(secondaryText, role: appAlert.secondaryButtonRole) {
-                    appAlert.secondaryAction?()
-                }
-            }
-            Button(appAlert.primaryButtonText, role: appAlert.primaryButtonRole) {
-                appAlert.primaryAction?()
-            }
-        } message: { appAlert in
-            Text(appAlert.message)
-        }
+        modifier(GlobalAlertModifier())
     }
 }

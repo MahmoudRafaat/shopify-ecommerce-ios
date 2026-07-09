@@ -9,6 +9,7 @@ import Foundation
 
 protocol GetProductsUseCaseProtocol {
     func execute() async throws -> [Product]
+    func execute(collectionId: Int) async throws -> [Product]
 }
 
 class GetProductsUseCase: GetProductsUseCaseProtocol {
@@ -20,5 +21,9 @@ class GetProductsUseCase: GetProductsUseCaseProtocol {
     
     func execute() async throws -> [Product] {
         return try await repository.getProducts()
+    }
+    
+    func execute(collectionId: Int) async throws -> [Product] {
+        return try await repository.getProductsByCollection(id: collectionId)
     }
 }
