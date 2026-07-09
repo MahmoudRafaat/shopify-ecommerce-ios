@@ -22,7 +22,6 @@ struct ProfileDetailsView: View {
     }
     
     var body: some View {
-        NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
                     
@@ -99,7 +98,6 @@ struct ProfileDetailsView: View {
                     Task { await viewModel.loadProfile() }
                 }
             }
-        }
         .fullScreenCover(isPresented: $showLoginScreen) {
             LoginView(viewmodel: AuthFactory.makeLoginViewModel())
         }

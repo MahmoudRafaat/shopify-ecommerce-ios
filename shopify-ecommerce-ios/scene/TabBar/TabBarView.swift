@@ -32,9 +32,9 @@ struct TabBarView: View {
                 .tag(Tab.search)
                 
                 NavigationStack {
-                    ProfileDetailsView(viewModel: ProfileViewModel())
+                    SettingsView()
                 }
-                .tag(Tab.profile)
+                .tag(Tab.settings)
             }
             .toolbar(.hidden, for: .tabBar)
             

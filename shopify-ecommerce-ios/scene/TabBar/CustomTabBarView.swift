@@ -20,7 +20,7 @@ struct CustomTabBarView: View {
             ForEach(Tab.allCases, id: \.self) { tab in
                 Spacer()
                 Button {
-                    if isGuestMode && (tab == .cart || tab == .wishlist || tab == .profile) {
+                    if isGuestMode && (tab == .cart || tab == .wishlist) {
                         showLoginAlert = true
                     } else {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {

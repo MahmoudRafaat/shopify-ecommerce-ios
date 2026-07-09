@@ -19,12 +19,6 @@ struct HeaderView: View {
     var body: some View {
         VStack(spacing: 16) {
             HStack {
-                NavigationLink(destination: SettingsView()) {
-                    Image(systemName: "gearshape")
-                        .font(.title3)
-                        .foregroundStyle(.black)
-                }
-                                               
                 Spacer()
                 
                 HStack(spacing: 8) {
@@ -38,7 +32,7 @@ struct HeaderView: View {
                 Spacer()
                 
                 Button {
-                    
+                    onMenuTap?()
                 } label: {
                     Image("profile")
                         .resizable()

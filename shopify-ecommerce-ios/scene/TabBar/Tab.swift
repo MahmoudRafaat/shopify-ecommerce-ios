@@ -12,7 +12,7 @@ enum Tab: String, CaseIterable {
     case wishlist = "Wishlist"
     case cart = ""
     case search = "Search"
-    case profile = "Profile"
+    case settings = "Settings"
     
     func iconName(isActive: Bool) -> String {
         switch self {
@@ -20,7 +20,7 @@ enum Tab: String, CaseIterable {
         case .wishlist: return isActive ? "heart.fill" : "heart"
         case .cart: return "cart"
         case .search: return "magnifyingglass"
-        case .profile: return isActive ? "person.fill" : "person"
+        case .settings: return isActive ? "gearshape.fill" : "gearshape"
         }
     }
 }

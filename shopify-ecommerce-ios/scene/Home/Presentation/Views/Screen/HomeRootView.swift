@@ -44,8 +44,8 @@ struct HomeRootView: View {
 
                     case .categoriesScreen(let categoryId):
                         CollectionScreenView(id: categoryId)
-                    case .settings:
-                        SettingsView()
+                    case .profileDetails:
+                        ProfileDetailsView(viewModel: ProfileViewModel())
                             .navigationBarBackButtonHidden(false)
                     }
                 }
