@@ -22,9 +22,11 @@ struct CustomTabBarView: View {
             ForEach(Tab.allCases, id: \.self) { tab in
                 Spacer()
                 Button {
-                    guard NetworkMonitor.shared.isConnected else {
-                        showNetworkAlert = true
-                        return
+                    if tab != .wishlist && tab != .settings {
+                        guard NetworkMonitor.shared.isConnected else {
+                            showNetworkAlert = true
+                            return
+                        }
                     }
                     if isGuestMode && (tab == .cart || tab == .wishlist) {
                         showLoginAlert = true

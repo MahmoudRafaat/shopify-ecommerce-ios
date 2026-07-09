@@ -36,7 +36,6 @@ final class HomeCoordinator {
     }
 
     func goToProfile() {
-        guard NetworkMonitor.shared.isConnected else { showNetworkAlert = true; return }
         print("Pushing from coordinator:", ObjectIdentifier(self))
         navigationPath.append(Destination.profileDetails)
     }
