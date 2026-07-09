@@ -8,13 +8,13 @@ struct CheckoutCouponView: View {
         HStack {
             Image(systemName: "ticket")
                 .font(.title2)
-                .foregroundColor(.black)
+                .foregroundColor(AppColor.textPrimary)
             
             if let selectedCouponCode = viewModel.selectedCouponCode {
                 Text(selectedCouponCode)
                     .font(.body)
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColor.textPrimary)
                 
                 Spacer()
                 
@@ -26,12 +26,12 @@ struct CheckoutCouponView: View {
                     viewModel.selectedCoupon = nil
                 }) {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColor.textSecondary)
                 }
             } else {
                 Text("Apply Coupons")
                     .font(.body)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColor.textPrimary)
                 
                 Spacer()
                 

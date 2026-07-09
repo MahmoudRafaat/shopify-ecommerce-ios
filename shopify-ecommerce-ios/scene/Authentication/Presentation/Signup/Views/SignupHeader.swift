@@ -12,7 +12,7 @@ struct SignupHeader: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Create an\n account")
                 .font(.system(size: 36, weight: .bold))
-                .foregroundColor(.black)
+                .foregroundColor(AppColor.textPrimary)
                 .lineSpacing(4)
         }
         .padding(.top, 40)

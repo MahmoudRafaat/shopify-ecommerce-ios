@@ -16,16 +16,16 @@ struct EmptyCartView: View {
             
             Image(systemName: "cart.badge.minus")
                 .font(.system(size: 80))
-                .foregroundColor(.gray.opacity(0.5))
+                .foregroundColor(AppColor.textSecondary.opacity(0.5))
             
             Text("Your bag is empty")
                 .font(.title2)
                 .fontWeight(.bold)
-                .foregroundColor(.black)
+                .foregroundColor(AppColor.textPrimary)
             
             Text("Looks like you haven't added any items to your bag yet.")
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
             

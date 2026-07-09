@@ -17,7 +17,7 @@ struct AddressDetailsSection: View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Address Details")
                 .font(.headline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
                 .padding(.horizontal, 28)
             
             CustomTextField(placeholder: "Address", type: .address, hasError: false, text: $address1)

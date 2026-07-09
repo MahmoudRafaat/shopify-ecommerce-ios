@@ -33,7 +33,7 @@ struct OrderDetailsView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 16)
         }
-        .background(Color(white: 0.98))
+        .background(AppColor.backgroundPrimary)
         .navigationTitle("Order Details")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)

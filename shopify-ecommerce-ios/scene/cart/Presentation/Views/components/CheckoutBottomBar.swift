@@ -11,7 +11,7 @@ struct CheckoutBottomBar: View {
                 Text(PriceFormatter.format(amountString: viewModel.orderTotal, currencyService: currencyService))
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColor.textPrimary)
                 
                 Button(action: {}) {
                     Text("View Details")
@@ -35,7 +35,7 @@ struct CheckoutBottomBar: View {
         .padding(.bottom, 16)
         .background(
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(Color.white)
+                .fill(AppColor.backgroundPrimary)
                 .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: -5)
         )
     }

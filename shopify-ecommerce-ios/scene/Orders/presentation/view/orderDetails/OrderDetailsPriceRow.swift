@@ -23,7 +23,7 @@ struct OrderDetailsPriceRow: View {
             
             Text(value)
                 .font(isTotal ? .title3.bold() : .subheadline)
-                .foregroundStyle(isDiscount ? .red : (isTotal ? .appBlue : .primary))
+                .foregroundStyle(isDiscount ? AppColor.dangerDefault : (isTotal ? .appBlue : .primary))
         }
     }
 }

@@ -26,17 +26,17 @@ struct ProductActionButtons: View {
                 HStack(spacing: 10) {
 
                     RoundedRectangle(cornerRadius: 18)
-                        .fill(Color(red: 0.04, green: 0.30, blue: 0.82))
+                        .fill(AppColor.brandPrimary)
                         .frame(width: buttonHeight, height: buttonHeight)
                         .overlay {
                             Image(systemName: "cart")
                                 .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(AppColor.backgroundPrimary)
                         }
 
                     Text(state.cartTitle)
                         .font(.system(size: 17, weight: .regular))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
 //                        .lineLimit(1)
 
                     Spacer(minLength: 0)
@@ -46,8 +46,8 @@ struct ProductActionButtons: View {
                 .background(
                     LinearGradient(
                         colors: [
-                            Color(red: 0.16, green: 0.45, blue: 0.95),
-                            Color(red: 0.08, green: 0.33, blue: 0.90)
+                            AppColor.brandPrimary,
+                            AppColor.brandPrimary
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -62,17 +62,17 @@ struct ProductActionButtons: View {
                 HStack(spacing: 10) {
 
                     RoundedRectangle(cornerRadius: 18)
-                        .fill(Color(red: 0.02, green: 0.62, blue: 0.28))
+                        .fill(AppColor.successDefault)
                         .frame(width: buttonHeight, height: buttonHeight)
                         .overlay {
                             Image(systemName: "hand.tap")
                                 .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(AppColor.backgroundPrimary)
                         }
 
                     Text(state.buyTitle)
                         .font(.system(size: 17, weight: .regular))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                         .lineLimit(1)
 
                     Spacer(minLength: 0)
@@ -82,8 +82,8 @@ struct ProductActionButtons: View {
                 .background(
                     LinearGradient(
                         colors: [
-                            Color(red: 0.42, green: 0.88, blue: 0.55),
-                            Color(red: 0.30, green: 0.80, blue: 0.45)
+                            AppColor.successDefault,
+                            AppColor.successDefault
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing

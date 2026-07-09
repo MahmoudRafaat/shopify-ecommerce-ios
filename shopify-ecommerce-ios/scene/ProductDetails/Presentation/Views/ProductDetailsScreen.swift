@@ -35,7 +35,7 @@ struct ProductDetailsScreen: View {
 
             case .error(let message):
                 Text(message)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(AppColor.dangerDefault)
             }
         }
         .task {

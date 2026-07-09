@@ -11,14 +11,14 @@ struct SignupFooter: View {
     var body: some View {
         HStack {
             Text("I Already Have an Account")
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
             NavigationLink(
                 destination: LoginView(viewmodel: AuthFactory.makeLoginViewModel())
                     .navigationBarBackButtonHidden(true)
             ) {
                 Text("Login")
                     .fontWeight(.bold)
-                    .foregroundColor(Color(.red))
+                    .foregroundColor(Color(AppColor.dangerDefault))
                     .underline()
             }
         }

@@ -15,7 +15,7 @@ struct GuestModeBanner: View {
         VStack(spacing: 12) {
             Image(systemName: "person.crop.circle.badge.exclamationmark")
                 .font(.system(size: 48))
-                .foregroundColor(.orange)
+                .foregroundColor(AppColor.warningDefault)
             
             Text("Guest Mode")
                 .font(.title2)
@@ -23,7 +23,7 @@ struct GuestModeBanner: View {
             
             Text("Sign in to view and edit your profile information")
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
             
@@ -32,7 +32,7 @@ struct GuestModeBanner: View {
             } label: {
                 Text("Sign In")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
                     .background(brandColor)
@@ -42,7 +42,7 @@ struct GuestModeBanner: View {
             .padding(.top, 8)
         }
         .padding(.vertical, 24)
-        .background(Color.gray.opacity(0.05))
+        .background(AppColor.textSecondary.opacity(0.05))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .padding(.horizontal, 16)
     }

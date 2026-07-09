@@ -15,11 +15,11 @@ struct SettingsGuestModeBanner: View {
         VStack(spacing: 12) {
             Image(systemName: "person.crop.circle.badge.exclamationmark")
                 .font(.system(size: 32))
-                .foregroundColor(.orange)
+                .foregroundColor(AppColor.warningDefault)
             
             Text("Sign in to access all settings")
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
                 .multilineTextAlignment(.center)
             
             Button {
@@ -27,7 +27,7 @@ struct SettingsGuestModeBanner: View {
             } label: {
                 Text("Sign In")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .frame(maxWidth: .infinity)
                     .frame(height: 40)
                     .background(brandColor)
@@ -36,7 +36,7 @@ struct SettingsGuestModeBanner: View {
             .padding(.horizontal, 40)
         }
         .padding(.vertical, 20)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 4)
     }

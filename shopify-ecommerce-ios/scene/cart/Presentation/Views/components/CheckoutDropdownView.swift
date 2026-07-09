@@ -9,16 +9,16 @@ struct CheckoutDropdownView: View {
         Button(action: action) {
             HStack {
                 Text(title)
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
                 Text(value)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColor.textPrimary)
                 Image(systemName: "chevron.down")
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
                     .font(.caption)
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(Color(UIColor.systemGray6))
+            .background(Color(.systemGray6))
             .cornerRadius(6)
         }
     }

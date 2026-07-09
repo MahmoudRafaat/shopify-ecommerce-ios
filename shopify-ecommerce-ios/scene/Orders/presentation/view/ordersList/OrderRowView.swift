@@ -20,14 +20,14 @@ struct OrderRowView: View {
                     
                     Text(order.formattedDate)
                         .font(.system(size: 13))
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColor.textSecondary)
                 }
                 
                 Spacer()
                 
                 Text(order.status.label)
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                     .background(order.status.color)
@@ -37,7 +37,7 @@ struct OrderRowView: View {
             HStack {
                 Text("\(order.lineItems.count) \(order.lineItems.count == 1 ? "item" : "items")")
                     .font(.system(size: 14))
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColor.textSecondary)
                 
                 Spacer()
                 
@@ -50,11 +50,11 @@ struct OrderRowView: View {
                 Spacer()
                 Image(systemName: "chevron.right")
                     .font(.system(size: 12))
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColor.textSecondary)
             }
         }
         .padding(16)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(
             color: .black.opacity(0.05),

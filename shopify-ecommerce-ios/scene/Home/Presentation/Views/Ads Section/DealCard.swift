@@ -15,16 +15,16 @@ struct DealCard: View {
         HStack {
             VStack(alignment: .leading, spacing: 8){
                 Text(dealName)
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .font(.system(size: 16, weight: .semibold, design: .rounded))
                 
                 HStack{
                     Image(systemName: "clock")
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                     
                     Text(dealDescription)
                         .font(.system(size: 12, weight: .regular, design: .rounded))
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                 }
             }
             Spacer()

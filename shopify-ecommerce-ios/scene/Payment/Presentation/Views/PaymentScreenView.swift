@@ -26,8 +26,8 @@ struct PaymentScreenView: View {
 
                     // MARK: Price Summary
                     VStack(spacing: 18) {
-                        titleWithPrice(title: "Subtotal",     price: PriceFormatter.format(amountString: viewModel.totalPrice, currencyService: currencyService), color: .gray)
-                        titleWithPrice(title: "Shipping",     price: "Free", color: .gray)
+                        titleWithPrice(title: "Subtotal",     price: PriceFormatter.format(amountString: viewModel.totalPrice, currencyService: currencyService), color: AppColor.textSecondary)
+                        titleWithPrice(title: "Shipping",     price: "Free", color: AppColor.textSecondary)
                         Divider()
                         titleWithPrice(title: "Order Total",  price: PriceFormatter.format(amountString: viewModel.totalPrice, currencyService: currencyService), color: .primary)
                     }
@@ -94,7 +94,7 @@ struct PaymentScreenView: View {
             Spacer()
             Text(title)
                 .font(.system(size: 18, weight: .medium))
-                .foregroundStyle(.gray)
+                .foregroundStyle(AppColor.textSecondary)
         }
         .frame(height: 40)
         .padding(20)

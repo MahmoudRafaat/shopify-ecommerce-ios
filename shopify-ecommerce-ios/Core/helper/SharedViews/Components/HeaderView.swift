@@ -22,7 +22,7 @@ struct HeaderView: View {
                 NavigationLink(destination: SettingsView()) {
                     Image(systemName: "gearshape")
                         .font(.title3)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(AppColor.textPrimary)
                 }
                                                
                 Spacer()
@@ -53,7 +53,7 @@ struct HeaderView: View {
                 .padding(.horizontal, 16)
                 .overlay {
                    if onSearchTap != nil {
-                        Color.white.opacity(0.001)
+                        AppColor.backgroundPrimary.opacity(0.001)
                             .onTapGesture {
                                 onSearchTap?()
                             }

@@ -8,7 +8,7 @@ struct CheckoutIconButton: View {
         Button(action: action) {
             Image(systemName: iconName)
                 .font(.title3)
-                .foregroundColor(.black)
+                .foregroundColor(AppColor.textPrimary)
         }
     }
 }

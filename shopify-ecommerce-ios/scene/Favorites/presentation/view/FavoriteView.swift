@@ -21,10 +21,10 @@ struct FavoriteView: View {
                 VStack(spacing: 16) {
                     Image(systemName: "heart.slash")
                         .font(.system(size: 48))
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColor.textSecondary)
                     Text("No Favorites Yet")
                         .font(.headline)
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColor.textSecondary)
                 }
                 Spacer()
             } else {

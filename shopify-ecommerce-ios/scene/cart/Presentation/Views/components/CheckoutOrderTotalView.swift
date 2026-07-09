@@ -11,7 +11,7 @@ struct CheckoutOrderTotalView: View {
             HStack(spacing: 8) {
                 Text("EMI Available")
                     .font(.subheadline)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColor.textPrimary)
                 
                 Button(action: {}) {
                     Text("Details")

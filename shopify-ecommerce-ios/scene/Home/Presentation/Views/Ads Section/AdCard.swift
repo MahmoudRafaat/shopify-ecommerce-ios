@@ -23,16 +23,16 @@ struct AdCard: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(title)
                     .font(.system(size: 24, weight: .bold))
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Now in (\(category))")
                         .font(.system(size: 12, weight: .light))
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                     
                     Text(colors)
                         .font(.system(size: 12, weight: .light))
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                 }
                 TrailingIconOutlinedButton(title: "Shop now", action: action)
             }

@@ -20,14 +20,14 @@ struct OrderDetailsHeaderCard: View {
                     
                     Text(order.formattedDate)
                         .font(.subheadline)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColor.textSecondary)
                 }
                 
                 Spacer()
                 
                 Text(order.status.label)
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 6)
                     .background(order.status.color)
@@ -35,7 +35,7 @@ struct OrderDetailsHeaderCard: View {
             }
         }
         .padding(20)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
     }
@@ -60,7 +60,7 @@ struct OrderDetailsLineItemsSection: View {
                     }
                 }
             }
-            .background(Color.white)
+            .background(AppColor.backgroundPrimary)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
         }

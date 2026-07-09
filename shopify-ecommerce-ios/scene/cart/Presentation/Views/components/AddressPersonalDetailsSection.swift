@@ -9,7 +9,7 @@ struct AddressPersonalDetailsSection: View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Personal Details")
                 .font(.headline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
                 .padding(.horizontal, 28)
             
             CustomTextField(placeholder: "First Name", type: .name, hasError: false, text: $firstName)

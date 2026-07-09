@@ -15,12 +15,12 @@ struct DetailRow: View {
         HStack(alignment: .top) {
             Text(label + ":")
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
                 .frame(width: 70, alignment: .leading)
             
             Text(value.isEmpty ? "Not set" : value)
                 .font(.subheadline)
-                .foregroundColor(value.isEmpty ? .gray.opacity(0.7) : .primary)
+                .foregroundColor(value.isEmpty ? AppColor.textSecondary.opacity(0.7) : .primary)
         }
     }
 }

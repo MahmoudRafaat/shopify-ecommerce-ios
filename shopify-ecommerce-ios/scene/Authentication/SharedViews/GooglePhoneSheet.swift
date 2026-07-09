@@ -20,7 +20,7 @@ struct GooglePhoneSheet: View {
             
             Text("Please enter your phone number to complete the registration.")
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             

@@ -73,7 +73,7 @@ struct FilterSheetView: View {
                 }
             }
         }
-        .background(.white)
+        .background(AppColor.backgroundPrimary)
         .presentationDetents([.medium])
         .onAppear {
             selectedVendor = currentVendor

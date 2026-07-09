@@ -97,11 +97,11 @@ struct SearchView: View {
         VStack(spacing: 12) {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 48))
-                .foregroundColor(.gray.opacity(0.5))
+                .foregroundColor(AppColor.textSecondary.opacity(0.5))
             
             Text("Search for products")
                 .font(.headline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.top, 80)
@@ -121,15 +121,15 @@ struct SearchView: View {
         VStack(spacing: 12) {
             Image(systemName: "tray")
                 .font(.system(size: 48))
-                .foregroundColor(.gray.opacity(0.5))
+                .foregroundColor(AppColor.textSecondary.opacity(0.5))
             
             Text("No products found")
                 .font(.headline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
             
             Text("Try adjusting your search or filters.")
                 .font(.subheadline)
-                .foregroundColor(.gray.opacity(0.8))
+                .foregroundColor(AppColor.textSecondary.opacity(0.8))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.top, 80)
