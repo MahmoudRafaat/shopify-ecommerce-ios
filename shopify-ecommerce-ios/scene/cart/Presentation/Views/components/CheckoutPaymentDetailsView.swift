@@ -12,7 +12,7 @@ struct CheckoutPaymentDetailsView: View {
                 .padding(.bottom, 8)
             
             // Order Amounts
-            CheckoutTextRowView(title: "Order Amounts", value: PriceFormatter.format(amountString: viewModel.originalSubtotal, currencyService: currencyService))
+            CheckoutTextRowView(title: "Order Amounts", value: PriceFormatter.format(amountString: viewModel.uiState.originalSubtotal, currencyService: currencyService))
             
             // Convenience
             HStack {
@@ -39,14 +39,14 @@ struct CheckoutPaymentDetailsView: View {
                     Text("Apply Coupon")
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundColor(viewModel.selectedCouponCode == nil ? AppColor.textSecondary : Color("appPrimary"))
+                        .foregroundColor(viewModel.uiState.selectedCouponCode == nil ? AppColor.textSecondary : Color("appPrimary"))
                 }
-                .disabled(viewModel.selectedCouponCode == nil)
+                .disabled(viewModel.uiState.selectedCouponCode == nil)
             }
             
             // Discount
-            if viewModel.discountAmount != "0.00" {
-                CheckoutTextRowView(title: "Discount (\(viewModel.selectedCouponCode ?? ""))", value: "-\(PriceFormatter.format(amountString: viewModel.discountAmount, currencyService: currencyService))", valueColor: AppColor.successDefault)
+            if viewModel.uiState.discountAmount != "0.00" {
+                CheckoutTextRowView(title: "Discount (\(viewModel.uiState.selectedCouponCode ?? ""))", value: "-\(PriceFormatter.format(amountString: viewModel.uiState.discountAmount, currencyService: currencyService))", valueColor: AppColor.successDefault)
             }
             
             // Delivery Fee

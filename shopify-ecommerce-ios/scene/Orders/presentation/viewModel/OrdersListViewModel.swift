@@ -42,19 +42,19 @@ class OrdersListViewModel {
     func loadOrders() async {
         guard let customerId = customerId else {
             uiState.isLoading = false
-            uiState.errorMessage = "Please sign in to view your orders"
+            uiState.error = .custom(title: "Not Signed In", message: "Please sign in to view your orders", icon: "person.crop.circle.badge.exclamationmark")
             return
         }
         
         uiState.isLoading = true
-        uiState.errorMessage = nil
+        uiState.error = nil
         
         do {
             let orders = try await getOrdersUseCase.execute(customerId: customerId)
             uiState.orders = orders
             uiState.isEmpty = orders.isEmpty
         } catch {
-            uiState.errorMessage = error.localizedDescription
+            uiState.error = AppError.determine()
             uiState.isEmpty = true
         }
         

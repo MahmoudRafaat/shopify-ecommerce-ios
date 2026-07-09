@@ -11,32 +11,14 @@ import SwiftUI
 import Combine
 
 
+
+
 @Observable
 final class CartViewModel: CartViewModelProtocol {
     
     private let useCases: CheckoutUseCases
     
-    // MARK: - State
-    var isLoading = false
-    var errorMessage: String?
-    
-    var draftOrderId: Int?
-    var orderTotal: String = "0.00"
-    var subtotal: String = "0.00"
-    var originalSubtotal: String = "0.00"
-    var tax: String = "0.00"
-    var discountAmount: String = "0.00"
-    
-    var cartLineItems: [OrderItemUIModel] = []
-    var discountCode: String = ""
-    var currentAddress: DraftAddressRequest? = nil
-    var isAddressSheetPresented: Bool = false
-    var isOrderDeleted: Bool = false
-    
-    var activeCoupons: [String: PriceRuleResponse] = [:]
-    var isCouponSheetPresented: Bool = false
-    var selectedCoupon: PriceRuleResponse?
-    var selectedCouponCode: String?
+    var uiState = CartUIState()
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -57,14 +39,14 @@ final class CartViewModel: CartViewModelProtocol {
     
     @MainActor
     func loadOrCreateCart(products: [ProductDataModel]) async {
-        self.isLoading = true
-        self.errorMessage = nil
+        self.uiState.isLoading = true
+        self.uiState.error = nil
         
         do {
             async let fetchCouponsTask = useCases.fetchActiveDiscountCodes.execute()
             
             let coupons = try await fetchCouponsTask
-            self.activeCoupons = coupons
+            self.uiState.activeCoupons = coupons
             
             if let cartMetafield = try await useCases.getCustomerCartMetafield.execute(),
                let savedCartId = Int?(cartMetafield.value), savedCartId > 0 {
@@ -98,7 +80,7 @@ final class CartViewModel: CartViewModelProtocol {
                         updateUI(with: draftOrderResponse)
                     }
                     
-                    self.isLoading = false
+                    self.uiState.isLoading = false
                     return
                 } catch {
                     // Fall through to create a new cart
@@ -106,7 +88,7 @@ final class CartViewModel: CartViewModelProtocol {
             }
             
             if products.isEmpty {
-                self.isLoading = false
+                self.uiState.isLoading = false
                 return
             }
             
@@ -116,19 +98,19 @@ final class CartViewModel: CartViewModelProtocol {
             updateUI(with: draftOrderResponse)
             
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.uiState.error = AppError.determine()
         }
-        self.isLoading = false
+        self.uiState.isLoading = false
     }
     
     @MainActor
     func updateQuantity(for variantId: Int, to newQuantity: Int) async {
-        guard let orderId = draftOrderId else { return }
-        self.isLoading = true
-        self.errorMessage = nil
+        guard let orderId = uiState.draftOrderId else { return }
+        self.uiState.isLoading = true
+        self.uiState.error = nil
         
-        if let index = cartLineItems.firstIndex(where: { $0.id == variantId }) {
-            let existingItem = cartLineItems[index]
+        if let index = uiState.cartLineItems.firstIndex(where: { $0.id == variantId }) {
+            let existingItem = uiState.cartLineItems[index]
             
             let updatedModel = OrderItemUIModel(
                 id: existingItem.id,
@@ -139,7 +121,7 @@ final class CartViewModel: CartViewModelProtocol {
                 imageUrl: existingItem.imageUrl
             )
             
-            var allItems = cartLineItems
+            var allItems = uiState.cartLineItems
             allItems[index] = updatedModel
             
             do {
@@ -149,21 +131,21 @@ final class CartViewModel: CartViewModelProtocol {
                 )
                 updateUI(with: response)
             } catch {
-                self.errorMessage = error.localizedDescription
+                self.uiState.error = AppError.determine()
             }
         }
-        self.isLoading = false
+        self.uiState.isLoading = false
     }
     
     
     @MainActor
     func applyDiscount() async {
-        guard let orderId = draftOrderId,
-              let code = selectedCouponCode,
-              let rule = selectedCoupon else { return }
+        guard let orderId = uiState.draftOrderId,
+              let code = uiState.selectedCouponCode,
+              let rule = uiState.selectedCoupon else { return }
         
-        self.isLoading = true
-        self.errorMessage = nil
+        self.uiState.isLoading = true
+        self.uiState.error = nil
         
         do {
             let response = try await useCases.applyDiscount.execute(
@@ -173,83 +155,83 @@ final class CartViewModel: CartViewModelProtocol {
             )
             updateUI(with: response)
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.uiState.error = AppError.determine()
         }
-        self.isLoading = false
+        self.uiState.isLoading = false
     }
     
     @MainActor
     func removeDiscount() async {
-        guard let orderId = draftOrderId else { return }
+        guard let orderId = uiState.draftOrderId else { return }
         
-        self.isLoading = true
-        self.errorMessage = nil
+        self.uiState.isLoading = true
+        self.uiState.error = nil
         
         do {
             let response = try await useCases.removeDiscount.execute(draftOrderId: orderId)
             updateUI(with: response)
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.uiState.error = AppError.determine()
         }
         
-        self.isLoading = false
+        self.uiState.isLoading = false
     }
     
     @MainActor
     func updateAddress(address: DraftAddressRequest) async {
-        guard let orderId = draftOrderId else { return }
-        self.isLoading = true
-        self.errorMessage = nil
+        guard let orderId = uiState.draftOrderId else { return }
+        self.uiState.isLoading = true
+        self.uiState.error = nil
         
         do {
             let response = try await useCases.updateDraftOrderAddress.execute(
                 draftOrderId: orderId,
                 address: address
             )
-            self.currentAddress = address
+            self.uiState.currentAddress = address
             updateUI(with: response)
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.uiState.error = AppError.determine()
         }
         
-        self.isLoading = false
+        self.uiState.isLoading = false
     }
     
     @MainActor
     func removeLineItem(variantId: Int) async {
-        guard let orderId = draftOrderId else { return }
-        self.isLoading = true
-        self.errorMessage = nil
+        guard let orderId = uiState.draftOrderId else { return }
+        self.uiState.isLoading = true
+        self.uiState.error = nil
         
-        let remainingItems = cartLineItems.filter { $0.id != variantId }
+        let remainingItems = uiState.cartLineItems.filter { $0.id != variantId }
         
         do {
             if remainingItems.isEmpty {
                 // Last item removed — delete the entire draft order
                 try await useCases.deleteDraftOrder.execute(draftOrderId: orderId)
                 try await useCases.setCustomerCartMetafield.execute(draftOrderId: 0)
-                cartLineItems = []
-                draftOrderId = nil
-                orderTotal = "0.00"
-                subtotal = "0.00"
-                originalSubtotal = "0.00"
-                tax = "0.00"
-                discountAmount = "0.00"
-                isOrderDeleted = true
+                uiState.cartLineItems = []
+                uiState.draftOrderId = nil
+                uiState.orderTotal = "0.00"
+                uiState.subtotal = "0.00"
+                uiState.originalSubtotal = "0.00"
+                uiState.tax = "0.00"
+                uiState.discountAmount = "0.00"
+                uiState.isOrderDeleted = true
             } else {
                 let response = try await useCases.removeLineItem.execute(
                     draftOrderId: orderId,
                     variantId: variantId,
                     currentLineItems: remainingItems
                 )
-                cartLineItems = remainingItems
+                uiState.cartLineItems = remainingItems
                 updateUI(with: response)
             }
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.uiState.error = AppError.determine()
         }
         
-        self.isLoading = false
+        self.uiState.isLoading = false
     }
     
     // MARK: - Cart lifecycle
@@ -258,7 +240,7 @@ final class CartViewModel: CartViewModelProtocol {
     /// Triggered globally via `CartService.shared.clearCartSubject`.
     @MainActor
     func clearCart() async {
-        self.isLoading = true
+        self.uiState.isLoading = true
         var resetSuccess = false
         
         // Robust retry mechanism for Metafield reset (up to 3 retries)
@@ -276,30 +258,30 @@ final class CartViewModel: CartViewModelProtocol {
         }
         
         if !resetSuccess {
-            self.errorMessage = "We couldn't finalize the cart reset on the server. Please try refreshing."
+            self.uiState.error = AppError.determine()
         }
         
         // Reset local state
-        cartLineItems = []
-        draftOrderId  = nil
-        orderTotal    = "0.00"
-        subtotal      = "0.00"
-        originalSubtotal = "0.00"
-        tax           = "0.00"
-        discountAmount = "0.00"
-        selectedCoupon = nil
-        selectedCouponCode = nil
+        uiState.cartLineItems = []
+        uiState.draftOrderId  = nil
+        uiState.orderTotal    = "0.00"
+        uiState.subtotal      = "0.00"
+        uiState.originalSubtotal = "0.00"
+        uiState.tax           = "0.00"
+        uiState.discountAmount = "0.00"
+        uiState.selectedCoupon = nil
+        uiState.selectedCouponCode = nil
         
-        self.isLoading = false
+        self.uiState.isLoading = false
     }
     private func updateUI(with response: CheckoutOrderInfo) {
-        self.draftOrderId = response.id
-        self.subtotal = response.subtotal
-        self.tax = response.tax
-        self.orderTotal = response.total
-        self.originalSubtotal = response.originalSubtotal
-        self.discountAmount = response.discountAmount
-        self.cartLineItems = response.lineItems
+        self.uiState.draftOrderId = response.id
+        self.uiState.subtotal = response.subtotal
+        self.uiState.tax = response.tax
+        self.uiState.orderTotal = response.total
+        self.uiState.originalSubtotal = response.originalSubtotal
+        self.uiState.discountAmount = response.discountAmount
+        self.uiState.cartLineItems = response.lineItems
         
         let syncedProducts = response.lineItems.map { uiItem in
             ProductDataModel(variantId: uiItem.id, quantity: uiItem.quantity, imageUrl: uiItem.imageUrl)

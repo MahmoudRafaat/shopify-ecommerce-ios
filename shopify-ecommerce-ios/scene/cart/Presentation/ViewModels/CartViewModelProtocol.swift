@@ -8,24 +8,7 @@
 import Foundation
 
 protocol CartViewModelProtocol {
-    var isLoading: Bool { get }
-    var errorMessage: String? { get }
-    var draftOrderId: Int? { get }
-    var orderTotal: String { get }
-    var subtotal: String { get }
-    var originalSubtotal: String { get }
-    var tax: String { get }
-    var discountAmount: String { get }
-    var cartLineItems: [OrderItemUIModel] { get }
-    var discountCode: String { get set }
-    var currentAddress: DraftAddressRequest? { get }
-    var isAddressSheetPresented: Bool { get set }
-    var isOrderDeleted: Bool { get }
-    
-    var activeCoupons: [String: PriceRuleResponse] { get }
-    var isCouponSheetPresented: Bool { get set }
-    var selectedCoupon: PriceRuleResponse? { get set }
-    var selectedCouponCode: String? { get set }
+    var uiState: CartUIState { get set }
     
     func loadOrCreateCart(products: [ProductDataModel]) async
     func updateQuantity(for variantId: Int, to newQuantity: Int) async

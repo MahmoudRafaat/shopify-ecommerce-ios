@@ -13,7 +13,7 @@ class SearchViewModel {
     
     private let searchProductsUseCase: SearchProductsUseCaseProtocol
     
-    private(set) var viewState: SearchViewState = .idle
+    var uiState = SearchUIState()
     
     var searchText: String = "" {
         didSet { debounceSearch() }
@@ -115,8 +115,9 @@ class SearchViewModel {
         allProducts = []
         nextPageURL = nil
         isLoadingMore = false
-        
-        viewState = .loading
+        uiState.isIdle = false
+        uiState.isLoading = true
+        uiState.error = nil
         
         let query = ProductQuery(
             title: searchText.isEmpty ? nil : searchText,
@@ -134,10 +135,11 @@ class SearchViewModel {
             allProducts = result.products
             nextPageURL = result.nextPageURL
             totalProductCount = count
-            viewState = .success(allProducts)
+            uiState.isLoading = false
         } catch {
             if !Task.isCancelled {
-                viewState = .error(error.localizedDescription)
+                uiState.isLoading = false
+                uiState.error = AppError.determine()
             }
         }
     }
@@ -146,17 +148,18 @@ class SearchViewModel {
         guard let url = nextPageURL, !isLoadingMore else { return }
         
         isLoadingMore = true
-        viewState = .loadingMore
+        uiState.isLoadingMore = true
         
         Task {
             do {
                 let result = try await searchProductsUseCase.executeNextPage(url: url)
                 allProducts.append(contentsOf: result.products)
                 nextPageURL = result.nextPageURL
-                viewState = .success(allProducts)
+                uiState.isLoadingMore = false
             } catch {
                 if !Task.isCancelled {
-                    viewState = .error(error.localizedDescription)
+                    uiState.isLoadingMore = false
+                    uiState.error = AppError.determine()
                 }
             }
             isLoadingMore = false

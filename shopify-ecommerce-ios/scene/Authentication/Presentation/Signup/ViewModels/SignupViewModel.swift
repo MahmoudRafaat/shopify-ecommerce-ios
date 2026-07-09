@@ -18,14 +18,7 @@ protocol SignupViewModelProtocol {
     var password: String { get set }
     var confirmPassword: String { get set }
     
-    var emailError: String? { get set }
-    var phoneError: String? { get set }
-    var passwordError: String? { get set }
-    var confirmPasswordError: String? { get set }
-    
-    var errorMessage: String? { get set }
-    var isLoading: Bool { get }
-    var isSignupSuccess: Bool { get }
+    var uiState: SignupUIState { get set }
     
     func signup()
     func loginWithGoogle(presenting: UIViewController)
@@ -44,14 +37,7 @@ class SignupViewModel: SignupViewModelProtocol {
     var password = ""
     var confirmPassword = ""
     
-    var emailError: String? = nil
-    var phoneError: String? = nil
-    var passwordError: String? = nil
-    var confirmPasswordError: String? = nil
-    
-    var errorMessage: String? = nil
-    var isLoading = false
-    var isSignupSuccess = false
+    var uiState = SignupUIState()
     
     var showPhonePopup = false
     var googlePhone = ""
@@ -71,28 +57,30 @@ class SignupViewModel: SignupViewModelProtocol {
     
     func signup() {
         checkValidation()
-        self.isLoading = true
+        guard uiState.emailError == nil && uiState.phoneError == nil && uiState.passwordError == nil && uiState.confirmPasswordError == nil else { return }
+        
+        self.uiState.isLoading = true
         Task {
             do {
                 try await signupUseCase.execute(email: email, password: password, phone: phone)
                 UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)
-                self.isSignupSuccess = true
-                self.isLoading = false
+                self.uiState.isSignupSuccess = true
+                self.uiState.isLoading = false
             } catch {
-                self.errorMessage = error.localizedDescription
-                self.isLoading = false
+                self.uiState.error = AppError.custom(title: "Error", message: error.localizedDescription)
+                self.uiState.isLoading = false
             }
         }
     }
     
     func loginWithGoogle(presenting: UIViewController) {
-        isLoading = true
-        errorMessage = nil
-        isSignupSuccess = false
+        uiState.isLoading = true
+        uiState.error = nil
+        uiState.isSignupSuccess = false
         
         guard let clientID = FirebaseApp.app()?.options.clientID else {
-            self.errorMessage = "Firebase configuration error."
-            self.isLoading = false
+            self.uiState.error = AppError.custom(title: "Error", message: "Firebase configuration error.")
+            self.uiState.isLoading = false
             return
         }
         
@@ -104,8 +92,8 @@ class SignupViewModel: SignupViewModelProtocol {
             
             if let error = error {
                 Task { @MainActor in
-                    self.isLoading = false
-                    self.errorMessage = error.localizedDescription
+                    self.uiState.isLoading = false
+                    self.uiState.error = AppError.custom(title: "Error", message: error.localizedDescription)
                 }
                 return
             }
@@ -113,8 +101,8 @@ class SignupViewModel: SignupViewModelProtocol {
             guard let user = result?.user,
                   let idToken = user.idToken?.tokenString else {
                 Task { @MainActor in
-                    self.isLoading = false
-                    self.errorMessage = "Failed to get Google ID token."
+                    self.uiState.isLoading = false
+                    self.uiState.error = AppError.custom(title: "Error", message: "Failed to get Google ID token.")
                 }
                 return
             }
@@ -141,25 +129,25 @@ class SignupViewModel: SignupViewModelProtocol {
                     UserDefaults.standard.set(email, forKey: "user_email")
                     UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)
                     
-                    self.isSignupSuccess = true
-                    self.errorMessage = nil
-                    self.isLoading = false
+                    self.uiState.isSignupSuccess = true
+                    self.uiState.error = nil
+                    self.uiState.isLoading = false
                     
                 } catch LoginError.phoneRequiredForGoogleAuth {
                     self.pendingGoogleCredential = credential
                     self.pendingGoogleEmail = email
                     self.pendingGoogleFirstName = firstName
                     self.pendingGoogleLastName = lastName
-                    self.isLoading = false
+                    self.uiState.isLoading = false
                     self.showPhonePopup = true
                 } catch {
                     if let loginError = error as? LoginError {
-                        self.errorMessage = loginError.errorDescription ?? "Google Login failed. Please try again."
+                        self.uiState.error = AppError.custom(title: "Error", message: loginError.errorDescription ?? "Google Login failed. Please try again.")
                     } else {
-                        self.errorMessage = "Something went wrong. Please try again."
+                        self.uiState.error = AppError.determine()
                     }
-                    self.isSignupSuccess = false
-                    self.isLoading = false
+                    self.uiState.isSignupSuccess = false
+                    self.uiState.isLoading = false
                 }
             }
         }
@@ -167,20 +155,20 @@ class SignupViewModel: SignupViewModelProtocol {
     
     func submitGooglePhone() {
         guard !googlePhone.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            self.errorMessage = "Please enter a valid phone number."
+            self.uiState.error = AppError.custom(title: "Error", message: "Please enter a valid phone number.")
             return
         }
         
         guard let credential = pendingGoogleCredential else { return }
         let email = pendingGoogleEmail
         
-        isLoading = true
-        errorMessage = nil
-        isSignupSuccess = false
+        uiState.isLoading = true
+        uiState.error = nil
+        uiState.isSignupSuccess = false
         showPhonePopup = false
         
         Task { @MainActor in
-            defer { self.isLoading = false }
+            defer { self.uiState.isLoading = false }
             
             do {
                 let result = try await self.googleAuthUseCase.execute(
@@ -196,45 +184,45 @@ class SignupViewModel: SignupViewModelProtocol {
                 UserDefaults.standard.set(email, forKey: "user_email")
                 UserDefaults.standard.set(true, forKey: AppConstants.isLoggedIn)
                 
-                self.isSignupSuccess = true
-                self.errorMessage = nil
+                self.uiState.isSignupSuccess = true
+                self.uiState.error = nil
             } catch {
                 if let loginError = error as? LoginError {
-                    self.errorMessage = loginError.errorDescription ?? "Google Login failed. Please try again."
+                    self.uiState.error = AppError.custom(title: "Error", message: loginError.errorDescription ?? "Google Login failed. Please try again.")
                 } else {
-                    self.errorMessage = "Something went wrong. Please try again."
+                    self.uiState.error = AppError.determine()
                 }
-                self.isSignupSuccess = false
+                self.uiState.isSignupSuccess = false
             }
         }
     }
     
     func checkValidation(){
-        emailError = nil
-        phoneError = nil
-        passwordError = nil
-        confirmPasswordError = nil
-        errorMessage = nil
+        uiState.emailError = nil
+        uiState.phoneError = nil
+        uiState.passwordError = nil
+        uiState.confirmPasswordError = nil
+        uiState.error = nil
         
         var isValid = true
         
         if email.isEmpty {
-            emailError = "Email is required"
+            uiState.emailError = "Email is required"
             isValid = false
         }
         if phone.isEmpty {
-            phoneError = "Phone number is required"
+            uiState.phoneError = "Phone number is required"
             isValid = false
         }
         if password.isEmpty {
-            passwordError = "Password is required"
+            uiState.passwordError = "Password is required"
             isValid = false
         }
         if confirmPassword.isEmpty {
-            confirmPasswordError = "Confirm password is required"
+            uiState.confirmPasswordError = "Confirm password is required"
             isValid = false
         } else if password != confirmPassword {
-            confirmPasswordError = "Passwords do not match"
+            uiState.confirmPasswordError = "Passwords do not match"
             isValid = false
         }
         

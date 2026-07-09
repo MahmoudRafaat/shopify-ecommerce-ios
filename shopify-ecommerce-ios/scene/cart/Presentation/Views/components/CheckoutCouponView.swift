@@ -10,7 +10,7 @@ struct CheckoutCouponView: View {
                 .font(.title2)
                 .foregroundColor(AppColor.textPrimary)
             
-            if let selectedCouponCode = viewModel.selectedCouponCode {
+            if let selectedCouponCode = viewModel.uiState.selectedCouponCode {
                 Text(selectedCouponCode)
                     .font(.body)
                     .fontWeight(.bold)
@@ -22,8 +22,8 @@ struct CheckoutCouponView: View {
                     Task {
                         await viewModel.removeDiscount()
                     }
-                    viewModel.selectedCouponCode = nil
-                    viewModel.selectedCoupon = nil
+                    viewModel.uiState.selectedCouponCode = nil
+                    viewModel.uiState.selectedCoupon = nil
                 }) {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundColor(AppColor.textSecondary)
@@ -36,7 +36,7 @@ struct CheckoutCouponView: View {
                 Spacer()
                 
                 Button(action: {
-                    viewModel.isCouponSheetPresented = true
+                    viewModel.uiState.isCouponSheetPresented = true
                     onSelect?()
                 }) {
                     Text("Select")

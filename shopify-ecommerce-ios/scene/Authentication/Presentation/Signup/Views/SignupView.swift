@@ -24,32 +24,32 @@ struct SignupView: View {
                     CustomTextField(
                         placeholder: "Username or Email",
                         type: .email,
-                        hasError: viewmodel.emailError != nil,
-                        errorMessage: viewmodel.emailError,
+                        hasError: viewmodel.uiState.emailError != nil,
+                        errorMessage: viewmodel.uiState.emailError,
                         text: $viewmodel.email
                     ).padding(.horizontal,-28)
                     
                     CustomTextField(
                         placeholder: "Phone Number",
                         type: .phone,
-                        hasError: viewmodel.phoneError != nil,
-                        errorMessage: viewmodel.phoneError,
+                        hasError: viewmodel.uiState.phoneError != nil,
+                        errorMessage: viewmodel.uiState.phoneError,
                         text: $viewmodel.phone
                     ).padding(.horizontal,-28)
                     
                     CustomTextField(
                         placeholder: "Password",
                         type: .password,
-                        hasError: viewmodel.passwordError != nil,
-                        errorMessage: viewmodel.passwordError,
+                        hasError: viewmodel.uiState.passwordError != nil,
+                        errorMessage: viewmodel.uiState.passwordError,
                         text: $viewmodel.password
                     ).padding(.horizontal,-28)
                     
                     CustomTextField(
                         placeholder: "Confirm Password",
                         type: .password,
-                        hasError: viewmodel.confirmPasswordError != nil,
-                        errorMessage: viewmodel.confirmPasswordError,
+                        hasError: viewmodel.uiState.confirmPasswordError != nil,
+                        errorMessage: viewmodel.uiState.confirmPasswordError,
                         text: $viewmodel.confirmPassword
                     ).padding(.horizontal,-28)
                 }
@@ -86,8 +86,13 @@ struct SignupView: View {
                 .foregroundColor(.appPrimary)
             }
         }
-        .showLoading(if: viewmodel.isLoading)
-        .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
+        .showLoading(if: viewmodel.uiState.isLoading)
+        .onChange(of: viewmodel.uiState.error) { _, error in
+            if let error = error {
+                AlertManager.shared.showError(error)
+                viewmodel.uiState.error = nil
+            }
+        }
         .background(AppColor.backgroundPrimary.ignoresSafeArea())
 
         .sheet(isPresented: $viewmodel.showPhonePopup) {

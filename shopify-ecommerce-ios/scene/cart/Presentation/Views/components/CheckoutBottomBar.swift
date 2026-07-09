@@ -8,7 +8,7 @@ struct CheckoutBottomBar: View {
     var body: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(PriceFormatter.format(amountString: viewModel.orderTotal, currencyService: currencyService))
+                Text(PriceFormatter.format(amountString: viewModel.uiState.orderTotal, currencyService: currencyService))
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundColor(AppColor.textPrimary)
@@ -24,10 +24,10 @@ struct CheckoutBottomBar: View {
             Spacer()
             
             CustomButton(text: "Proceed to Payment") {
-                guard let orderID = viewModel.draftOrderId else { return }
+                guard let orderID = viewModel.uiState.draftOrderId else { return }
                 coordinator.goToPayment(draftOrderId: orderID)
             }
-            .disabled(viewModel.isLoading || viewModel.draftOrderId == nil)
+            .disabled(viewModel.uiState.isLoading || viewModel.uiState.draftOrderId == nil)
             .padding(.trailing, 16)
         }
         .padding(.horizontal)

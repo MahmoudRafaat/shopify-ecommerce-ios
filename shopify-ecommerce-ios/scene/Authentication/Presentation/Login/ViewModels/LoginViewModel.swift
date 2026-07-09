@@ -15,10 +15,7 @@ import FirebaseCore
 protocol LoginViewModelProtocol: AnyObject {
     var email: String { get set }
     var password: String { get set }
-    var errorMessage: String? { get set }
-    var isLoading: Bool { get }
-    var isLoginSuccess: Bool { get }
-    var showSuccessMessage: Bool { get }
+    var uiState: LoginUIState { get set }
     
     func login()
     func loginWithGoogle(presenting: UIViewController)
@@ -34,10 +31,7 @@ class LoginViewModel: LoginViewModelProtocol {
     var email = ""
     var password = ""
     
-    var errorMessage: String? = nil
-    private(set) var isLoading = false
-    private(set) var isLoginSuccess = false
-    private(set) var showSuccessMessage = false
+    var uiState = LoginUIState()
     
     var showPhonePopup = false
     var googlePhone = ""
@@ -57,28 +51,28 @@ class LoginViewModel: LoginViewModelProtocol {
     
     func login() {
         guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            self.errorMessage = "Please enter your email address."
+            self.uiState.error = AppError.custom(title: "Error", message: "Please enter your email address.")
             return
         }
         
         guard !password.isEmpty else {
-            self.errorMessage = "Please enter your password."
+            self.uiState.error = AppError.custom(title: "Error", message: "Please enter your password.")
             return
         }
         
         guard isValidEmail(email) else {
-            self.errorMessage = "Please enter a valid email address."
+            self.uiState.error = AppError.custom(title: "Error", message: "Please enter a valid email address.")
             return
         }
         
-        isLoading = true
-        errorMessage = nil
-        isLoginSuccess = false
-        showSuccessMessage = false
+        uiState.isLoading = true
+        uiState.error = nil
+        uiState.isLoginSuccess = false
+        uiState.showSuccessMessage = false
         
         Task { @MainActor in
             defer {
-                isLoading = false
+                uiState.isLoading = false
             }
             
             do {
@@ -86,34 +80,34 @@ class LoginViewModel: LoginViewModelProtocol {
                 
                 storeUserData(result)
                 
-                showSuccessMessage = true
+                uiState.showSuccessMessage = true
                 
                 try? await Task.sleep(nanoseconds: 2_000_000_000)
                 
-                isLoginSuccess = true
-                errorMessage = nil
+                uiState.isLoginSuccess = true
+                uiState.error = nil
                 
             } catch {
                 if let loginError = error as? LoginError {
-                    errorMessage = loginError.errorDescription ?? "Login failed. Please try again."
+                    uiState.error = AppError.custom(title: "Error", message: loginError.errorDescription ?? "Login failed. Please try again.")
                 } else {
-                    errorMessage = "Something went wrong. Please try again."
+                    uiState.error = AppError.determine()
                 }
-                isLoginSuccess = false
-                showSuccessMessage = false
+                uiState.isLoginSuccess = false
+                uiState.showSuccessMessage = false
             }
         }
     }
     
     func loginWithGoogle(presenting: UIViewController) {
-        isLoading = true
-        errorMessage = nil
-        isLoginSuccess = false
-        showSuccessMessage = false
+        uiState.isLoading = true
+        uiState.error = nil
+        uiState.isLoginSuccess = false
+        uiState.showSuccessMessage = false
         
         guard let clientID = FirebaseApp.app()?.options.clientID else {
-            self.errorMessage = "Firebase configuration error."
-            self.isLoading = false
+            self.uiState.error = AppError.custom(title: "Error", message: "Firebase configuration error.")
+            self.uiState.isLoading = false
             return
         }
         
@@ -125,8 +119,8 @@ class LoginViewModel: LoginViewModelProtocol {
             
             if let error = error {
                 Task { @MainActor in
-                    self.isLoading = false
-                    self.errorMessage = error.localizedDescription
+                    self.uiState.isLoading = false
+                    self.uiState.error = AppError.custom(title: "Error", message: error.localizedDescription)
                 }
                 return
             }
@@ -134,8 +128,8 @@ class LoginViewModel: LoginViewModelProtocol {
             guard let user = result?.user,
                   let idToken = user.idToken?.tokenString else {
                 Task { @MainActor in
-                    self.isLoading = false
-                    self.errorMessage = "Failed to get Google ID token."
+                    self.uiState.isLoading = false
+                    self.uiState.error = AppError.custom(title: "Error", message: "Failed to get Google ID token.")
                 }
                 return
             }
@@ -158,29 +152,29 @@ class LoginViewModel: LoginViewModelProtocol {
                     self.email = email // For storing user data
                     self.storeUserData(result)
                     
-                    self.showSuccessMessage = true
+                    self.uiState.showSuccessMessage = true
                     try? await Task.sleep(nanoseconds: 2_000_000_000)
                     
-                    self.isLoginSuccess = true
-                    self.errorMessage = nil
-                    self.isLoading = false
+                    self.uiState.isLoginSuccess = true
+                    self.uiState.error = nil
+                    self.uiState.isLoading = false
                     
                 } catch LoginError.phoneRequiredForGoogleAuth {
                     self.pendingGoogleCredential = credential
                     self.pendingGoogleEmail = email
                     self.pendingGoogleFirstName = firstName
                     self.pendingGoogleLastName = lastName
-                    self.isLoading = false
+                    self.uiState.isLoading = false
                     self.showPhonePopup = true
                 } catch {
                     if let loginError = error as? LoginError {
-                        self.errorMessage = loginError.errorDescription ?? "Google Login failed. Please try again."
+                        self.uiState.error = AppError.custom(title: "Error", message: loginError.errorDescription ?? "Google Login failed. Please try again.")
                     } else {
-                        self.errorMessage = "Something went wrong. Please try again."
+                        self.uiState.error = AppError.determine()
                     }
-                    self.isLoginSuccess = false
-                    self.showSuccessMessage = false
-                    self.isLoading = false
+                    self.uiState.isLoginSuccess = false
+                    self.uiState.showSuccessMessage = false
+                    self.uiState.isLoading = false
                 }
             }
         }
@@ -188,21 +182,21 @@ class LoginViewModel: LoginViewModelProtocol {
     
     func submitGooglePhone() {
         guard !googlePhone.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            self.errorMessage = "Please enter a valid phone number."
+            self.uiState.error = AppError.custom(title: "Error", message: "Please enter a valid phone number.")
             return
         }
         
         guard let credential = pendingGoogleCredential else { return }
         let email = pendingGoogleEmail
         
-        isLoading = true
-        errorMessage = nil
-        isLoginSuccess = false
-        showSuccessMessage = false
+        uiState.isLoading = true
+        uiState.error = nil
+        uiState.isLoginSuccess = false
+        uiState.showSuccessMessage = false
         showPhonePopup = false
         
         Task { @MainActor in
-            defer { self.isLoading = false }
+            defer { self.uiState.isLoading = false }
             
             do {
                 let result = try await self.googleAuthUseCase.execute(
@@ -214,19 +208,19 @@ class LoginViewModel: LoginViewModelProtocol {
                 self.email = email // For storing user data
                 self.storeUserData(result)
                 
-                self.showSuccessMessage = true
+                self.uiState.showSuccessMessage = true
                 try? await Task.sleep(nanoseconds: 2_000_000_000)
                 
-                self.isLoginSuccess = true
-                self.errorMessage = nil
+                self.uiState.isLoginSuccess = true
+                self.uiState.error = nil
             } catch {
                 if let loginError = error as? LoginError {
-                    self.errorMessage = loginError.errorDescription ?? "Google Login failed. Please try again."
+                    self.uiState.error = AppError.custom(title: "Error", message: loginError.errorDescription ?? "Google Login failed. Please try again.")
                 } else {
-                    self.errorMessage = "Something went wrong. Please try again."
+                    self.uiState.error = AppError.determine()
                 }
-                self.isLoginSuccess = false
-                self.showSuccessMessage = false
+                self.uiState.isLoginSuccess = false
+                self.uiState.showSuccessMessage = false
             }
         }
     }
@@ -234,10 +228,10 @@ class LoginViewModel: LoginViewModelProtocol {
     func resetState() {
         email = ""
         password = ""
-        errorMessage = nil
-        isLoading = false
-        isLoginSuccess = false
-        showSuccessMessage = false
+        uiState.error = nil
+        uiState.isLoading = false
+        uiState.isLoginSuccess = false
+        uiState.showSuccessMessage = false
     }
     
     private func isValidEmail(_ email: String) -> Bool {

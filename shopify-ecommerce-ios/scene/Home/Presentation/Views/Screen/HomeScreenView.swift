@@ -18,37 +18,30 @@ struct HomeScreenView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            ScrollView {
-                VStack(spacing: 24) {
-                    HeaderView(
-                        searchText: .constant(""),
-                        onSearchTap: {
-                            selectedTab = .search
-                        },
-                        onMenuTap: {
-                            if isGuestMode {
-                                showLoginAlert = true
-                            } else {
-                                coordinator.goToProfile()
-                            }
+            VStack(spacing: 0) {
+                HeaderView(
+                    searchText: .constant(""),
+                    onSearchTap: {
+                        selectedTab = .search
+                    },
+                    onMenuTap: {
+                        if isGuestMode {
+                            showLoginAlert = true
+                        } else {
+                            coordinator.goToProfile()
                         }
-                    )
-
-                    if viewModel.errorMessage != nil {
-                        ContentUnavailableView {
-                            Label("Oops.. Something went wrong.", systemImage: "exclamationmark.triangle.fill")
-                        } description: {
-                            Text("Check your internet connection and try again.")
-                        } actions: {
-                            Button("Try Again") {
-                                Task {
-                                    await viewModel.fetchData()
-                                }
+                    }
+                )
+                .padding(.bottom, 8)
+                
+                ScrollView {
+                    VStack(spacing: 24) {
+                        if let error = viewModel.uiState.error {
+                        CustomContentUnavailableView(error: error, onRetry: {
+                            Task {
+                                await viewModel.fetchData()
                             }
-                            .buttonStyle(.borderedProminent)
-                            .tint(.appBlue)
-                            .controlSize(.regular)
-                        }
+                        })
                     } else {
                         VStack(spacing: 8) {
                             Text("All Featured")
@@ -57,10 +50,10 @@ struct HomeScreenView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal, 16)
 
-                            if viewModel.isCategoriesLoading {
+                            if viewModel.uiState.isCategoriesLoading {
                                 ProgressView()
                             } else {
-                                CategoriesSectionView(categories: viewModel.categories)
+                                CategoriesSectionView(categories: viewModel.uiState.categories)
                             }
                         }
 
@@ -73,10 +66,10 @@ struct HomeScreenView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal, 16)
 
-                            if viewModel.isBrandsLoading {
+                            if viewModel.uiState.isBrandsLoading {
                                 ProgressView()
                             } else {
-                                CategoriesSectionView(categories: viewModel.brands)
+                                CategoriesSectionView(categories: viewModel.uiState.brands)
                             }
                         }
 
@@ -86,11 +79,11 @@ struct HomeScreenView: View {
                             isToday: true
                         )
 
-                        if viewModel.isProductsLoading {
+                        if viewModel.uiState.isProductsLoading {
                             ProgressView()
                                 .padding(.top, 32)
                         } else {
-                            ForEach(viewModel.categorySections, id: \.title) { section in
+                            ForEach(viewModel.uiState.categorySections, id: \.title) { section in
                                 if !section.products.isEmpty {
                                     VStack(spacing: 0) {
                                         Text("\(section.title) Products")
@@ -116,6 +109,7 @@ struct HomeScreenView: View {
                     }
                 }
                 .padding(.bottom, 80) 
+            }
             }
 
 

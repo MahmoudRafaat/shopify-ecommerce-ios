@@ -17,8 +17,10 @@ final class CartCoordinator {
     }
 
     var navigationPath = NavigationPath()
+    var showNetworkAlert = false
 
     func goToPayment(draftOrderId: Int) {
+        guard NetworkMonitor.shared.isConnected else { showNetworkAlert = true; return }
         navigationPath.append(Destination.payment(draftOrderId: draftOrderId))
     }
 

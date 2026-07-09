@@ -11,7 +11,7 @@ import os
 @MainActor
 final class ProductDetailsViewModel: ObservableObject {
 
-    @Published private(set) var screenState: ProductDetailsScreenState = .loading
+    @Published private(set) var uiState = ProductDetailsScreenUIState()
     @Published var alertMessage: String? = nil
     var alertTitle: String = ""
 
@@ -37,27 +37,29 @@ final class ProductDetailsViewModel: ObservableObject {
     func loadProduct() async {
         logger.debug("Loading product \(self.productId)")
 
-        screenState = .loading
+        uiState.isLoading = true
+        uiState.error = nil
 
         do {
             let product = try await getProductDetailsUseCase.execute(productId: productId)
-            screenState = .success(product.toUIState())
+            uiState.data = product.toUIState()
+            uiState.isLoading = false
         } catch {
             logger.error("Failed to load product \(self.productId): \(error.localizedDescription)")
-            screenState = .error(error.localizedDescription)
+            uiState.error = AppError.determine()
+            uiState.isLoading = false
         }
     }
 
     func selectSize(_ size: String) {
-        guard case .success(let currentState) = screenState else { return }
-
-        screenState = .success(currentState.withSelectedSize(size))
+        guard let currentState = uiState.data else { return }
+        uiState.data = currentState.withSelectedSize(size)
     }
 
     // MARK: - Add to Cart
 
     func addToCart() {
-        guard case .success(let state) = screenState,
+        guard let state = uiState.data,
               let variantId = state.selectedVariantId else {
             logger.warning("Cannot add to cart — no variant selected")
             return

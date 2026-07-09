@@ -16,8 +16,10 @@ final class SearchCoordinator {
     }
     
     var navigationPath = NavigationPath()
+    var showNetworkAlert = false
     
     func goToProductDetail(id: Int) {
+        guard NetworkMonitor.shared.isConnected else { showNetworkAlert = true; return }
         print("SearchCoordinator: goToProductDetail called with id: \(id)")
         navigationPath.append(Destination.productDetail(productId: id))
     }

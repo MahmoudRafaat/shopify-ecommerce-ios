@@ -7,15 +7,15 @@
 
 import Foundation
 
+
+
 @Observable
 class CollectionViewModel {
     let getCollectionProductsUseCase: GetCollectionProductsUseCase
-    private(set) var products: [ProductCollection] = []
+    
+    var uiState = CollectionUIState()
     
     var collcetionId: Int?
-    
-    var isLoading: Bool = true
-    var isLoadingMore: Bool = false
     
     var searchText: String = "" {
         didSet { debounceSearch() }
@@ -43,37 +43,40 @@ class CollectionViewModel {
     }
     
     func fetchProducts() async {
-        isLoading = true
-        products = []
+        uiState.isLoading = true
+        uiState.products = []
         nextPageURL = nil
-        isLoadingMore = false
+        uiState.isLoadingMore = false
+        uiState.error = nil
         
         do {
             guard let collcetionId else { return }
             let query = searchText.isEmpty ? nil : searchText
             let result = try await getCollectionProductsUseCase.execute(collectionId: collcetionId, searchQuery: query)
-            products = result.products
+            uiState.products = result.products
             nextPageURL = result.nextPageURL
         } catch {
             print("Error fetching products: \(error)")
+            uiState.error = AppError.determine()
         }
-        isLoading = false
+        uiState.isLoading = false
     }
     
     func loadMoreIfNeeded() {
-        guard let url = nextPageURL, !isLoadingMore else { return }
+        guard let url = nextPageURL, !uiState.isLoadingMore else { return }
         
-        isLoadingMore = true
+        uiState.isLoadingMore = true
         
         Task {
             do {
                 let result = try await getCollectionProductsUseCase.fetchNextPage(url: url)
-                products.append(contentsOf: result.products)
+                uiState.products.append(contentsOf: result.products)
                 nextPageURL = result.nextPageURL
             } catch {
                 print("Error fetching next page: \(error)")
+                uiState.error = AppError.determine()
             }
-            isLoadingMore = false
+            uiState.isLoadingMore = false
         }
     }
 }

@@ -16,7 +16,7 @@ struct CartViewBody: View {
 
                 AddressSection()
                 
-                ForEach(viewModel.cartLineItems) { item in
+                ForEach(viewModel.uiState.cartLineItems) { item in
                     CheckoutProductItemView(item: item)
                 }
                 

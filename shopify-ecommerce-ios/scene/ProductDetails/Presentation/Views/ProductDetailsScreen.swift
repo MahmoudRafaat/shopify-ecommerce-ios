@@ -21,29 +21,28 @@ struct ProductDetailsScreen: View {
     var body: some View {
 
         Group {
-            switch viewModel.screenState {
-
-            case .loading:
+            if let error = viewModel.uiState.error {
+                CustomContentUnavailableView(error: error, onRetry: {
+                    Task { await viewModel.loadProduct() }
+                })
+            } else if viewModel.uiState.isLoading {
                 LoadingView()
-
-            case .success(let state):
+            } else if let state = viewModel.uiState.data {
                 ProductDetailsView(
                     state: state,
                     onSizeSelected: viewModel.selectSize(_:),
                     onAddToCart: viewModel.addToCart
                 )
-
-            case .error(let message):
-                Text(message)
-                    .foregroundStyle(AppColor.dangerDefault)
             }
         }
         .task {
             await viewModel.loadProduct()
         }
-        .showCustomAlert(
-            title: viewModel.alertTitle,
-            errorMessage: $viewModel.alertMessage
-        )
+        .onChange(of: viewModel.alertMessage) { _, msg in
+            if let msg = msg {
+                AlertManager.shared.showAlert(title: viewModel.alertTitle, message: msg)
+                viewModel.alertMessage = nil
+            }
+        }
     }
 }

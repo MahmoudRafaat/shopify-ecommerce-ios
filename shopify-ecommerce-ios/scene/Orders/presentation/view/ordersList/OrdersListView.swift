@@ -20,7 +20,12 @@ struct OrdersListView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                if viewModel.uiState.isLoading && viewModel.uiState.orders.isEmpty {
+                if let error = viewModel.uiState.error, viewModel.uiState.orders.isEmpty {
+                    CustomContentUnavailableView(error: error, onRetry: {
+                        Task { await viewModel.loadOrders() }
+                    })
+                    .padding(.top, 60)
+                } else if viewModel.uiState.isLoading && viewModel.uiState.orders.isEmpty {
                     ForEach(0..<5, id: \.self) { _ in
                         OrderSkeletonRow()
                     }
@@ -61,10 +66,15 @@ struct OrdersListView: View {
         .refreshable {
             await viewModel.loadOrders()
         }
-        .showCustomAlert(title: "Error", errorMessage: $viewModel.uiState.errorMessage)
+        .onChange(of: viewModel.uiState.error) { _, error in
+            if let error = error {
+                AlertManager.shared.showError(error)
+                viewModel.uiState.error = nil
+            }
+        }
         .showLoading(if: viewModel.uiState.isLoading && viewModel.uiState.orders.isEmpty)
         .onAppear {
-            if viewModel.uiState.orders.isEmpty && viewModel.uiState.errorMessage == nil {
+            if viewModel.uiState.orders.isEmpty && viewModel.uiState.error == nil {
                 Task { await viewModel.loadOrders() }
             }
         }

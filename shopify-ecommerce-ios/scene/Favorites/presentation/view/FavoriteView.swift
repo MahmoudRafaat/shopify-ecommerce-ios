@@ -16,7 +16,19 @@ struct FavoriteView: View {
         VStack(spacing: 0) {
             FavoriteHeaderView()
             
-            if viewModel.favorites.isEmpty {
+            if let error = viewModel.uiState.error {
+                Spacer()
+                CustomContentUnavailableView(error: error, onRetry: {
+                    viewModel.fetchFavorites()
+                })
+                Spacer()
+            } else if viewModel.uiState.isLoading {
+                Spacer()
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .appBlue))
+                    .scaleEffect(1.3)
+                Spacer()
+            } else if viewModel.uiState.favorites.isEmpty {
                 Spacer()
                 VStack(spacing: 16) {
                     Image(systemName: "heart.slash")
@@ -29,7 +41,7 @@ struct FavoriteView: View {
                 Spacer()
             } else {
                 FavoriteGridView(
-                    favorites: viewModel.favorites,
+                    favorites: viewModel.uiState.favorites,
                     onRemoveFavorite: { id in
                         viewModel.removeFavorite(id: id)
                     },
@@ -40,7 +52,6 @@ struct FavoriteView: View {
                 )
             }
         }
-        .showLoading(if: viewModel.isLoading)
         .onAppear {
             viewModel.fetchFavorites()
         }

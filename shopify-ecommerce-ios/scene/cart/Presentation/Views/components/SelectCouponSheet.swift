@@ -14,12 +14,12 @@ struct SelectCouponSheet: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.activeCoupons.keys.sorted(), id: \.self) { code in
-                    if let rule = viewModel.activeCoupons[code] {
+                ForEach(viewModel.uiState.activeCoupons.keys.sorted(), id: \.self) { code in
+                    if let rule = viewModel.uiState.activeCoupons[code] {
                         Button(action: {
-                            viewModel.selectedCouponCode = code
-                            viewModel.selectedCoupon = rule
-                            viewModel.isCouponSheetPresented = false
+                            viewModel.uiState.selectedCouponCode = code
+                            viewModel.uiState.selectedCoupon = rule
+                            viewModel.uiState.isCouponSheetPresented = false
                             presentationMode.wrappedValue.dismiss()
                         }) {
                             HStack {
@@ -41,7 +41,7 @@ struct SelectCouponSheet: View {
                                 
                                 Spacer()
                                 
-                                if viewModel.selectedCouponCode == code {
+                                if viewModel.uiState.selectedCouponCode == code {
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundColor(Color("appPrimary"))
                                 }
@@ -52,7 +52,7 @@ struct SelectCouponSheet: View {
             }
             .navigationTitle("Select Coupon")
             .navigationBarItems(trailing: Button("Cancel") {
-                viewModel.isCouponSheetPresented = false
+                viewModel.uiState.isCouponSheetPresented = false
                 presentationMode.wrappedValue.dismiss()
             })
         }

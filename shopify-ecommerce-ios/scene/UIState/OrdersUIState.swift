@@ -12,5 +12,5 @@ struct OrdersUIState {
     var orders: [OrderDisplayModel] = []
     var isLoading: Bool = false
     var isEmpty: Bool = false
-    var errorMessage: String?
+    var error: AppError? = nil
 }
