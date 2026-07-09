@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CustomTabBarView: View {
     @Binding var selectedTab: Tab
+    @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
+    @State private var showLoginAlert = false
     
     // TODO: Change After Merge to Dev
     let themeRed : Color = .appPrimary
@@ -18,8 +20,12 @@ struct CustomTabBarView: View {
             ForEach(Tab.allCases, id: \.self) { tab in
                 Spacer()
                 Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                        selectedTab = tab
+                    if isGuestMode && (tab == .cart || tab == .wishlist) {
+                        showLoginAlert = true
+                    } else {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            selectedTab = tab
+                        }
                     }
                 } label: {
                     if tab == .cart {
@@ -52,6 +58,14 @@ struct CustomTabBarView: View {
         .frame(height: 75)
         .background(AppColor.backgroundPrimary)
         .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: -5)
+        .alert("Login Required", isPresented: $showLoginAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Login Now") {
+                isGuestMode = false // This will route them back to the login screen
+            }
+        } message: {
+            Text("Please login to access this feature.")
+        }
     }
 }
 

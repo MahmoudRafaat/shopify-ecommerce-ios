@@ -62,6 +62,7 @@ class SettingsViewModel {
         do {
             try logoutUseCase.execute()
             uiState.isLoggedIn = false
+            UserDefaults.standard.set(false, forKey: AppConstants.isGuestMode)
             uiState.errorMessage = nil
         } catch {
             uiState.errorMessage = error.localizedDescription

@@ -13,6 +13,8 @@ struct HomeScreenView: View {
     @Binding var selectedTab: Tab
 
     @Environment(HomeCoordinator.self) var coordinator
+    @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
+    @State private var showLoginAlert = false
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -24,7 +26,11 @@ struct HomeScreenView: View {
                             selectedTab = .search
                         },
                         onMenuTap: {
-                            coordinator.goToSettings()
+                            if isGuestMode {
+                                showLoginAlert = true
+                            } else {
+                                coordinator.goToProfile()
+                            }
                         }
                     )
 
@@ -125,6 +131,14 @@ struct HomeScreenView: View {
         .tint(.appBlue)
         .task {
             await viewModel.fetchData()
+        }
+        .alert("Login Required", isPresented: $showLoginAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Login Now") {
+                isGuestMode = false
+            }
+        } message: {
+            Text("Please login to access this feature.")
         }
     }
 }

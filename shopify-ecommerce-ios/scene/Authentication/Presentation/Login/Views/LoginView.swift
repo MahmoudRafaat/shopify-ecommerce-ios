@@ -9,8 +9,8 @@ import SwiftUI
 
 struct LoginView: View {
     @State var viewmodel: LoginViewModelProtocol
-    @State private var showHome = false
     @State private var navigateToSignup = false
+    @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
     
     var body: some View {
         NavigationStack {
@@ -30,9 +30,8 @@ struct LoginView: View {
                         }
                         .disabled(viewmodel.isLoading)
                         
-                        NavigationLink {
-                            TabBarView()
-                                .navigationBarBackButtonHidden(true)
+                        Button {
+                            isGuestMode = true
                         } label: {
                             Text("Continue as Guest")
                                 .font(.subheadline)
@@ -58,7 +57,16 @@ struct LoginView: View {
                     })
                 }
                 .padding(.horizontal, 24)
-                .showLoading(if: viewmodel.isLoading)
+                .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Skip") {
+                    isGuestMode = true
+                }
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.appPrimary)
+            }
+        }
+        .showLoading(if: viewmodel.isLoading)
                 .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
                 .background(AppColor.backgroundPrimary.ignoresSafeArea())
                 .disabled(viewmodel.showSuccessMessage)
@@ -80,16 +88,8 @@ struct LoginView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: viewmodel.showSuccessMessage)
-            .fullScreenCover(isPresented: $showHome) {
-              TabBarView()
-            }
             .navigationDestination(isPresented: $navigateToSignup) {
                 SignupView(viewmodel: AuthFactory.makeSignupViewModel())
-            }
-            .onChange(of: viewmodel.isLoginSuccess) { _, newValue in
-                if newValue {
-                    showHome = true
-                }
             }
             .sheet(isPresented: $viewmodel.showPhonePopup) {
                 GooglePhoneSheet(

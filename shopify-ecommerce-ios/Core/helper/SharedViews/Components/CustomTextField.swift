@@ -39,7 +39,7 @@ struct CustomTextField: View {
                     }
                 }.padding()
                     .frame(height: 70)
-                    .background (Color(white: 0.95))
+                    .background(RoundedRectangle(cornerRadius: 16).fill(Color(white: 0.95)))
                     .overlay {
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(

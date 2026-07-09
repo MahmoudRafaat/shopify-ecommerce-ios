@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SignupView: View {
     @State var viewmodel: SignupViewModelProtocol
-    @State private var showHome = false
+    
+    @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
     
     var body: some View {
         
@@ -76,17 +77,19 @@ struct SignupView: View {
             }
             .padding(.horizontal, 24)
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Skip") {
+                    isGuestMode = true
+                }
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.appPrimary)
+            }
+        }
         .showLoading(if: viewmodel.isLoading)
         .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
         .background(AppColor.backgroundPrimary.ignoresSafeArea())
-        .fullScreenCover(isPresented: $showHome) {
-            TabBarView()
-        }
-        .onChange(of: viewmodel.isSignupSuccess) { _, newValue in
-            if newValue {
-                showHome = true
-            }
-        }
+
         .sheet(isPresented: $viewmodel.showPhonePopup) {
             GooglePhoneSheet(
                 googlePhone: $viewmodel.googlePhone,
