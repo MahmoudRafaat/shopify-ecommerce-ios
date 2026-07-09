@@ -41,6 +41,7 @@ final class CartViewModel: CartViewModelProtocol {
     func loadOrCreateCart(products: [ProductDataModel]) async {
         self.uiState.isLoading = true
         self.uiState.error = nil
+        self.uiState.isOrderDeleted = false
         
         do {
             async let fetchCouponsTask = useCases.fetchActiveDiscountCodes.execute()
@@ -218,6 +219,7 @@ final class CartViewModel: CartViewModelProtocol {
                 uiState.tax = "0.00"
                 uiState.discountAmount = "0.00"
                 uiState.isOrderDeleted = true
+                CartService.shared.removeProduct(variantId: variantId)
             } else {
                 let response = try await useCases.removeLineItem.execute(
                     draftOrderId: orderId,
@@ -225,6 +227,7 @@ final class CartViewModel: CartViewModelProtocol {
                     currentLineItems: remainingItems
                 )
                 uiState.cartLineItems = remainingItems
+                CartService.shared.removeProduct(variantId: variantId)
                 updateUI(with: response)
             }
         } catch {
