@@ -89,14 +89,7 @@ struct SignupView: View {
         .showLoading(if: viewmodel.isLoading)
         .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
         .background(AppColor.backgroundPrimary.ignoresSafeArea())
-        .fullScreenCover(isPresented: $showHome) {
-            TabBarView()
-        }
-        .onChange(of: viewmodel.isSignupSuccess) { _, newValue in
-            if newValue {
-                showHome = true
-            }
-        }
+
         .sheet(isPresented: $viewmodel.showPhonePopup) {
             GooglePhoneSheet(
                 googlePhone: $viewmodel.googlePhone,
