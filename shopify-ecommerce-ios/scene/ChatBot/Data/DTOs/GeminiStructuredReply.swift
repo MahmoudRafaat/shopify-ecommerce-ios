@@ -9,8 +9,8 @@ import Foundation
 
 struct GeminiStructuredReply: Decodable {
     let reply: String
-    let isInScope: Bool
-    let isProductRecommendation: Bool
-    let recommendedProductIds: [Int]
-    let recommendedCategoryIds: [Int]
+    let isInScope: Bool?
+    let isProductRecommendation: Bool?
+    let recommendedProductIds: [Int]?
+    let recommendedCategoryIds: [Int]?
 }

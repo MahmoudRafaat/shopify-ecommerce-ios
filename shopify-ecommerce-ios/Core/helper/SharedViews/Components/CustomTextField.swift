@@ -19,7 +19,7 @@ struct CustomTextField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4){
                 HStack(spacing: 12){
-                    Image(systemName: type.icon).foregroundStyle(Color(.darkGray)).font(.title2)
+                    Image(systemName: type.icon).foregroundStyle(AppColor.textSecondary).font(.title2)
                     
                     Group{
                         if(type == .password && isSecure){
@@ -34,12 +34,12 @@ struct CustomTextField: View {
                         Button{
                             isSecure.toggle()
                         }label: {
-                            Image(systemName: isSecure ? "eye.slash" : "eye").foregroundStyle(Color(.darkGray))
+                            Image(systemName: isSecure ? "eye.slash" : "eye").foregroundStyle(AppColor.textSecondary)
                         }.buttonStyle(.plain).font(.title2)
                     }
                 }.padding()
                     .frame(height: 70)
-                    .background(RoundedRectangle(cornerRadius: 16).fill(Color(white: 0.95)))
+                    .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemGray6)))
                     .overlay {
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(

@@ -161,6 +161,7 @@ struct AIAssistantView: View {
                     .padding(.vertical, 10)
                     .background(Color(.systemGray6))
                     .clipShape(Capsule())
+                    .environment(\.colorScheme, .dark)
                     .disabled(viewModel.isGuestMode && AIConfig.guestModeRestricted)
                 
                 Button {

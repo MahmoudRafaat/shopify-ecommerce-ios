@@ -17,6 +17,10 @@ struct OrderDisplayModel: Identifiable, Hashable {
     let formattedSubtotal: String
     let formattedTax: String
     let formattedDiscount: String?
+    let rawTotal: String
+    let rawSubtotal: String
+    let rawTax: String
+    let rawDiscount: String?
     let note: String?
     let lineItems: [OrderLineItemDisplay]
     let shippingAddress: OrderAddressDisplay?
@@ -47,11 +51,17 @@ struct OrderDisplayModel: Identifiable, Hashable {
         self.formattedSubtotal = formatter.string(from: NSDecimalNumber(string: dto.subtotalPrice)) ?? dto.subtotalPrice
         self.formattedTax = formatter.string(from: NSDecimalNumber(string: dto.totalTax)) ?? dto.totalTax
         
+        self.rawTotal = dto.totalPrice
+        self.rawSubtotal = dto.subtotalPrice
+        self.rawTax = dto.totalTax
+        
         let discountValue = NSDecimalNumber(string: dto.totalDiscounts)
         if discountValue.compare(NSDecimalNumber.zero) == .orderedSame {
             self.formattedDiscount = nil
+            self.rawDiscount = nil
         } else {
             self.formattedDiscount = formatter.string(from: discountValue) ?? dto.totalDiscounts
+            self.rawDiscount = dto.totalDiscounts
         }
         
         self.note = dto.note

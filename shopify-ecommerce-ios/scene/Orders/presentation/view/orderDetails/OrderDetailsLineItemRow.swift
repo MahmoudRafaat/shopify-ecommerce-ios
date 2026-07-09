@@ -7,6 +7,7 @@
 
 import SwiftUI
 struct OrderDetailsLineItemRow: View {
+    @Environment(CurrencyService.self) private var currencyService
     let item: OrderLineItemDisplay
     
     var body: some View {
@@ -34,7 +35,7 @@ struct OrderDetailsLineItemRow: View {
                     .background(AppColor.textSecondary.opacity(0.15))
                     .clipShape(RoundedRectangle(cornerRadius: 4))
                 
-                Text(item.price)
+                Text(PriceFormatter.format(amountString: item.price, currencyService: currencyService))
                     .font(.subheadline)
                     .fontWeight(.semibold)
             }

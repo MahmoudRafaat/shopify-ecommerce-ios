@@ -36,7 +36,6 @@ final class PaymentViewModel {
 
     let paymentMethods: [PaymentMethodState] = [
         PaymentMethodState(id: 1, icon: "visa",    numbers: "*********2109"),
-        PaymentMethodState(id: 2, icon: "paypal",  numbers: "*********3309"),
         PaymentMethodState(id: 3, icon: "dollars", numbers: "Cash On Delivery"),
     ]
 
@@ -124,13 +123,12 @@ final class PaymentViewModel {
     // MARK: - Unified Checkout Flow (COD & Card)
 
     /// Orchestrates the checkout process depending on the selected payment method.
-    /// - Parameter selectedIndex: 0 = Visa (Paymob), 1 = Paypal (Paymob), 2 = Cash on Delivery.
     func checkout(selectedIndex: Int) async {
         guard let orderId else { return }
         uiState.error = nil
         uiState.orderCompleted = false
 
-        let isCOD = (selectedIndex == 2)
+        let isCOD = (paymentMethods[selectedIndex].id == 3)
 
         if isCOD {
             do {

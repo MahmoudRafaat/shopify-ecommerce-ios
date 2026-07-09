@@ -249,19 +249,28 @@ class ChatRemoteDataSource: ChatRemoteDataSourceProtocol {
             .replacingOccurrences(of: "```", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        guard let data = cleaned.data(using: .utf8),
-              let decoded = try? JSONDecoder().decode(GeminiStructuredReply.self, from: data) else {
-            return AIResponse(text: raw, suggestedProducts: [], suggestedCategories: [])
+        guard let data = cleaned.data(using: .utf8) else {
+            return AIResponse(text: "Sorry, I couldn't process the response.", suggestedProducts: [], suggestedCategories: [])
         }
 
-        guard decoded.isInScope else {
-            return AIResponse(text: decoded.reply, suggestedProducts: [], suggestedCategories: [])
+        do {
+            let decoded = try JSONDecoder().decode(GeminiStructuredReply.self, from: data)
+
+            guard decoded.isInScope ?? true else {
+                return AIResponse(text: decoded.reply, suggestedProducts: [], suggestedCategories: [])
+            }
+
+            let products: [Product] = (decoded.isProductRecommendation ?? false)
+                ? candidates.filter { (decoded.recommendedProductIds ?? []).contains($0.id) }
+                : []
+
+            return AIResponse(text: decoded.reply, suggestedProducts: products, suggestedCategories: [])
+        } catch {
+            if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let reply = json["reply"] as? String {
+                return AIResponse(text: reply, suggestedProducts: [], suggestedCategories: [])
+            }
+            return AIResponse(text: "Sorry, I am having trouble answering right now.", suggestedProducts: [], suggestedCategories: [])
         }
-
-        let products: [Product] = decoded.isProductRecommendation
-            ? candidates.filter { decoded.recommendedProductIds.contains($0.id) }
-            : []
-
-        return AIResponse(text: decoded.reply, suggestedProducts: products, suggestedCategories: [])
     }
 }

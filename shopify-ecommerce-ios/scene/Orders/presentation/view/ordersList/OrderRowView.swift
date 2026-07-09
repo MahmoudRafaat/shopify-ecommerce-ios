@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OrderRowView: View {
+    @Environment(CurrencyService.self) private var currencyService
     let order: OrderDisplayModel
     
     var body: some View {
@@ -41,7 +42,7 @@ struct OrderRowView: View {
                 
                 Spacer()
                 
-                Text(order.formattedTotal)
+                Text(PriceFormatter.format(amountString: order.rawTotal, currencyService: currencyService))
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.appBlue)
             }
