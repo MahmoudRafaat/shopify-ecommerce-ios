@@ -14,6 +14,7 @@ final class ProductDetailsViewModel: ObservableObject {
     @Published private(set) var uiState = ProductDetailsScreenUIState()
     @Published var alertMessage: String? = nil
     var alertTitle: String = ""
+    @Published var isAddedToCartSuccess: Bool = false
 
     private let productId: Int
     private let getProductDetailsUseCase: GetProductDetailsUseCase
@@ -75,8 +76,10 @@ final class ProductDetailsViewModel: ObservableObject {
 
         if added {
             logger.info("Added variant \(variantId) to cart")
-            alertTitle = "Added to Cart"
-            alertMessage = "Product has been added to your cart successfully."
+            isAddedToCartSuccess = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.isAddedToCartSuccess = false
+            }
         } else {
             logger.warning("Variant \(variantId) already in cart")
             alertTitle = "Already in Cart"

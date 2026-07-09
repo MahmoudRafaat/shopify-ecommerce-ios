@@ -25,7 +25,7 @@ struct LoginFooterView: View {
                 Text("Sign Up")
                     .font(.subheadline)
                     .fontWeight(.bold)
-                    .foregroundColor(AppColor.brandPrimary)
+                    .foregroundColor(.appPrimary)
             }
         }
         .font(.footnote)

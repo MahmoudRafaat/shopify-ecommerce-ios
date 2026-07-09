@@ -30,6 +30,7 @@ struct ProductDetailsScreen: View {
             } else if let state = viewModel.uiState.data {
                 ProductDetailsView(
                     state: state,
+                    isAddedToCart: viewModel.isAddedToCartSuccess,
                     onSizeSelected: viewModel.selectSize(_:),
                     onAddToCart: viewModel.addToCart
                 )

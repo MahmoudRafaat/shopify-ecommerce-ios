@@ -10,6 +10,7 @@ import SwiftUI
 struct ProductActionButtons: View {
 
     let state: ProductActionsState
+    let isAddedToCart: Bool
 
     let onAddToCart: () -> Void
     let onBuyNow: () -> Void
@@ -35,18 +36,18 @@ struct ProductActionButtons: View {
                 HStack(spacing: 10) {
 
                     RoundedRectangle(cornerRadius: 18)
-                        .fill(AppColor.brandPrimary)
+                        .fill(isAddedToCart ? AppColor.successDefault : AppColor.brandPrimary)
                         .frame(width: buttonHeight, height: buttonHeight)
                         .overlay {
-                            Image(systemName: "cart")
+                            Image(systemName: isAddedToCart ? "checkmark" : "cart")
                                 .font(.system(size: 20, weight: .semibold))
                                 .foregroundStyle(AppColor.backgroundPrimary)
                         }
 
-                    Text(state.cartTitle)
+                    Text(isAddedToCart ? "Added" : state.cartTitle)
                         .font(.system(size: 17, weight: .regular))
                         .foregroundStyle(AppColor.backgroundPrimary)
-//                        .lineLimit(1)
+                        .lineLimit(1)
 
                     Spacer(minLength: 0)
                 }
@@ -55,8 +56,8 @@ struct ProductActionButtons: View {
                 .background(
                     LinearGradient(
                         colors: [
-                            AppColor.brandPrimary,
-                            AppColor.brandPrimary
+                            isAddedToCart ? AppColor.successDefault : AppColor.brandPrimary,
+                            isAddedToCart ? AppColor.successDefault : AppColor.brandPrimary
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -121,6 +122,7 @@ struct ProductActionButtons: View {
 #Preview {
     ProductActionButtons(
         state: ProductActionsState(cartTitle: "Go to cart", buyTitle: "Buy Now"),
+        isAddedToCart: false,
         onAddToCart: {},
         onBuyNow: {}
     )

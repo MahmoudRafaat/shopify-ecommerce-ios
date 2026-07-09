@@ -48,7 +48,7 @@ struct LoginInputView: View {
             }) {
                 Text("Forgot Password?")
                     .font(.footnote)
-                    .foregroundColor(AppColor.brandPrimary)
+                    .foregroundColor(.appPrimary)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
             .padding(.top, 8)

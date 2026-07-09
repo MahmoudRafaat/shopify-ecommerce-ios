@@ -14,7 +14,7 @@
 		4C15AC245525EBB0589387B0 /* SettingsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDC079065D27E7E3E2C94E3 /* SettingsUIState.swift */; };
 		5690D3AD22C37A8D652AA332 /* CollectionUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DA55C0AA158361D8845A0F /* CollectionUIState.swift */; };
 		6C9CA9F059CA67B6A6CC64EE /* CartUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9761E3913C54E647D1531E24 /* CartUIState.swift */; };
-		6D6FCC222FF2531B00A82A9C /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		6D6FCC222FF2531B00A82A9C /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FCC232FF2533100A82A9C /* Kingfisher */; };
 		6D6FFBF32FFDCB2900B1D298 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FFBF22FFDCB2900B1D298 /* GoogleSignIn */; };
 		6D6FFBF52FFDCB2900B1D298 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6FFBF42FFDCB2900B1D298 /* GoogleSignInSwift */; };
@@ -106,15 +106,11 @@
 		};
 		B3AEA0552FEFCC8500BE7867 /* shopify-ecommerce-iosTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = "shopify-ecommerce-iosTests";
 			sourceTree = "<group>";
 		};
 		B3AEA05F2FEFCC8500BE7867 /* shopify-ecommerce-iosUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = "shopify-ecommerce-iosUITests";
 			sourceTree = "<group>";
 		};
@@ -129,7 +125,7 @@
 				6D6FCC242FF2533100A82A9C /* Kingfisher in Frameworks */,
 				6D6FFBF52FFDCB2900B1D298 /* GoogleSignInSwift in Frameworks */,
 				6FC1DB9C2FFC6B370020A6F3 /* PaymobSDK.xcframework in Frameworks */,
-				6D6FCC222FF2531B00A82A9C /* BuildFile in Frameworks */,
+				6D6FCC222FF2531B00A82A9C /* (null) in Frameworks */,
 				B38B80612FFD9D5400C2B131 /* GoogleGenerativeAI in Frameworks */,
 				B361E8022FF520990008A453 /* FirebaseAnalytics in Frameworks */,
 				B361E8042FF520A20008A453 /* FirebaseAuth in Frameworks */,
@@ -159,7 +155,6 @@
 			children = (
 				B32744653095DFDE0BAB57A5 /* helper */,
 			);
-			name = Core;
 			path = Core;
 			sourceTree = "<group>";
 		};
@@ -180,7 +175,6 @@
 				B7E5811F96A464713630C87C /* LoginUIState.swift */,
 				3EDC079065D27E7E3E2C94E3 /* SettingsUIState.swift */,
 			);
-			name = UIState;
 			path = UIState;
 			sourceTree = "<group>";
 		};
@@ -189,7 +183,6 @@
 			children = (
 				7B6D70B1EF256CD997109197 /* UIState */,
 			);
-			name = scene;
 			path = scene;
 			sourceTree = "<group>";
 		};
@@ -198,7 +191,6 @@
 			children = (
 				7245612139294E9FD3F05B6E /* AlertManager.swift */,
 			);
-			name = helper;
 			path = helper;
 			sourceTree = "<group>";
 		};
@@ -239,7 +231,6 @@
 				511CF5B2B6D03A7D109A4A93 /* Core */,
 				89C03AA4C35A5D8B5477D4B8 /* scene */,
 			);
-			name = "shopify-ecommerce-ios";
 			path = "shopify-ecommerce-ios";
 			sourceTree = "<group>";
 		};
@@ -590,6 +581,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "shopify-ecommerce-ios/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Stylish;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "This app needs photo library access to upload product images to the AI assistant.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to take photos of products for the AI assistant.";
@@ -625,6 +617,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "shopify-ecommerce-ios/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Stylish;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "This app needs photo library access to upload product images to the AI assistant.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to take photos of products for the AI assistant.";

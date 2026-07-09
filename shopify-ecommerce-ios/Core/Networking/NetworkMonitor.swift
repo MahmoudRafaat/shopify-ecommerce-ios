@@ -14,11 +14,13 @@ final class NetworkMonitor {
     
     private let networkMonitor = NWPathMonitor()
     private let workerQueue = DispatchQueue(label: "Monitor")
-    var isConnected = false
+    var isConnected = true
     
     init() {
         networkMonitor.pathUpdateHandler = { path in
-            self.isConnected = path.status == .satisfied
+            DispatchQueue.main.async {
+                self.isConnected = path.status == .satisfied
+            }
         }
         networkMonitor.start(queue: workerQueue)
     }

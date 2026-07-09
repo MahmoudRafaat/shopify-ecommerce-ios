@@ -10,6 +10,7 @@ import SwiftUI
 struct ProductDetailsView: View {
 
     let state: ProductDetailsUIState
+    let isAddedToCart: Bool
     let onSizeSelected: (String) -> Void
     let onAddToCart: () -> Void
     @Environment(HomeCoordinator.self) var coordinator: HomeCoordinator?
@@ -35,6 +36,7 @@ struct ProductDetailsView: View {
 
                 ProductActionButtons(
                     state: state.actionsSection,
+                    isAddedToCart: isAddedToCart,
                     onAddToCart: onAddToCart,
                     onBuyNow: {}
                 )
@@ -166,6 +168,7 @@ private extension ProductDetailsView {
 //                )
 //            ]
         )
+        , isAddedToCart: false
         , onSizeSelected: {_ in}
         , onAddToCart: {}
     )

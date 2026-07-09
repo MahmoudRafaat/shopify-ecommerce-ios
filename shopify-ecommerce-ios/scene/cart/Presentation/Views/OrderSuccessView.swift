@@ -24,6 +24,7 @@ struct OrderSuccessView: View {
                 Text("Order Placed!")
                     .font(.title)
                     .fontWeight(.bold)
+                    .padding(.bottom, 20)
 
                 Text("Your order has been placed successfully.\nWe'll notify you when it ships.")
                     .font(.subheadline)
