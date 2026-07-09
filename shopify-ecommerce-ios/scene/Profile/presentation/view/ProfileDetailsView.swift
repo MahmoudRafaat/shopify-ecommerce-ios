@@ -88,7 +88,7 @@ struct ProfileDetailsView: View {
                     Spacer(minLength: 40)
                 }
             }
-            .background(Color(white: 0.99))
+            .background(AppColor.backgroundPrimary)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.uiState.errorMessage) { _, msg in
