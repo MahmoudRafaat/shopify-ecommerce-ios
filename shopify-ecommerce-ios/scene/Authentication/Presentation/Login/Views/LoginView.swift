@@ -11,6 +11,7 @@ struct LoginView: View {
     @State var viewmodel: LoginViewModelProtocol
     @State private var navigateToSignup = false
     @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
@@ -32,6 +33,7 @@ struct LoginView: View {
                         
                         Button {
                             isGuestMode = true
+                            dismiss()
                         } label: {
                             Text("Continue as Guest")
                                 .font(.subheadline)
@@ -61,6 +63,7 @@ struct LoginView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Skip") {
                     isGuestMode = true
+                    dismiss()
                 }
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.appPrimary)
@@ -93,6 +96,13 @@ struct LoginView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: viewmodel.uiState.showSuccessMessage)
+            .onChange(of: viewmodel.uiState.showSuccessMessage) { _, newValue in
+                if newValue {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        dismiss()
+                    }
+                }
+            }
             .navigationDestination(isPresented: $navigateToSignup) {
                 SignupView(viewmodel: AuthFactory.makeSignupViewModel())
             }

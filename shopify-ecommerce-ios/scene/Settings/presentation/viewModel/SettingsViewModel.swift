@@ -75,9 +75,14 @@ class SettingsViewModel {
         uiState.showHelpAlert = true
     }
     
+    var navigateToProfileScreen = false
+    
     func navigateToProfile() {
-        // Navigate to Profile screen
-     
+        if uiState.isLoggedIn {
+            navigateToProfileScreen = true
+        } else {
+            uiState.errorMessage = "Please sign in to view your profile"
+        }
     }
     
 

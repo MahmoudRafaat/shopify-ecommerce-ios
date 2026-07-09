@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Binding var selectedTab: Tab
     @State private var viewModel = SettingsViewModel()
     @State private var showLoginScreen = false
     @State private var navigateToCurrencyPicker = false
-    @Environment(\.dismiss) private var dismiss
     @Environment(CurrencyService.self) private var currencyService
     @AppStorage("isDarkMode") private var isDarkMode = false
     let brandRed = AppColor.dangerDefault
@@ -32,7 +32,7 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        dismiss()
+                        selectedTab = .home
                     } label: {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
@@ -87,6 +87,9 @@ struct SettingsView: View {
             }
             .navigationDestination(isPresented: $navigateToCurrencyPicker) {
                 CurrencyPickerView()
+            }
+            .navigationDestination(isPresented: $viewModel.navigateToProfileScreen) {
+                ProfileDetailsView(viewModel: ProfileViewModel())
             }
         }
         .fullScreenCover(isPresented: $showLoginScreen) {

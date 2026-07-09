@@ -32,7 +32,7 @@ struct TabBarView: View {
                 .tag(Tab.search)
                 
                 NavigationStack {
-                    SettingsView()
+                    SettingsView(selectedTab: $selectedTab)
                 }
                 .tag(Tab.settings)
             }

@@ -11,6 +11,7 @@ struct SignupView: View {
     @State var viewmodel: SignupViewModelProtocol
     
     @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         
@@ -81,6 +82,7 @@ struct SignupView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Skip") {
                     isGuestMode = true
+                    dismiss()
                 }
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.appPrimary)
@@ -94,6 +96,13 @@ struct SignupView: View {
             }
         }
         .background(AppColor.backgroundPrimary.ignoresSafeArea())
+        .onChange(of: viewmodel.uiState.isSignupSuccess) { _, newValue in
+            if newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    dismiss()
+                }
+            }
+        }
 
         .sheet(isPresented: $viewmodel.showPhonePopup) {
             GooglePhoneSheet(
