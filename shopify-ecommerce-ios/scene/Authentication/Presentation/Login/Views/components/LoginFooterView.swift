@@ -20,12 +20,12 @@ struct LoginFooterView: View {
         HStack(spacing: 4) {
             Text("Create An Account")
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
             Button(action: onSignUp) {
                 Text("Sign Up")
                     .font(.subheadline)
                     .fontWeight(.bold)
-                    .foregroundColor(.pink)
+                    .foregroundColor(AppColor.brandPrimary)
             }
         }
         .font(.footnote)

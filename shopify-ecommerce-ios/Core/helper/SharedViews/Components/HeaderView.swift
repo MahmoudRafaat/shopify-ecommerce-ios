@@ -47,7 +47,7 @@ struct HeaderView: View {
                 .padding(.horizontal, 16)
                 .overlay {
                    if onSearchTap != nil {
-                        Color.white.opacity(0.001)
+                        AppColor.backgroundPrimary.opacity(0.001)
                             .onTapGesture {
                                 onSearchTap?()
                             }

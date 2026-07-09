@@ -31,13 +31,13 @@ struct CustomTabBarView: View {
                     if tab == .cart {
                         ZStack {
                             Circle()
-                                .fill(selectedTab == .cart ? themeRed : Color.white)
+                                .fill(selectedTab == .cart ? themeRed : AppColor.backgroundPrimary)
                                 .frame(width: 65, height: 65)
                                 .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 5)
                             
                             Image(systemName: tab.iconName(isActive: selectedTab == tab))
                                 .font(.system(size: 26, weight: .medium))
-                                .foregroundColor(selectedTab == .cart ? .white : .black)
+                                .foregroundColor(selectedTab == .cart ? AppColor.backgroundPrimary : AppColor.textPrimary)
                         }
                         .offset(y: -25)
                         
@@ -49,14 +49,14 @@ struct CustomTabBarView: View {
                             Text(tab.rawValue)
                                 .font(.system(size: 12, weight: selectedTab == tab ? .medium : .regular))
                         }
-                        .foregroundColor(selectedTab == tab ? themeRed : .black)
+                        .foregroundColor(selectedTab == tab ? themeRed : AppColor.textPrimary)
                     }
                 }
                 Spacer()
             }
         }
         .frame(height: 75)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: -5)
         .alert("Login Required", isPresented: $showLoginAlert) {
             Button("Cancel", role: .cancel) { }

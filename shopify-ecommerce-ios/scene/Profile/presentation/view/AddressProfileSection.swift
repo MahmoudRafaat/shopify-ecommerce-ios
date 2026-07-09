@@ -38,7 +38,7 @@ struct AddressProfileSection: View {
                         isEditing = true
                     }
                     .font(.system(size: 14))
-                    .foregroundStyle(Color.blue)
+                    .foregroundStyle(AppColor.brandPrimary)
                 }
             }
             .padding(.horizontal, 28)
@@ -98,7 +98,7 @@ struct AddressProfileSection: View {
                         isEditing = false
                     }
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
                     
@@ -107,16 +107,16 @@ struct AddressProfileSection: View {
                     } label: {
                         if uiState.isSavingAddress {
                             ProgressView()
-                                .tint(.white)
+                                .tint(AppColor.backgroundPrimary)
                         } else {
                             Text("Save Address")
                         }
                     }
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
-                    .background(isAddressValid && uiState.isLoggedIn ? brandColor : Color.gray)
+                    .background(isAddressValid && uiState.isLoggedIn ? brandColor : AppColor.textSecondary)
 
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .disabled(!isAddressValid || uiState.isSavingAddress || !uiState.isLoggedIn)

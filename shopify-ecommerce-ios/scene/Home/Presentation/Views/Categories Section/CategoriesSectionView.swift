@@ -21,7 +21,7 @@ struct CategoriesSectionView: View {
                 }
             }
             .padding( 16)
-        }  .background(.white)
+        }  .background(AppColor.backgroundPrimary)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(
                 color: .black.opacity(0.05),

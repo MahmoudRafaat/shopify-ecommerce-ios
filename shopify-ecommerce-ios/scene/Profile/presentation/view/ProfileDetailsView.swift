@@ -15,7 +15,7 @@ struct ProfileDetailsView: View {
     @State private var isEditingPayment = false
     @State private var showLoginScreen = false
     
-    let brandRed = Color(red: 0.95, green: 0.25, blue: 0.40)
+    let brandRed = AppColor.dangerDefault
     
     init(viewModel: ProfileViewModel) {
         self._viewModel = State(initialValue: viewModel)

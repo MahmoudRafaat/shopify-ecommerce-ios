@@ -13,7 +13,8 @@ struct SettingsView: View {
     @State private var navigateToCurrencyPicker = false
     @Environment(\.dismiss) private var dismiss
     @Environment(CurrencyService.self) private var currencyService
-    let brandRed = Color(red: 0.95, green: 0.25, blue: 0.40)
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    let brandRed = AppColor.dangerDefault
 
     var body: some View {
         NavigationStack {
@@ -25,7 +26,6 @@ struct SettingsView: View {
                     Spacer(minLength: 40)
                 }
             }
-            .background(Color(white: 0.98).ignoresSafeArea())
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
@@ -170,7 +170,7 @@ struct SettingsView: View {
             SettingsRowView(
                 icon: "moon.fill",
                 title: "Dark Theme",
-                style: .toggle($viewModel.uiState.darkThemeEnabled)
+                style: .toggle($isDarkMode)
             )
         }
     }
@@ -233,7 +233,7 @@ struct SettingsGroup<Content: View>: View {
         VStack(spacing: 0) {
             content
         }
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: Color.black.opacity(0.02), radius: 8, x: 0, y: 4)
     }

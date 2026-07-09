@@ -17,17 +17,17 @@ struct SettingsProfileHeader: View {
     var body: some View {
         HStack(spacing: 16) {
             Circle()
-                .fill(isLoggedIn ? Color.pink.opacity(0.2) : Color.gray.opacity(0.2))
+                .fill(isLoggedIn ? AppColor.brandPrimary.opacity(0.2) : AppColor.textSecondary.opacity(0.2))
                 .frame(width: 60, height: 60)
                 .overlay {
                     Image(systemName: isLoggedIn ? "person.fill" : "person.slash.fill")
                         .font(.title2)
-                        .foregroundStyle(isLoggedIn ? .pink : .gray)
+                        .foregroundStyle(isLoggedIn ? AppColor.brandPrimary : AppColor.textSecondary)
                 }
             
                 Text(isLoggedIn ? email : "Sign in to manage your account")
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
             
             
             Spacer()
@@ -39,7 +39,7 @@ struct SettingsProfileHeader: View {
             }
         }
         .padding(20)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: Color.black.opacity(0.03), radius: 10, x: 0, y: 5)
     }

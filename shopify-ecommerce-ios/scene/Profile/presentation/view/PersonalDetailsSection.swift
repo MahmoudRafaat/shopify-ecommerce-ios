@@ -36,7 +36,7 @@ struct PersonalDetailsSection: View {
                         isEditingName = true
                     }
                     .font(.system(size: 14))
-                    .foregroundStyle(Color.blue)
+                    .foregroundStyle(AppColor.brandPrimary)
                 }
             }
             .padding(.horizontal, 28)
@@ -65,7 +65,7 @@ struct PersonalDetailsSection: View {
                         isEditingName = false
                     }
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
                     
@@ -74,16 +74,16 @@ struct PersonalDetailsSection: View {
                     } label: {
                         if uiState.isSavingName {
                             ProgressView()
-                                .tint(.white)
+                                .tint(AppColor.backgroundPrimary)
                         } else {
                             Text("Save Name")
                         }
                     }
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
-                    .background(isNameValid && uiState.isLoggedIn ? brandColor : Color.gray)
+                    .background(isNameValid && uiState.isLoggedIn ? brandColor : AppColor.textSecondary)
 
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .disabled(!isNameValid || uiState.isSavingName || !uiState.isLoggedIn)
@@ -94,7 +94,7 @@ struct PersonalDetailsSection: View {
                     HStack(alignment: .top) {
                         Text("Email:")
                             .font(.subheadline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(AppColor.textSecondary)
                             .frame(width: 70, alignment: .leading)
                         
                         Text(uiState.email)
@@ -105,18 +105,18 @@ struct PersonalDetailsSection: View {
                         
                         Image(systemName: "lock.fill")
                             .font(.caption)
-                            .foregroundColor(.gray)
+                            .foregroundColor(AppColor.textSecondary)
                     }
                     
                     HStack(alignment: .top) {
                         Text("Name:")
                             .font(.subheadline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(AppColor.textSecondary)
                             .frame(width: 70, alignment: .leading)
                         
                         Text("\(uiState.firstName) \(uiState.lastName)")
                             .font(.subheadline)
-                            .foregroundColor(uiState.firstName.isEmpty ? .gray.opacity(0.7) : .primary)
+                            .foregroundColor(uiState.firstName.isEmpty ? AppColor.textSecondary.opacity(0.7) : .primary)
                     }
                 }
                 .padding(.horizontal, 28)

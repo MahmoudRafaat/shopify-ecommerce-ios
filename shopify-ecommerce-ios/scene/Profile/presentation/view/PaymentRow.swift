@@ -15,7 +15,7 @@ struct PaymentRow: View {
         HStack(spacing: 8) {
             Image(systemName: icon)
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColor.textSecondary)
                 .frame(width: 20)
             
             Text(text)

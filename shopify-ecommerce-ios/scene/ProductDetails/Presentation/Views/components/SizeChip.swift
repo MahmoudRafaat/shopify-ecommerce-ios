@@ -22,7 +22,7 @@ struct SizeChip: View {
                 .fontWeight(.medium)
                 .foregroundStyle(
                     isSelected
-                    ? Color.white
+                    ? AppColor.backgroundPrimary
                     : Color("appPink")
                 )
                 .padding(.horizontal, 20)
@@ -33,7 +33,7 @@ struct SizeChip: View {
                         .fill(
                             isSelected
                             ? Color("appPink")
-                            : Color.white
+                            : AppColor.backgroundPrimary
                         )
                 }
                 .overlay {
@@ -42,7 +42,7 @@ struct SizeChip: View {
                         .stroke(
                             isSelected
                             ? Color.clear
-                            : Color.gray.opacity(0.3),
+                            : AppColor.textSecondary.opacity(0.3),
                             lineWidth: 1
                         )
                 }

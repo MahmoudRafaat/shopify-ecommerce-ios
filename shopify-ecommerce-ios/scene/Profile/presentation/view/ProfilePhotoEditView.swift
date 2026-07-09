@@ -12,14 +12,14 @@ struct ProfilePhotoEditView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Circle()
-                .fill(Color.pink.opacity(0.8))
+                .fill(AppColor.brandPrimary.opacity(0.8))
                 .frame(width: 90, height: 90)
                 .overlay {
                     Image(systemName: "person.fill")
                         .resizable()
                         .scaledToFit()
                         .padding(20)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColor.backgroundPrimary)
                         .clipShape(Circle())
                 }
             
@@ -28,12 +28,12 @@ struct ProfilePhotoEditView: View {
             } label: {
                 Image(systemName: "pencil")
                     .font(.system(size: 12, weight: .bold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColor.backgroundPrimary)
                     .frame(width: 28, height: 28)
-                    .background(Color.blue)
+                    .background(AppColor.brandPrimary)
                     .clipShape(Circle())
                     .overlay(
-                        Circle().stroke(Color.white, lineWidth: 2)
+                        Circle().stroke(AppColor.backgroundPrimary, lineWidth: 2)
                     )
             }
             .offset(x: 0, y: 0)

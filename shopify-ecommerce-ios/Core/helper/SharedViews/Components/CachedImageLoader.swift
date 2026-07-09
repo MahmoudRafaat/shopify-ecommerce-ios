@@ -20,7 +20,7 @@ struct CachedImageLoader: View {
         KFImage(URL(string: urlString))
             .placeholder {
                 ZStack {
-                    Color.gray.opacity(0.1)
+                    AppColor.textSecondary.opacity(0.1)
                     ProgressView().tint(.appPink)
                 }
             }

@@ -64,7 +64,7 @@ private extension ProductImageSection {
                     .fill(
                         index == selectedIndex
                         ? Color("appPink") // Use your Assets color
-                        : Color.gray.opacity(0.3)
+                        : AppColor.textSecondary.opacity(0.3)
                     )
                     .frame(width: 8, height: 8)
             }

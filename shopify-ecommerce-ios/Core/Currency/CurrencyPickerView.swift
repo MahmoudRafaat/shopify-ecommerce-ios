@@ -15,7 +15,7 @@ struct CurrencyPickerView: View {
         List {
             if currencyService.supportedCurrencies.isEmpty {
                 Text("Loading currencies...")
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColor.textSecondary)
             } else {
                 ForEach(currencyService.supportedCurrencies, id: \.self) { code in
                 Button {

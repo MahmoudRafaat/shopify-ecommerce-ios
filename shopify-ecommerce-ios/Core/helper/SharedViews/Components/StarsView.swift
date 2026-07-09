@@ -20,10 +20,10 @@ struct StarsView: View {
                         .foregroundColor(.yellow)
                 } else if rating - floatIndex >= 0.5 {
                     Image(systemName: "star.leadinghalf.filled")
-                        .foregroundColor(.gray.opacity(0.5))
+                        .foregroundColor(AppColor.textSecondary.opacity(0.5))
                 } else {
                     Image(systemName: "star")
-                        .foregroundColor(.gray.opacity(0.5))
+                        .foregroundColor(AppColor.textSecondary.opacity(0.5))
                 }
             }
             .font(.system(size: starsSize))

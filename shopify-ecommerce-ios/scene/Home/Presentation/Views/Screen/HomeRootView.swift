@@ -34,7 +34,7 @@ struct HomeRootView: View {
                                      } label: {
                                          Image(systemName: "cart")
                                              .font(.system(size: 18, weight: .medium))
-                                             .foregroundStyle(.black)
+                                             .foregroundStyle(AppColor.textPrimary)
                                              .frame(width: 40, height: 40)
                                              .background(Color(.systemGray6))
                                              .clipShape(Circle())
@@ -66,7 +66,7 @@ struct HomeRootView: View {
                         } label: {
                             Image(systemName: "xmark")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.black)
+                                .foregroundStyle(AppColor.textPrimary)
                                 .frame(width: 32, height: 32)
                                 .background(Color(.systemGray6))
                                 .clipShape(Circle())
@@ -82,7 +82,7 @@ struct HomeRootView: View {
                         } label: {
                             Image(systemName: "cart")
                                 .font(.system(size: 18, weight: .medium))
-                                .foregroundStyle(.black)
+                                .foregroundStyle(AppColor.textPrimary)
                                 .frame(width: 40, height: 40)
                                 .background(Color(.systemGray6))
                                 .clipShape(Circle())

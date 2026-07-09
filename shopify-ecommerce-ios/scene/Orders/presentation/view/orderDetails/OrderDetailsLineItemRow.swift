@@ -19,7 +19,7 @@ struct OrderDetailsLineItemRow: View {
                 if let sku = item.sku, !sku.isEmpty {
                     Text("SKU: \(sku)")
                         .font(.caption)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColor.textSecondary)
                 }
             }
             
@@ -28,10 +28,10 @@ struct OrderDetailsLineItemRow: View {
             HStack(spacing: 8) {
                 Text("×\(item.quantity)")
                     .font(.caption)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColor.textSecondary)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 2)
-                    .background(Color.gray.opacity(0.15))
+                    .background(AppColor.textSecondary.opacity(0.15))
                     .clipShape(RoundedRectangle(cornerRadius: 4))
                 
                 Text(item.price)

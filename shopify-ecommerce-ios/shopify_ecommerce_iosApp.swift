@@ -21,6 +21,7 @@ struct shopify_ecommerce_iosApp: App {
     @AppStorage(AppConstants.hasSeenOnboarding) private var hasSeenOnboarding = false
     @AppStorage(AppConstants.isLoggedIn) private var isLoggedIn = false
     @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
+    @AppStorage("isDarkMode") private var isDarkMode = false
     
     var body: some Scene {
         WindowGroup {
@@ -44,6 +45,7 @@ struct shopify_ecommerce_iosApp: App {
             .modelContainer(SwiftDataHandler.shared.sharedModelContainer)
             .environment(networkMonitor)
             .environment(currencyService)
+            .preferredColorScheme(isDarkMode ? .dark : nil)
         }
     }
 }

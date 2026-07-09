@@ -19,11 +19,11 @@ struct TrailingIconOutlinedButton: View {
                 Text(title)
                 Image(systemName: "chevron.right")
             }
-            .foregroundStyle(Color.white)
+            .foregroundStyle(AppColor.backgroundPrimary)
             .padding(10)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(.white, lineWidth: 2)
+                    .strokeBorder(AppColor.backgroundPrimary, lineWidth: 2)
             )
         }
     }
@@ -32,5 +32,5 @@ struct TrailingIconOutlinedButton: View {
 #Preview {
     TrailingIconOutlinedButton(title: "Shop now", action: {})
         .padding()
-        .background(Color.red)
+        .background(AppColor.dangerDefault)
 }

@@ -15,7 +15,7 @@ struct OrderDetailsAddressSection: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
                 Image(systemName: icon)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColor.textSecondary)
                 Text(title)
                     .font(.headline)
             }
@@ -33,7 +33,7 @@ struct OrderDetailsAddressSection: View {
                 HStack(spacing: 8) {
                     Image(systemName: "phone.fill")
                         .font(.caption)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColor.textSecondary)
                     Text(phone)
                         .font(.subheadline)
                 }
@@ -41,7 +41,7 @@ struct OrderDetailsAddressSection: View {
         }
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white)
+        .background(AppColor.backgroundPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
     }
