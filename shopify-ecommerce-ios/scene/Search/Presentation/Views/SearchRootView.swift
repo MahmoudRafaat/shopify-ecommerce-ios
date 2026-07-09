@@ -23,5 +23,18 @@ struct SearchRootView: View {
             }
         }
         .environment(coordinator)
+        .alert("No Internet Connection", isPresented: Binding(
+            get: { coordinator.showNetworkAlert },
+            set: { coordinator.showNetworkAlert = $0 }
+        )) {
+            Button("Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Please check your internet connection before continuing.")
+        }
     }
 }

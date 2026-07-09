@@ -8,6 +8,8 @@
 import Foundation
 import Observation
 
+
+
 @Observable
 class HomeViewModel {
     
@@ -17,15 +19,7 @@ class HomeViewModel {
     
     private var hasFetchedData: Bool = false
     
-    private(set) var categories: [Category] = []
-    private(set) var brands: [Category] = []
-    private(set) var categorySections: [(title: String, products: [Product])] = []
-    
-    var isCategoriesLoading: Bool = true
-    var isBrandsLoading: Bool = true
-    var isProductsLoading: Bool = true
-    
-    var errorMessage: String? = nil
+    var uiState = HomeUIState()
     
     init(
         getProductsUseCase: GetProductsUseCaseProtocol,
@@ -41,7 +35,7 @@ class HomeViewModel {
         guard !hasFetchedData else { return }
         
         hasFetchedData = true
-        errorMessage = nil
+        uiState.error = nil
         
         async let categoriesTask: () = fetchCategories()
         async let brandsTask: () = fetchBrands()
@@ -56,31 +50,31 @@ class HomeViewModel {
     }
     
     private func fetchCategories() async {
-        isCategoriesLoading = true
+        uiState.isCategoriesLoading = true
         do {
-            self.categories = try await getCategoriesUseCase.execute()
+            self.uiState.categories = try await getCategoriesUseCase.execute()
         } catch {
             print("Error fetching categories: \(error)")
-            self.errorMessage = error.localizedDescription
+            self.uiState.error = AppError.determine()
             self.hasFetchedData = false
         }
-        isCategoriesLoading = false
+        uiState.isCategoriesLoading = false
     }
     
     private func fetchBrands() async {
-        isBrandsLoading = true
+        uiState.isBrandsLoading = true
         do {
-            self.brands = try await getBrandsUseCase.execute()
+            self.uiState.brands = try await getBrandsUseCase.execute()
         } catch {
             print("Error fetching brands: \(error)")
-            self.errorMessage = error.localizedDescription
+            self.uiState.error = AppError.determine()
             self.hasFetchedData = false
         }
-        isBrandsLoading = false
+        uiState.isBrandsLoading = false
     }
     
     private func fetchProducts() async {
-        isProductsLoading = true
+        uiState.isProductsLoading = true
         do {
             let allProducts = try await getProductsUseCase.execute()
     
@@ -93,15 +87,15 @@ class HomeViewModel {
             let shuffledKeys = validGroups.keys.shuffled()
             let selectedKeys = Array(shuffledKeys.prefix(2))
             
-            self.categorySections = selectedKeys.map { key in
+            self.uiState.categorySections = selectedKeys.map { key in
                 (title: key, products: validGroups[key]!)
             }
             
         } catch {
             print("Error fetching products: \(error)")
-            self.errorMessage = error.localizedDescription
+            self.uiState.error = AppError.determine()
             self.hasFetchedData = false
         }
-        isProductsLoading = false
+        uiState.isProductsLoading = false
     }
 }

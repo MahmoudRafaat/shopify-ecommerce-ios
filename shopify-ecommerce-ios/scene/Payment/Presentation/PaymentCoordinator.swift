@@ -35,6 +35,10 @@ final class PaymentCoordinator: PaymentFlowCoordinating {
     func startPayment(request: PaymobPaymentRequest) async throws -> PaymentResult {
         // Load configuration here — keeps this infrastructure call out of both
         // the ViewModel and the domain use case.
+        guard NetworkMonitor.shared.isConnected else {
+            throw PaymentCoordinatorError.noInternetConnection
+        }
+        
         let configuration = try PaymobConfiguration.fromBundle()
 
         guard configuration.cardIntegrationID > 0 else {
@@ -62,11 +66,14 @@ final class PaymentCoordinator: PaymentFlowCoordinating {
 
 enum PaymentCoordinatorError: LocalizedError {
     case configurationLoadFailed(String)
+    case noInternetConnection
 
     var errorDescription: String? {
         switch self {
         case .configurationLoadFailed(let reason):
             return "Payment coordinator could not load configuration: \(reason)"
+        case .noInternetConnection:
+            return "No internet connection available."
         }
     }
 }

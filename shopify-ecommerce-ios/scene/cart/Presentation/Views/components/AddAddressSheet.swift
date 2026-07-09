@@ -47,7 +47,7 @@ struct AddAddressSheet: View {
                                 phone: phone
                             )
                             await viewModel.updateAddress(address: newAddress)
-                            viewModel.isAddressSheetPresented = false
+                            viewModel.uiState.isAddressSheetPresented = false
                         }
                     }
                     .disabled(address1.isEmpty || city.isEmpty || country.isEmpty)
@@ -63,12 +63,12 @@ struct AddAddressSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        viewModel.isAddressSheetPresented = false
+                        viewModel.uiState.isAddressSheetPresented = false
                     }
                 }
             }
             .onAppear {
-                if let current = viewModel.currentAddress {
+                if let current = viewModel.uiState.currentAddress {
                     firstName = current.firstName ?? ""
                     lastName = current.lastName ?? ""
                     address1 = current.address1 ?? ""

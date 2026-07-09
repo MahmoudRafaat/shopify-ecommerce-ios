@@ -46,6 +46,7 @@ struct shopify_ecommerce_iosApp: App {
             .environment(networkMonitor)
             .environment(currencyService)
             .preferredColorScheme(isDarkMode ? .dark : nil)
+            .withGlobalAlerts()
         }
     }
 }

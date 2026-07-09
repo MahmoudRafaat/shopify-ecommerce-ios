@@ -45,16 +45,39 @@ struct SettingsView: View {
                 }
             }
             .showLoading(if: viewModel.uiState.isLoading)
-            .showCustomAlert(title: "Error", errorMessage: $viewModel.uiState.errorMessage)
-            .alert("Logout", isPresented: $viewModel.uiState.showLogoutConfirmation) {
-                logoutAlertButtons
-            } message: {
-                Text("Are you sure you want to logout?")
+            .onChange(of: viewModel.uiState.errorMessage) { _, msg in
+                if let msg = msg {
+                    AlertManager.shared.showAlert(title: "Error", message: msg)
+                    viewModel.uiState.errorMessage = nil
+                }
             }
-            .alert("Help Center", isPresented: $viewModel.uiState.showHelpAlert) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(viewModel.uiState.helpText)
+            .onChange(of: viewModel.uiState.showLogoutConfirmation) { _, show in
+                if show {
+                    AlertManager.shared.showAlert(
+                        title: "Logout",
+                        message: "Are you sure you want to logout?",
+                        primaryButtonText: "Cancel",
+                        primaryButtonRole: .cancel,
+                        primaryAction: { viewModel.uiState.showLogoutConfirmation = false },
+                        secondaryButtonText: "Logout",
+                        secondaryButtonRole: .destructive,
+                        secondaryAction: {
+                            viewModel.uiState.showLogoutConfirmation = false
+                            viewModel.confirmLogout()
+                        }
+                    )
+                }
+            }
+            .onChange(of: viewModel.uiState.showHelpAlert) { _, show in
+                if show {
+                    AlertManager.shared.showAlert(
+                        title: "Help Center",
+                        message: viewModel.uiState.helpText,
+                        primaryButtonText: "OK",
+                        primaryButtonRole: .cancel,
+                        primaryAction: { viewModel.uiState.showHelpAlert = false }
+                    )
+                }
             }
             .onAppear {
                 viewModel.loadUserData()
@@ -213,13 +236,6 @@ struct SettingsView: View {
         }
     }
 
-    @ViewBuilder
-    private var logoutAlertButtons: some View {
-        Button("Cancel", role: .cancel) { }
-        Button("Logout", role: .destructive) {
-            viewModel.confirmLogout()
-        }
-    }
 }
 
 struct SettingsGroup<Content: View>: View {

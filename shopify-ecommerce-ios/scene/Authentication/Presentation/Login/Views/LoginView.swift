@@ -21,14 +21,14 @@ struct LoginView: View {
                     LoginInputView(
                         email: $viewmodel.email,
                         password: $viewmodel.password,
-                        errorMessage: viewmodel.errorMessage
+                        errorMessage: viewmodel.uiState.error?.message
                     )
                     
                     VStack(spacing: 16) {
                         CustomButton(text: "Login") {
                             viewmodel.login()
                         }
-                        .disabled(viewmodel.isLoading)
+                        .disabled(viewmodel.uiState.isLoading)
                         
                         Button {
                             isGuestMode = true
@@ -66,12 +66,17 @@ struct LoginView: View {
                 .foregroundColor(.appPrimary)
             }
         }
-        .showLoading(if: viewmodel.isLoading)
-                .showCustomAlert(title: "Error", errorMessage: $viewmodel.errorMessage)
+        .showLoading(if: viewmodel.uiState.isLoading)
+                .onChange(of: viewmodel.uiState.error) { _, error in
+                    if let error = error {
+                        AlertManager.shared.showError(error)
+                        viewmodel.uiState.error = nil
+                    }
+                }
                 .background(AppColor.backgroundPrimary.ignoresSafeArea())
-                .disabled(viewmodel.showSuccessMessage)
+                .disabled(viewmodel.uiState.showSuccessMessage)
                 
-                if viewmodel.showSuccessMessage {
+                if viewmodel.uiState.showSuccessMessage {
                     VStack {
                         Spacer()
                         Text("Login Successful!")
@@ -87,7 +92,7 @@ struct LoginView: View {
                     }
                 }
             }
-            .animation(.easeInOut(duration: 0.3), value: viewmodel.showSuccessMessage)
+            .animation(.easeInOut(duration: 0.3), value: viewmodel.uiState.showSuccessMessage)
             .navigationDestination(isPresented: $navigateToSignup) {
                 SignupView(viewmodel: AuthFactory.makeSignupViewModel())
             }

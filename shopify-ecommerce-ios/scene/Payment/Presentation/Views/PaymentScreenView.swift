@@ -17,7 +17,6 @@ struct PaymentScreenView: View {
     @Environment(CurrencyService.self) private var currencyService
 
     @State private var selectedIndex: Int = 0
-    @State private var alertMessage: String? = nil
 
     var body: some View {
         VStack(spacing: 0) {
@@ -61,13 +60,14 @@ struct PaymentScreenView: View {
         .task {
             await viewModel.getTotalPrice()
         }
-        .showLoading(if: viewModel.isProcessingPayment)
-        // Mirror paymentError into the local @State binding for the alert modifier.
-        .onChange(of: viewModel.paymentError) { _, error in
-            alertMessage = error
+        .showLoading(if: viewModel.uiState.isLoading)
+        .onChange(of: viewModel.uiState.error) { _, error in
+            if let error = error {
+                AlertManager.shared.showError(error)
+                viewModel.uiState.error = nil
+            }
         }
-        .showCustomAlert(title: "Payment Error", errorMessage: $alertMessage)
-        .onChange(of: viewModel.orderCompleted) { _, completed in
+        .onChange(of: viewModel.uiState.orderCompleted) { _, completed in
             if completed {
                 onOrderSuccess?()
             }

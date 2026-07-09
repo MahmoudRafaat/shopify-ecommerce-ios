@@ -91,7 +91,12 @@ struct ProfileDetailsView: View {
             .background(Color(white: 0.99))
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
-            .showCustomAlert(title: "Error", errorMessage: $viewModel.uiState.errorMessage)
+            .onChange(of: viewModel.uiState.errorMessage) { _, msg in
+                if let msg = msg {
+                    AlertManager.shared.showAlert(title: "Error", message: msg)
+                    viewModel.uiState.errorMessage = nil
+                }
+            }
             .showLoading(if: viewModel.uiState.isLoading)
             .onAppear {
                 if viewModel.uiState.isLoggedIn {

@@ -26,31 +26,51 @@ struct CollectionScreenView: View {
         VStack(spacing: 0) {
             HeaderView(searchText: Bindable(viewModel).searchText)
             
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVGrid(columns: columns) {
-                    ForEach(0..<viewModel.products.count, id: \.self) { index in
-                        let product = viewModel.products[index]
-                        
-                        ProductCardView(uiState: ProductUIState(product: product)) {
-                            coordinator.navigationPath.append(HomeCoordinator.Destination.productDetail(productId: product.id))
-                        }
-                        .onAppear {
-                            if index == viewModel.products.count - 1 {
-                                viewModel.loadMoreIfNeeded()
+            if viewModel.uiState.isLoading {
+                Spacer()
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .appBlue))
+                    .scaleEffect(1.3)
+                Spacer()
+            } else if let error = viewModel.uiState.error {
+                CustomContentUnavailableView(error: error, onRetry: {
+                    Task { await viewModel.fetchProducts() }
+                })
+            } else if viewModel.uiState.products.isEmpty {
+                Spacer()
+                ContentUnavailableView {
+                    Label("No products found", systemImage: "tray")
+                } description: {
+                    Text("Try adjusting your search.")
+                }
+                Spacer()
+            } else {
+                ScrollView(.vertical, showsIndicators: false) {
+                    LazyVGrid(columns: columns) {
+                        ForEach(0..<viewModel.uiState.products.count, id: \.self) { index in
+                            let product = viewModel.uiState.products[index]
+                            
+                            ProductCardView(uiState: ProductUIState(product: product)) {
+                                coordinator.navigationPath.append(HomeCoordinator.Destination.productDetail(productId: product.id))
+                            }
+                            .onAppear {
+                                if index == viewModel.uiState.products.count - 1 {
+                                    viewModel.loadMoreIfNeeded()
+                                }
                             }
                         }
+                        .padding(.bottom, 16)
                     }
-                    .padding(.bottom, 16)
-                }
-                .padding(16)
-                
-                if viewModel.canLoadMore {
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: .appBlue))
-                            .padding(.vertical, 20)
-                        Spacer()
+                    .padding(16)
+                    
+                    if viewModel.canLoadMore {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .appBlue))
+                                .padding(.vertical, 20)
+                            Spacer()
+                        }
                     }
                 }
             }

@@ -29,10 +29,8 @@ final class PaymentViewModel {
 
     /// The result of the most recent Paymob payment attempt.
     var paymentResult: PaymentResult?
-    /// Set when any error occurs; cleared at the start of each new operation.
-    var paymentError: String?
-    /// `true` while a payment session is in-flight.
-    var isProcessingPayment: Bool = false
+    
+    var uiState = PaymentUIState()
 
     // MARK: - Static UI data
 
@@ -65,13 +63,10 @@ final class PaymentViewModel {
             totalPrice = order.total
             self.orderId   = order.id
         } catch {
-            paymentError = error.localizedDescription
+            uiState.error = AppError.custom(title: "Error", message: error.localizedDescription)
             print("[PaymentViewModel] getTotalPrice failed: \(error)")
         }
     }
-
-    /// Indicates that the order and payment (if applicable) were completed successfully.
-    var orderCompleted: Bool = false
 
     // MARK: - Paymob payment
 
@@ -90,12 +85,12 @@ final class PaymentViewModel {
         orderDescription: String = "Shopify Order",
         paymentMethodIDs: [Int]
     ) async {
-        guard !isProcessingPayment else { return }
+        guard !uiState.isLoading else { return }
 
         paymentResult = nil
-        paymentError  = nil
-        isProcessingPayment = true
-        defer { isProcessingPayment = false }
+        uiState.error  = nil
+        uiState.isLoading = true
+        defer { uiState.isLoading = false }
 
         // Domain-layer money conversion — no arithmetic in the ViewModel.
         let amountCents = MoneyConverter.toCents(from: totalPrice)
@@ -121,7 +116,7 @@ final class PaymentViewModel {
             paymentResult = result
             print("[PaymentViewModel] Payment result: \(result)")
         } catch {
-            paymentError = error.localizedDescription
+            uiState.error = AppError.custom(title: "Error", message: error.localizedDescription)
             print("[PaymentViewModel] Payment failed: \(error)")
         }
     }
@@ -132,8 +127,8 @@ final class PaymentViewModel {
     /// - Parameter selectedIndex: 0 = Visa (Paymob), 1 = Paypal (Paymob), 2 = Cash on Delivery.
     func checkout(selectedIndex: Int) async {
         guard let orderId else { return }
-        paymentError = nil
-        orderCompleted = false
+        uiState.error = nil
+        uiState.orderCompleted = false
 
         let isCOD = (selectedIndex == 2)
 
@@ -141,10 +136,10 @@ final class PaymentViewModel {
             do {
                 try await completeOrderUseCase.execute(id: orderId, paymentPending: true)
                 CartService.shared.clear()
-                orderCompleted = true
+                uiState.orderCompleted = true
                 print("[PaymentViewModel] COD Order \(orderId) completed.")
             } catch {
-                paymentError = error.localizedDescription
+                uiState.error = AppError.custom(title: "Error", message: error.localizedDescription)
                 print("[PaymentViewModel] completeOrder failed: \(error)")
             }
         } else {
@@ -170,16 +165,16 @@ final class PaymentViewModel {
                     // Payment succeeded -> Complete order on Shopify
                     try await completeOrderUseCase.execute(id: orderId, paymentPending: false)
                     CartService.shared.clear()
-                    orderCompleted = true
+                    uiState.orderCompleted = true
                     print("[PaymentViewModel] Card Order \(orderId) completed after successful payment.")
                 } catch {
-                    paymentError = error.localizedDescription
+                    uiState.error = AppError.custom(title: "Error", message: error.localizedDescription)
                     print("[PaymentViewModel] completeOrder after payment failed: \(error)")
                 }
             } else if case .failure(let reason) = paymentResult {
-                paymentError = "Payment failed: \(reason)"
+                uiState.error = AppError.custom(title: "Payment Error", message: reason)
             } else if case .pending = paymentResult {
-                paymentError = "Payment is pending verification."
+                uiState.error = AppError.custom(title: "Payment Pending", message: "Payment is pending verification.")
             }
         }
     }

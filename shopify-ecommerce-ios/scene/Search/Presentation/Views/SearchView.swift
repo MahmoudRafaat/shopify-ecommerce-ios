@@ -69,14 +69,15 @@ struct SearchView: View {
     
     @ViewBuilder
     private var contentView: some View {
-        switch viewModel.viewState {
-        case .idle:
+        if viewModel.uiState.isIdle {
             idleView
-            
-        case .loading:
+        } else if viewModel.uiState.isLoading {
             loadingView
-            
-        case .loadingMore, .success:
+        } else if let error = viewModel.uiState.error {
+            CustomContentUnavailableView(error: error, onRetry: {
+                viewModel.performSearch()
+            })
+        } else {
             let products = viewModel.currentProducts
             if products.isEmpty {
                 emptyView
@@ -87,9 +88,6 @@ struct SearchView: View {
                     onReachedBottom: { viewModel.loadMoreIfNeeded() }
                 )
             }
-            
-        case .error(let message):
-            errorView(message)
         }
     }
     
@@ -133,21 +131,6 @@ struct SearchView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.top, 80)
-    }
-    
-    private func errorView(_ message: String) -> some View {
-        ContentUnavailableView {
-            Label("Something went wrong.", systemImage: "exclamationmark.triangle.fill")
-        } description: {
-            Text("Please check your internet connection and try again.")
-        } actions: {
-            Button("Try Again") {
-                viewModel.performSearch()
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(.appBlue)
-            .controlSize(.regular)
-        }
     }
 }
 

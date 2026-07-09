@@ -12,6 +12,8 @@ struct CustomTabBarView: View {
     @AppStorage(AppConstants.isGuestMode) private var isGuestMode = false
     @State private var showLoginAlert = false
     
+    @State private var showNetworkAlert = false
+    
     // TODO: Change After Merge to Dev
     let themeRed : Color = .appPrimary
     
@@ -20,6 +22,12 @@ struct CustomTabBarView: View {
             ForEach(Tab.allCases, id: \.self) { tab in
                 Spacer()
                 Button {
+                    if tab != .wishlist && tab != .settings {
+                        guard NetworkMonitor.shared.isConnected else {
+                            showNetworkAlert = true
+                            return
+                        }
+                    }
                     if isGuestMode && (tab == .cart || tab == .wishlist) {
                         showLoginAlert = true
                     } else {
@@ -65,6 +73,16 @@ struct CustomTabBarView: View {
             }
         } message: {
             Text("Please login to access this feature.")
+        }
+        .alert("No Internet Connection", isPresented: $showNetworkAlert) {
+            Button("Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Please check your internet connection before continuing.")
         }
     }
 }

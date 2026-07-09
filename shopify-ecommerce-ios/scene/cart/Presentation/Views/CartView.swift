@@ -19,7 +19,7 @@ struct CartView: View {
             // Navigation Bar
             CheckoutNavigationBar()
             
-            if viewModel.isOrderDeleted || viewModel.cartLineItems.isEmpty && viewModel.draftOrderId == nil && !viewModel.isLoading {
+            if viewModel.uiState.isOrderDeleted || viewModel.uiState.cartLineItems.isEmpty && viewModel.uiState.draftOrderId == nil && !viewModel.uiState.isLoading {
                 // Empty State
                 EmptyCartView(onGoBack: {
                     showHome = true
@@ -32,13 +32,18 @@ struct CartView: View {
         }
         .environment(viewModel)
         .navigationBarHidden(true)
-        .showLoading(if: viewModel.isLoading)
-        .showCustomAlert(title: "Error", errorMessage: Bindable(viewModel).errorMessage)
-        .sheet(isPresented: Bindable(viewModel).isAddressSheetPresented) {
+        .showLoading(if: viewModel.uiState.isLoading)
+        .onChange(of: viewModel.uiState.error) { _, error in
+            if let error = error {
+                AlertManager.shared.showError(error)
+                viewModel.uiState.error = nil
+            }
+        }
+        .sheet(isPresented: Bindable(viewModel).uiState.isAddressSheetPresented) {
             AddAddressSheet()
                 .environment(viewModel)
         }
-        .sheet(isPresented: Bindable(viewModel).isCouponSheetPresented) {
+        .sheet(isPresented: Bindable(viewModel).uiState.isCouponSheetPresented) {
             SelectCouponSheet()
                 .environment(viewModel)
         }
