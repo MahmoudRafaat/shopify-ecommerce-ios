@@ -1,0 +1,65 @@
+//
+//  HomeHeaderView.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Yomna on 27/06/2026.
+//
+
+import SwiftUI
+
+struct HeaderView: View {
+    @Binding var searchText: String
+    @State private var showSettings = false
+    var autoFocus: Bool = false
+    var onSearchTap: (() -> Void)? = nil
+    var onMenuTap: (() -> Void)? = nil
+    
+    @FocusState private var isTextFieldFocused: Bool
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            HStack {
+                Spacer()
+                
+                HStack(spacing: 8) {
+                    Image("logo")
+                    Text("Stylish")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color(.appBlue))
+                }
+                
+                Spacer()
+                
+                Button {
+                    onMenuTap?()
+                } label: {
+                    Image("profile")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                }
+            }
+            .padding(.horizontal, 14)
+            
+            SearchField(searchText: $searchText)
+                .focused($isTextFieldFocused)
+                .padding(.horizontal, 16)
+                .overlay {
+                   if onSearchTap != nil {
+                        AppColor.backgroundPrimary.opacity(0.001)
+                            .onTapGesture {
+                                onSearchTap?()
+                            }
+                    }
+                }
+        }
+        .onAppear {
+            if autoFocus {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    isTextFieldFocused = true
+                }
+            }
+        }
+    }
+}

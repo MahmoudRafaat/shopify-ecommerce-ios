@@ -1,0 +1,98 @@
+//
+//  SettingsViewModel.swift
+//  shopify-ecommerce-ios
+//
+//  Created by Mahmoud Raafat Mustafa on 04/07/2026.
+//
+
+
+import Foundation
+import Observation
+import FirebaseAuth
+
+@Observable
+class SettingsViewModel {
+    
+    private let getUserUseCase: GetUserProfileUseCaseProtocol
+    private let logoutUseCase: LogoutUseCaseProtocol
+    private let checkLoginUseCase: CheckLoginStatusUseCaseProtocol
+    
+    var uiState = SettingsUIState()
+    var navigateToOrders = false
+
+    init(
+        getUserUseCase: GetUserProfileUseCaseProtocol = SettingsUseCase(),
+        logoutUseCase: LogoutUseCaseProtocol = SettingsUseCase(),
+        checkLoginUseCase: CheckLoginStatusUseCaseProtocol = SettingsUseCase()
+    ) {
+        self.getUserUseCase = getUserUseCase
+        self.logoutUseCase = logoutUseCase
+        self.checkLoginUseCase = checkLoginUseCase
+        loadUserData()
+    }
+    
+    func loadUserData() {
+        self.uiState.isLoading = true
+        let isLoggedIn = checkLoginUseCase.execute()
+        uiState.isLoggedIn = isLoggedIn
+        uiState.isGuestMode = !isLoggedIn
+      
+            self.uiState.isLoading = false
+        if isLoggedIn, let user = getUserUseCase.execute() {
+            uiState.userEmail = user.email ?? ""
+            uiState.userName = user.displayName ?? "User"
+        } else {
+            uiState.userEmail = ""
+            uiState.userName = "Guest"
+            self.uiState.isGuestMode = true
+
+        }
+        self.uiState.isLoading = false
+
+    }
+    
+    func handleLogout() {
+        uiState.showLogoutConfirmation = true
+    }
+    
+    func confirmLogout() {
+        uiState.showLogoutConfirmation = false
+        uiState.isLoading = true
+        
+        do {
+            try logoutUseCase.execute()
+            uiState.isLoggedIn = false
+            UserDefaults.standard.set(false, forKey: AppConstants.isGuestMode)
+            uiState.errorMessage = nil
+        } catch {
+            uiState.errorMessage = error.localizedDescription
+        }
+        
+        uiState.isLoading = false
+    }
+    
+    func showHelp() {
+        uiState.showHelpAlert = true
+    }
+    
+    var navigateToProfileScreen = false
+    
+    func navigateToProfile() {
+        if uiState.isLoggedIn {
+            navigateToProfileScreen = true
+        } else {
+            uiState.errorMessage = "Please sign in to view your profile"
+        }
+    }
+    
+
+    
+    func navigateToMyOrders() {
+        if uiState.isLoggedIn {
+                   navigateToOrders = true
+               } else {
+                   uiState.errorMessage = "Please sign in to view your orders"
+               }    }
+    
+ 
+}
